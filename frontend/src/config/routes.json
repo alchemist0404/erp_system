@@ -1,0 +1,26 @@
+{
+    "/" : {
+        "path" : "/games",
+        "title" : "Games Page"
+    },
+    "signin" : {
+        "path" : "/signin",
+        "title" : "Signin Page"
+    },
+    "games" : {
+        "path" : "/games",
+        "title" : "Games Page"
+    },
+    "rtp" : {
+        "path" : "/rtp",
+        "title" : "RTP Page"
+    },
+    "profit" : {
+        "path" : "/profit",
+        "title" : "Profit Page"
+    },
+    "customers" : {
+        "path" : "/customers",
+        "title" : "Customer Page"
+    }
+}

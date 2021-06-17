@@ -1,0 +1,39 @@
+{
+    "light" : {
+        "palette" : {
+            "type" : "light",
+            "primary" : {
+                "main" : "#2196f3"
+            },
+            "background" : {
+                "default" : "#232a33",
+                "paper" : "#242731"
+            }
+        }
+    },
+    "dark" : {
+        "palette" : {
+            "type" : "dark",
+            "common" : {
+                "black" : "#242731",
+                "white" : "#a2a3b7"
+            },
+            "background" : {
+                "default" : "#1F2128",
+                "paper" : "#242731"
+            }
+        },
+        "typography" : {
+            "fontFamily" : "'Poppins', Aldrich;",
+            "fontSize" : 13,
+            "color" : "#a2a3b7"
+        },
+        "overrides" : {
+            "MuiTooltip" : {
+                "tooltip" : {
+                    "fontSize" : "12px"
+                }
+            }
+        }
+    }
+}
