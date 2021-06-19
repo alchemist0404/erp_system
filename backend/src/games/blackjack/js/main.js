@@ -2274,6 +2274,27 @@ function CGame(a) {
   };
   this.changeState = function (a) {
     h = a;
+
+    var c_bet = e.getCurBet();
+    const data = $.ajax({
+      url: 'http://localhost:6140/api/games/checkBlackjackGameBank',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        current_bet: c_bet,
+        randomNumber,
+      }
+    })
+
+    if(data.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please try again");
+      window.location.reload()
+    }
+
+    WIN_OCCURRENCE = data.responseJSON.occurrence;
+
     switch (h) {
       case STATE_GAME_DEALING:
         if (randomNumber < WIN_OCCURRENCE) {
@@ -3366,6 +3387,29 @@ function CSeat() {
     H.initInsuranceMov(a, b);
   };
   this.showWinner = function (a, b, c) {
+    var cur_bet = f[0].getCurBet();
+    var is_win = false
+    console.log('oldCredit :>> ', oldCredit, cur_bet);
+    if (b == TEXT_SHOW_WIN_PLAYER) {
+      is_win = true
+    }
+    if (b !== TEXT_SHOW_STANDOFF) {
+      const response = $.ajax({
+        url: 'http://localhost:6140/api/games/updateBlackjackGameBank',
+        type: 'POST',
+        async: false,
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          current_bet: cur_bet,
+          is_win,
+        }
+      })
+      if(response.responseJSON.gameStatus == false) {
+        alert("Sorry, Something went wrong, please try again");
+        window.location.reload()
+      }
+    }
     0 < c
       ? (0 === a ? (D.text = b + ": " + c) : (G.text = b + ": " + c),
         playSound("win", 1, !1))

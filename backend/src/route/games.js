@@ -9,9 +9,11 @@ const {
     updateGame, 
     deleteGame,
     deleteMultiGames,
-    manageGamehilow,
+    manageNormalGame,
     manageGameameroullete,
-    manageGamebaccarat
+    manageGamebaccarat,
+    checkBlackjackGameBank,
+    updateBlackjackGameBank
 } = require('../controllers/gamesController')
 
 router.get('/:id', getGameById)
@@ -21,8 +23,10 @@ router.put('/:id', updateGame)
 router.delete('/:id', deleteGame)
 router.post('/getByRoute', getByRouteGame)
 router.post('/delete', deleteMultiGames)
-router.post('/manageGamehilow', manageGamehilow)
+router.post('/manageNormalGame', manageNormalGame)
 router.post('/manageGameameroullete', manageGameameroullete)
 router.post('/manageGamebaccarat', manageGamebaccarat)
+router.post('/checkBlackjackGameBank', checkBlackjackGameBank)
+router.post('/updateBlackjackGameBank', updateBlackjackGameBank)
 
 module.exports = router

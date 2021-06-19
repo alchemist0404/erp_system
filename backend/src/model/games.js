@@ -13,7 +13,10 @@ const gamesSchema = new Schema({
 	type: {
 		type: String
 	},
-	win_percentage: {
+	win_occurrence: {
+		type: Number
+	},
+	lose_occurrence: {
 		type: Number
 	}
 })

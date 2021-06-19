@@ -66,7 +66,7 @@ export default function Games() {
 			label: "Game Route & Directory"
 		},
 		{
-			name: "win_percentage",
+			name: "win_occurrence",
 			label: "Game Win Percentage"
 		},
 		{
@@ -103,7 +103,7 @@ export default function Games() {
 			type: gameType,
 			name: gameName,
 			route: gameRoute,
-			win_percentage: winPercentage
+			win_occurrence: winPercentage
 		}, gameId)
 		var data = await API.getGames();
 		dispatch(games_store(data.data))
@@ -127,7 +127,7 @@ export default function Games() {
 			name: gameName,
 			route: gameRoute,
 			type: gameType,
-			win_percentage: winPercentage
+			win_occurrence: winPercentage
 		});
 		if(addGameResult.msg !== "") {
 			alert(addGameResult.msg);

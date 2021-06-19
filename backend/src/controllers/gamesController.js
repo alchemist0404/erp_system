@@ -87,6 +87,120 @@ const deleteMultiGames = async (req, res) => {
   }
 };
 
+const manageNormalGame = async (req, res) => {
+
+  var updateData = {}, occurrence = 0, occurrence_type = 'lose';
+
+  try {
+    var re_data = req.body;
+    var randomNumber = Number(re_data.randomNumber)
+
+    var gameData = await Games.findById(Types.ObjectId(re_data.gameId))
+    var customerData = await Customers.findById(Types.ObjectId(re_data.customerId))
+    var profitData = await Profit.findOne({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) })
+    var rtpData = await Rtp.findOne({ game_id: Types.ObjectId(re_data.gameId) })
+
+    var betAmount = Number(re_data.betAmount)
+    var winAmount = Number(re_data.winAmount)
+
+    var allprofit = betAmount * (100 - Number(rtpData.rtp)) / 100;
+    var provider_profit = profitData.provider_profit + allprofit * customerData.providerProfit / 100;
+    var customer_profit = profitData.customer_profit + allprofit - allprofit * customerData.providerProfit / 100;
+    var game_bank = 0;
+    // var hookreturndata = await sendHook()
+
+    // game bank is lower than win amount
+    if (profitData.game_bank < (winAmount + allprofit)) {
+      
+      game_bank = profitData.game_bank + betAmount - allprofit;
+      updateData = {
+        provider_profit: provider_profit,
+        customer_profit: customer_profit,
+        game_bank: game_bank
+      };
+      if (re_data.tie === 'true') {
+        occurrence_type = 'lose'
+        occurrence = 100;
+      } else {
+        occurrence_type = 'win'
+        occurrence = 0;
+      }
+
+      // game bank is higher than win amount
+    } else {
+
+      // game tie exists
+      if (re_data.tie === 'true') {
+
+        // user lose
+        if (randomNumber > 100 - gameData.lose_occurrence) {
+          game_bank = profitData.game_bank + betAmount - allprofit;
+          updateData = {
+            provider_profit: provider_profit,
+            customer_profit: customer_profit,
+            game_bank: game_bank
+          };
+          occurrence_type = 'lose'
+          occurrence = 100;
+
+          // user win
+        } else if (randomNumber > 100 - gameData.lose_occurrence - gameData.win_occurrence) {
+          game_bank = profitData.game_bank - winAmount - allprofit;
+          updateData = {
+            provider_profit: provider_profit,
+            customer_profit: customer_profit,
+            game_bank: game_bank
+          };
+          occurrence_type = 'win'
+
+          // game tied
+        } else {
+          occurrence_type = 'tie'
+        }
+
+        // game tie no exists
+      } else {
+
+        // user win
+        if (randomNumber < gameData.win_occurrence) {
+          game_bank = profitData.game_bank - winAmount - allprofit;
+          updateData = {
+            provider_profit: provider_profit,
+            customer_profit: customer_profit,
+            game_bank: game_bank
+          };
+          occurrence_type = 'win'
+          occurrence = gameData.win_occurrence;
+
+          // user lose
+        } else {
+          game_bank = profitData.game_bank + betAmount - allprofit;
+          updateData = {
+            provider_profit: provider_profit,
+            customer_profit: customer_profit,
+            game_bank: game_bank
+          };
+          occurrence_type = 'win'
+          occurrence = 0;
+        }
+      }
+    }
+    await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
+    res.json({
+      occurrence_type: occurrence_type,
+      occurrence: occurrence,
+      gameStatus: true
+    })
+  } catch (err) {
+    console.log(err)
+    res.json({
+      occurrence_type: null,
+      occurrence: 0,
+      gameStatus: true
+    })
+  }
+};
+
 const manageGamehilow = async (req, res) => {
   try {
     var re_data = req.body;
@@ -113,14 +227,14 @@ const manageGamehilow = async (req, res) => {
       };
       occurrence = 0;
     } else {
-      if (Number(re_data.randomNumber) < gameData.win_percentage) {
+      if (Number(re_data.randomNumber) < gameData.win_occurrence) {
         game_bank = profitData.game_bank - betNum - allprofit;
         updateData = {
           provider_profit: provider_profit,
           customer_profit: customer_profit,
           game_bank: game_bank
         };
-        occurrence = gameData.win_percentage;
+        occurrence = gameData.win_occurrence;
       } else {
         game_bank = profitData.game_bank + betNum - allprofit;
         updateData = {
@@ -204,7 +318,7 @@ const manageGamebaccarat = async (req, res) => {
     const factors = [8, 1.95, 2]
     const total_amount = bets.reduce((a, b) => { return Number(a) + Number(b) }, 0)
     const bets_arr = [bets[0] * factors[0], bets[1] * factors[1], bets[2] * factors[2]]
-    
+
     const max_amount = Math.max.apply(null, bets_arr)
     const min_amount = Math.min.apply(null, bets_arr)
     const max_index = bets_arr.indexOf(String(max_amount))
@@ -217,7 +331,7 @@ const manageGamebaccarat = async (req, res) => {
 
     var game_bank = 0;
     console.log('--------------------------------------');
-    if (Number(randomNumber) > gameData.win_percentage) {  //////////////  user lose
+    if (Number(randomNumber) > gameData.win_occurrence) {  //////////////  user lose
       if (Number(betNumber) === 3) {
         var n_index = null
         // do n_index = Math.floor(Math.random() * 3);
@@ -230,9 +344,9 @@ const manageGamebaccarat = async (req, res) => {
           var win_val = win_arr[Math.floor(Math.random() * win_arr.length)]
           n_index = bets_arr.indexOf(win_val)
         }
-        
+
         console.log("you lose but you bets 3 so you win " + n_index);
-        
+
         re_bets[n_index] = Number(bets[n_index]);
         win_percent = 100;
         game_bank = profitData.game_bank + (total_amount - Number(bets_arr[n_index])) - all_profit
@@ -245,7 +359,7 @@ const manageGamebaccarat = async (req, res) => {
     } else {                                              ///////////////   user won
       var win_arr = bets_arr.filter((val, index) => Number(val) !== 0 && (Number(val) - Number(bets[index]) + all_profit) < profitData.game_bank)
       if (win_arr.length === 0) {
-        
+
         console.log("you won but game bank has not enough money so you lost");
 
         re_bets = [Number(bets[0]), Number(bets[1]), Number(bets[2])]
@@ -254,9 +368,9 @@ const manageGamebaccarat = async (req, res) => {
       } else {
         var win_val = win_arr[Math.floor(Math.random() * win_arr.length)]
         var win_index = bets_arr.indexOf(win_val)
-        
+
         console.log("congratulations! you won " + win_index);
-        
+
         re_bets[win_index] = Number(bets[win_index]);
         win_percent = 100;
         console.log('total_amount :>> ', total_amount, Number(bets_arr[win_index]), all_profit);
@@ -264,7 +378,7 @@ const manageGamebaccarat = async (req, res) => {
 
       }
     }
-    
+
     console.log('re_bets :>> ', re_bets, win_percent);
 
     updateData = {
@@ -289,15 +403,82 @@ const manageGamebaccarat = async (req, res) => {
   }
 };
 
+const checkBlackjackGameBank = async (req, res) => {
+  const { customerId, gameId, randomNumber, current_bet } = req.body;
+
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+
+  const all_profit = Number(current_bet) * (100 - Number(rtpData.rtp)) / 100
+
+  var win_occurrence = 0;
+  console.log("------------------------------------------");
+  if (Number(randomNumber) > gameData.win_occurrence) {           //////////////// use lose money
+    console.log("oops! you lose because you are not lucky~");
+    win_occurrence = gameData.win_occurrence
+  } else {                                                        //////////////// use win
+    if ((Number(current_bet) + all_profit) < profitData.game_bank) {
+      console.log("congratulations! you win~");
+      win_occurrence = gameData.win_occurrence
+    } else {
+      console.log("opps! you lose because the game bank has not enough money~");
+      win_occurrence = 0;
+    }
+  }
+
+  res.json({
+    occurrence: win_occurrence,
+    gameStatus: true
+  })
+}
+
+const updateBlackjackGameBank = async (req, res) => {
+  const { customerId, gameId, is_win, current_bet } = req.body;
+
+  const customerData = await Customers.findById(Types.ObjectId(customerId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+
+  const all_profit = Number(current_bet) * (100 - Number(rtpData.rtp)) / 100
+  const provider_profit = profitData.provider_profit + all_profit * customerData.providerProfit / 100
+  const customer_profit = profitData.customer_profit + all_profit - all_profit * customerData.providerProfit / 100
+
+  var game_bank = 0, update_data = {}
+
+  if (is_win == "true") {
+    game_bank = profitData.game_bank - Number(current_bet) - all_profit
+  } else {
+    game_bank = profitData.game_bank + Number(current_bet) - all_profit
+  }
+
+  update_data = {
+    provider_profit: provider_profit,
+    customer_profit: customer_profit,
+    game_bank: game_bank
+  };
+
+  console.log('profitData.game_bank :>> ', profitData.game_bank);
+
+  await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
+  res.json({
+    gameStatus: true
+  })
+
+}
+
 module.exports = {
-  addGame: addGame,
-  getGame: getGame,
-  getGameById: getGameById,
-  getByRouteGame: getByRouteGame,
-  updateGame: updateGame,
-  deleteMultiGames: deleteMultiGames,
-  deleteGame: deleteGame,
-  manageGamehilow: manageGamehilow,
-  manageGameameroullete: manageGameameroullete,
-  manageGamebaccarat: manageGamebaccarat,
+  addGame,
+  getGame,
+  getGameById,
+  getByRouteGame,
+  updateGame,
+  deleteMultiGames,
+  deleteGame,
+  manageGamehilow,
+  manageGameameroullete,
+  manageGamebaccarat,
+  checkBlackjackGameBank,
+  manageNormalGame,
+  updateBlackjackGameBank
 }

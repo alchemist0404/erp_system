@@ -2438,21 +2438,24 @@ function CGame(a) {
       let randomNumber = random.integer(1, 100);
       $(s_oMain).trigger("bet_placed", h);
       
-      var data = await $.ajax({
-        url: 'http://localhost:6140/api/games/manageGamehilow',
-        type: 'POST',
+      var reData = $.ajax({
+        url:'http://localhost:6140/api/games/manageNormalGame',
+        type: "POST",
+        async: false,
         data: {
-          customerId: customerid,
           gameId: gameid,
-          randomNumber: randomNumber,
-          betAmount: h
+          customerId: customerid,
+          betAmount: h,
+          winAmount: h,
+          tie: false,
+          randomNumber: randomNumber
         }
-      });
-      WIN_OCCURRENCE = data.occurrence
-      if(data.gameStatus == false) {
-        alert("Sorry, Something went wrong, please login again");
-        window.location.reload()
+      })
+
+      if(reData.responseJSON.occurrence_type === 'win') {
+        WIN_OCCURRENCE = reData.responseJSON.occurrence
       }
+
       if (randomNumber < WIN_OCCURRENCE) {
         var b = Math.random();
         var c = 4 / (52 - p);
