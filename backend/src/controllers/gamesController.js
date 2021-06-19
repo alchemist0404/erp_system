@@ -104,7 +104,7 @@ const manageGamehilow = async (req, res) => {
     var game_bank = 0;
     var updateData = {}, occurrence = 0;
     // var hookreturndata = await sendHook()
-    if (profitData.game_bank < (betNum * 2 + allprofit)) {
+    if (profitData.game_bank < (betNum + allprofit)) {
       game_bank = profitData.game_bank + betNum - allprofit;
       updateData = {
         provider_profit: provider_profit,
@@ -114,7 +114,7 @@ const manageGamehilow = async (req, res) => {
       occurrence = 0;
     } else {
       if (Number(re_data.randomNumber) < gameData.win_percentage) {
-        game_bank = profitData.game_bank - 2 * betNum - allprofit;
+        game_bank = profitData.game_bank - betNum - allprofit;
         updateData = {
           provider_profit: provider_profit,
           customer_profit: customer_profit,
@@ -139,7 +139,7 @@ const manageGamehilow = async (req, res) => {
   } catch (err) {
     res.json({
       occurrence: 0,
-      gameStatus: true
+      gameStatus: false
     })
   }
 };
@@ -191,50 +191,100 @@ const manageGameameroullete = async (req, res) => {
     })
   }
 };
+
 const manageGamebaccarat = async (req, res) => {
   try {
-    var re_data = req.body;
-    // var gameData = await Games.findById(Types.ObjectId(re_data.gameId))
+    const { customerId, gameId, bets, randomNumber, betNumber } = req.body;
 
-    var customerData = await Customers.findById(Types.ObjectId(re_data.customerId))
-    var profitData = await Profit.findOne({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) })
-    var rtpData = await Rtp.findOne({ game_id: Types.ObjectId(re_data.gameId) })
+    const gameData = await Games.findById(Types.ObjectId(gameId))
+    const customerData = await Customers.findById(Types.ObjectId(customerId))
+    const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+    const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
 
-    var betNum = Number(re_data.betAmount)
+    const factors = [8, 1.95, 2]
+    const total_amount = bets.reduce((a, b) => { return Number(a) + Number(b) }, 0)
+    const bets_arr = [bets[0] * factors[0], bets[1] * factors[1], bets[2] * factors[2]]
+    
+    const max_amount = Math.max.apply(null, bets_arr)
+    const min_amount = Math.min.apply(null, bets_arr)
+    const max_index = bets_arr.indexOf(String(max_amount))
 
-    var allprofit = betNum * (100 - Number(rtpData.rtp)) / 100;
-    var provider_profit = profitData.provider_profit + allprofit * customerData.providerProfit / 100;
-    var customer_profit = profitData.customer_profit + allprofit - allprofit * customerData.providerProfit / 100;
+    const all_profit = total_amount * (100 - Number(rtpData.rtp)) / 100
+    const provider_profit = profitData.provider_profit + all_profit * customerData.providerProfit / 100
+    const customer_profit = profitData.customer_profit + all_profit - all_profit * customerData.providerProfit / 100
+
+    var updateData = {}, re_bets = [0, 0, 0], win_percent = 0;
+
     var game_bank = 0;
-    var updateData = {}, flag = false;
+    console.log('--------------------------------------');
+    if (Number(randomNumber) > gameData.win_percentage) {  //////////////  user lose
+      if (Number(betNumber) === 3) {
+        var n_index = null
+        // do n_index = Math.floor(Math.random() * 3);
+        // while (profitData.game_bank > (bets[n_index] + all_profit));
 
-    // var hookreturndata = await sendHook()
-    if (profitData.game_bank < (Number(re_data.totalPrice) + allprofit)) {
-      game_bank = profitData.game_bank + betNum - allprofit;
-      updateData = {
-        provider_profit: provider_profit,
-        customer_profit: customer_profit,
-        game_bank: game_bank
-      };
-      flag = false;
-    } else {
-      game_bank = profitData.game_bank - Number(re_data.totalPrice) - allprofit;
-      updateData = {
-        provider_profit: provider_profit,
-        customer_profit: customer_profit,
-        game_bank: game_bank
-      };
-      flag = true;
+        var win_arr = bets_arr.filter((val, index) => (Number(val) - Number(bets[index]) + all_profit) < profitData.game_bank)
+        if (win_arr.length == 0) {
+          n_index = bets_arr.indexOf(min_amount)
+        } else {
+          var win_val = win_arr[Math.floor(Math.random() * win_arr.length)]
+          n_index = bets_arr.indexOf(win_val)
+        }
+        
+        console.log("you lose but you bets 3 so you win " + n_index);
+        
+        re_bets[n_index] = Number(bets[n_index]);
+        win_percent = 100;
+        game_bank = profitData.game_bank + (total_amount - Number(bets_arr[n_index])) - all_profit
+
+      } else {
+        console.log("you lost because random number is big");
+        re_bets = [Number(bets[0]), Number(bets[1]), Number(bets[2])]
+        game_bank = profitData.game_bank + total_amount - all_profit
+      }
+    } else {                                              ///////////////   user won
+      var win_arr = bets_arr.filter((val, index) => Number(val) !== 0 && (Number(val) - Number(bets[index]) + all_profit) < profitData.game_bank)
+      if (win_arr.length === 0) {
+        
+        console.log("you won but game bank has not enough money so you lost");
+
+        re_bets = [Number(bets[0]), Number(bets[1]), Number(bets[2])]
+        game_bank = profitData.game_bank + total_amount - all_profit
+
+      } else {
+        var win_val = win_arr[Math.floor(Math.random() * win_arr.length)]
+        var win_index = bets_arr.indexOf(win_val)
+        
+        console.log("congratulations! you won " + win_index);
+        
+        re_bets[win_index] = Number(bets[win_index]);
+        win_percent = 100;
+        console.log('total_amount :>> ', total_amount, Number(bets_arr[win_index]), all_profit);
+        game_bank = profitData.game_bank + (total_amount - Number(bets_arr[win_index])) - all_profit;
+
+      }
     }
-    await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
+    
+    console.log('re_bets :>> ', re_bets, win_percent);
+
+    updateData = {
+      provider_profit: provider_profit,
+      customer_profit: customer_profit,
+      game_bank: game_bank
+    };
+
+    console.log('updateData :>> ', updateData);
+
+    await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, updateData)
     res.json({
-      flag: flag,
+      win_percent,
+      re_bets,
       gameStatus: true
     })
   } catch (err) {
     res.json({
       flag: false,
-      gameStatus: true
+      gameStatus: false
     })
   }
 };

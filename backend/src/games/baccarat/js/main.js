@@ -2354,7 +2354,7 @@ function CGame(a) {
     m = [];
     m = s_oGameSettings.getShuffledCardDeck();
   };
-  this.changeState = function (a) {
+  this.changeState = async function (a) {
     f = a;
     if (f === STATE_GAME_DEALING) {
       y.disableBetFiches();
@@ -2366,20 +2366,25 @@ function CGame(a) {
       for (var c = 0, d = 0; d < a.length; d++) 0 < a[d] && (c++, betedPlace = d);
       if (c === 1 && betedPlace === 0) compareNumber /= 8;
 
-      console.log(x);
-      console.log(randomNumber, compareNumber);
-
-      // var data = $.ajax({
-      //   url: 'http://localhost:6140/api/games/manageGamebaccarat',
-      //   type: 'POST',
-      //   async: false,
-      //   data: {
-      //     customerId: customerid,
-      //     gameId: gameid,
-      //     betAmount: p.getCurBet(),
-      //     totalPrice: d
-      //   }
-      // })
+      const data = await $.ajax({
+        url: 'http://localhost:6140/api/games/manageGamebaccarat',
+        type: 'POST',
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          bets: a,
+          randomNumber,
+          betNumber: c
+        }
+      })
+      console.log('data :>> ', data);
+      if(data.gameStatus == false) {
+        alert("Sorry, Something went wrong, please login again");
+        window.location.reload()
+      }
+      compareNumber = data.win_percent
+      c = 1;
+      a = data.re_bets
       if (randomNumber < compareNumber) {
         if (1 === c) {
           for (d = 0; d < a.length; d++) {
@@ -2429,7 +2434,7 @@ function CGame(a) {
       h = [];
       for (d = 0; d < b.length; d++) h[d] = b[d];
 
-      console.log('======', d, '=======')
+      console.log('======', d, '=======', a, "==========", c)
       y.disableButtons();
       y.disableBetFiches();
       y.displayMsg(TEXT_DISPLAY_MSG_DEALING, "");

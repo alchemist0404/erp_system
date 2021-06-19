@@ -2438,7 +2438,7 @@ function CGame(a) {
       let randomNumber = random.integer(1, 100);
       $(s_oMain).trigger("bet_placed", h);
       
-      var data = await  $.ajax({
+      var data = await $.ajax({
         url: 'http://localhost:6140/api/games/manageGamehilow',
         type: 'POST',
         data: {
