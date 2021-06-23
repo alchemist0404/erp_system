@@ -2468,6 +2468,8 @@ function CGame(a) {
       const random = new Random();
       let randomNumber = random.integer(1, 100);
       // console.log(randomNumber);
+      console.log('a, e.getBetAnte() :>> ', a, e.getBetAnte(), e.getBetPlus());
+      console.log('k, q :>> ', k, q, h, p);
       if (randomNumber < WIN_OCCURRENCE) {
         do {
           // Player win.
@@ -2513,6 +2515,7 @@ function CGame(a) {
       (l = 0),
       this._showNextDealerCard());
     bl = e.getBetPlay();
+    console.log('bl :>> ', bl);
     $(s_oMain).trigger("bet_placed", bl);
   };
   this._showNextDealerCard = function () {

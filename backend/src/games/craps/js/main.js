@@ -1737,6 +1737,7 @@ function CGameSettings() {
     }
     return { win: f, lose: c };
   };
+  // 
   this.checkBetWin = function (a, b, f, d, c, g) {
     var e = -1;
     switch (c) {
@@ -3196,10 +3197,10 @@ function CGame(a) {
         0 === n.getCurBet() && w.enableRoll(!1);
         c++;
         c > NUM_HAND_FOR_ADS &&
-          ((c = 0), $(s_oMain).trigger("show_interlevel_ad"));
+        ((c = 0), $(s_oMain).trigger("show_interlevel_ad"));
         w.hideBlock();
-    }
-    D.setState(a);
+      }
+      D.setState(a);
   };
   this._prepareForRolling = function () {
     w.disableBetFiches();
@@ -3215,14 +3216,81 @@ function CGame(a) {
     var c;
     const random = new Random();
     randomNumber = random.integer(1, 100);
+
+    var se_obj = {}
+    for (let k in m) {
+      se_obj[k] = m[k] * s_oGameSettings.getBetMultiplier(String(k))
+    }
+
+    const response = $.ajax({
+      url: 'http://localhost:6140/api/games/checkCrapsGameBank',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        randomNumber,
+        bets: se_obj
+      }
+    })
+
+    console.log('response.responseJSON :>> ', response.responseJSON);
+
+    if(response.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please login again");
+      window.location.reload()
+    }
+
+    WIN_OCCURRENCE = response.responseJSON.win_occurrence;
+
+    var fields = ["pass_line", "come", "dont_pass1", "dont_pass2", "dont_come", "field", "big_6", "big_8", "lay_bet4", "lose_bet4", "lay_bet5", "lose_bet5", "lay_bet6", "lose_bet6", "lay_bet8", "lose_bet8", "lay_bet9", "lose_bet9", "lay_bet10", "lose_bet10", "number4", "win_bet4", "number5", "win_bet5", "number6", "win_bet6", "number8", "win_bet8", "number9", "win_bet9", "number10", "win_bet10", "any11_7", "any_craps_7", "seven_bet", "hardway6", "hardway10", "hardway8", "hardway4", "horn3", "horn2", "horn12"];
+    
+    var lose_pos_arr = []
+    for (let p = 0; p < fields.length; p++) {
+      if (m[fields[p]]) {
+        if (fields[p].includes("win_bet")) {
+          let n = fields[p].slice(7)
+          let number = "number" + n;
+          lose_pos_arr.push(number)
+        } else if (fields[p].includes("number")) {
+          let n = fields[p].slice(6)
+          let win_bet = "win_bet" + n;
+          lose_pos_arr.push(win_bet)
+        } else if (fields[p].includes("lay_bet")) {
+          let n = fields[p].slice(7)
+          let lose_bet = "lose_bet" + n;
+          lose_pos_arr.push(lose_bet)
+        } else if (fields[p].includes("lose_bet")) {
+          let n = fields[p].slice(8)
+          let lay_bet = "lay_bet" + n;
+          lose_pos_arr.push(lay_bet)
+        }
+        lose_pos_arr.push(fields[p])
+      }
+    }
+
+    for (let i = 0; i < lose_pos_arr.length; i++) {
+      var index = fields.indexOf(lose_pos_arr[i])
+      fields.splice(index, 1)
+    }
+
+    console.log('m :>> ', m);
+    
     for (c in m) {
       -1 !== c.indexOf("any11_")
-        ? (c = "any11")
-        : -1 !== c.indexOf("any_craps") && (c = "any_craps");
+      ? (c = "any11")
+      : -1 !== c.indexOf("any_craps") && (c = "any_craps");
+      if (Object.keys(response.responseJSON.data).length > 0 && !response.responseJSON.data[c] || WIN_OCCURRENCE == 0) {
+        var rn = Math.floor(Math.random() * fields.length)
+        c = fields[rn]
+      }
       var d = s_oGameSettings.getBetWinLoss(e, b, c);
       var g = d.lose;
       d = d.win;
     }
+    console.log('d :>> ', d);
+    console.log('f :>> ', f);
+    console.log('WIN_OCCURRENCE :>> ', WIN_OCCURRENCE);
     -1 !== c.indexOf("hardway") && (randomNumber *= 10);
     if (randomNumber >= WIN_OCCURRENCE)
       if (f > l) {

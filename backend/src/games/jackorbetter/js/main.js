@@ -1332,6 +1332,7 @@ var CANVAS_WIDTH = 1920,
   ENABLE_FULLSCREEN,
   ENABLE_CHECK_ORIENTATION,
   SOUNDTRACK_VOLUME_IN_GAME = 0.5;
+  AVAILABLE_CARDS = [];
 TEXT_GAMEOVER = "GAME OVER";
 TEXT_PLAY = "PLAY";
 TEXT_BET = "BET";
@@ -1355,6 +1356,18 @@ TEXT_SHARE_1 = "You collected <strong>";
 TEXT_SHARE_2 = " points</strong>!<br><br>Share your score with your friends!";
 TEXT_SHARE_3 = "My score is ";
 TEXT_SHARE_4 = " points! Can you do better?";
+var WIN_TYPE_VALUE = {
+  0 : 250,
+  1 : 50,
+  2 : 25,
+  3 : 9,
+  4 : 6,
+  5 : 4,
+  6 : 3,
+  7 : 2,
+  8 : 1,
+  9 : 0
+}
 let id;
 function CPreloader() {
   var a, c, b, d, k, m, p, g, n, f;
@@ -2248,6 +2261,27 @@ function CGame(a) {
     if (!(c || 0 >= d)) {
       c = !0;
       F.removeAllChildren();
+
+      const response = $.ajax({
+        url: 'http://localhost:6140/api/games/checkJackorBetterGameBank',
+        type: 'POST',
+        async: false,
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          bet_amount: m,
+          randomNumber,
+        }
+      })
+
+      if(response.responseJSON.gameStatus == false) {
+        alert("Sorry, Something went wrong, please login again");
+        window.location.reload()
+      }
+  
+      WIN_OCCURRENCE = response.responseJSON.win_occurrence;
+      AVAILABLE_WIN_TYPES = response.responseJSON.data;
+
       if (randomNumber > WIN_OCCURRENCE) {
         do this._createCard();
         while (A.evaluate(h) < HIGH_CARD);
@@ -2275,6 +2309,10 @@ function CGame(a) {
       this._checkDeckLength();
       a += 180;
       c.showCard();
+    }
+    var k = A.evaluate(h);
+    if (WIN_TYPE_VALUE[k] !== 0 && !AVAILABLE_WIN_TYPES.includes(WIN_TYPE_VALUE[k])) {
+      this._createCard()
     }
   };
   this.drawCards = function () {
@@ -2339,6 +2377,23 @@ function CGame(a) {
             ? s_oGame.assignWin(a)
             : (playSound("lose", 1, !1), z.showLosePanel());
           let winAmount = d - oldCredit + m;
+
+          const response = $.ajax({
+            url: 'http://localhost:6140/api/games/updateJackorBetterGameBank',
+            type: 'POST',
+            async: false,
+            data: {
+              customerId: customerid,
+              gameId: gameid,
+              bet_amount: m,
+              win_amount: winAmount,
+            }
+          })
+          if(response.responseJSON.gameStatus == false) {
+            alert("Sorry, Something went wrong, please try again");
+            window.location.reload()
+          }
+
           $(s_oMain).trigger("save_score", [d]);
           oldCredit = d;
           y++;
@@ -2387,6 +2442,10 @@ function CGame(a) {
         h[a].showCard(),
         f++,
         this._checkDeckLength());
+    var k = A.evaluate(h);
+    if (WIN_TYPE_VALUE[k] !== 0 && !AVAILABLE_WIN_TYPES.includes(WIN_TYPE_VALUE[k])) {
+      this._changeCardValue()
+    }
   };
   this._onButDealRelease = function () {
     clearInterval(id);

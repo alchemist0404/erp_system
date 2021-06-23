@@ -3052,13 +3052,8 @@ function CGame(a) {
     B = parseFloat(B.toFixed(2));
     const random = new Random();
     let randomNumber = random.integer(1, 100);
-    g =
-      (WIN_OCCURRENCE * [].concat.apply([], c).length) / NUMBERS_TO_BET <=
-        randomNumber
-        ? !1
-        : !0;
+    g = (WIN_OCCURRENCE * [].concat.apply([], c).length) / NUMBERS_TO_BET <= randomNumber ? !1 : !0;
 
-    console.log("=============", g, randomNumber, (WIN_OCCURRENCE * [].concat.apply([], c).length) / NUMBERS_TO_BET)
     // if (B < d) {
     //   c = 0;
     //   var e = Math.floor(100 * Math.random());

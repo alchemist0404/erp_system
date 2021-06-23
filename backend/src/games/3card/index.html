@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/ios_fullscreen.css" type="text/css" />
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    
+
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,minimal-ui"
@@ -20,7 +20,6 @@
     <script type="text/javascript" src="js/createjs-2015.11.26.min.js"></script>
     <script type="text/javascript" src="js/howler.min.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
-    
   </head>
   <body ondragstart="return false;" ondrop="return false;">
     <div
@@ -35,16 +34,30 @@
     ></div>
 
     <script>
+      var gameid = "";
+      var customerid = "";
       $(document).ready(function () {
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var balance = Number(url.searchParams.get("balance"));
+        gameid = url.searchParams.get("gameid");
+        customerid = url.searchParams.get("customerid");
+
+        var gameConfig = $.ajax({
+          url: `http://localhost:6140/api/games/${gameid}`,
+          type: "GET",
+          async: false,
+          data: {},
+        });
 
         var oMain = new CMain({
-          win_occurrence: 40, //WIN OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
-          bet_occurrence: 50,//LOSE OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
-          no_hand_occurrence: 9,//NO HAND OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
-          standoff_occurrence: 1,//TIE OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
-          min_bet: 1, //MIN BET PLAYABLE BY USER. DEFAULT IS 0.1$
-          max_bet: 10, //MAX BET PLAYABLE BY USER.
-          money: 100, //STARING CREDIT FOR THE USER
+          win_occurrence: gameConfig.responseJSON.data.win_occurrence, //WIN OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
+          bet_occurrence: 50, //LOSE OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
+          no_hand_occurrence: 9, //NO HAND OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
+          standoff_occurrence: 1, //TIE OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
+          min_bet: 0.1, //MIN BET PLAYABLE BY USER. DEFAULT IS 0.1$
+          max_bet: 300, //MAX BET PLAYABLE BY USER.
+          money: balance, //STARING CREDIT FOR THE USER
           game_cash: 100, //GAME CASH AVAILABLE WHEN GAME STARTS
           ante_payout: [
             5, //MULTIPLIER FOR STRAIGHT FLUSH
@@ -58,10 +71,7 @@
             4, //MULTIPLIER FOR FLUSH
             1, //MULTIPLIER FOR PAIR
           ],
-          max_limit: [
-            3000,
-            1500,
-          ],
+          max_limit: [3000, 1500],
           time_show_hand: 1500, //TIME (IN MILLISECONDS) SHOWING LAST HAND
           audio_enable_on_startup: false, //ENABLE/DISABLE AUDIO WHEN GAME STARTS
           show_credits: true, //SET THIS VALUE TO FALSE IF YOU DON'T TO SHOW CREDITS BUTTON
@@ -100,13 +110,13 @@
         $(oMain).on("bet_placed", function (evt, iTotBet) {
           //...ADD YOUR CODE HERE EVENTUALLY
           // alert(iTotBet);
-          console.log("Bet Placed", iTotBet);
+          // console.log("Bet Placed", iTotBet);
         });
 
         $(oMain).on("hand_finished", function (evt, iTotWin) {
           //...ADD YOUR CODE HERE EVENTUALLY
           // alert(iTotBet);
-          console.log("Hand finished", iTotWin);
+          // console.log("Hand finished", iTotWin);
         });
 
         $(oMain).on("save_score", function (evt, iMoney) {
@@ -114,7 +124,7 @@
             parent.__ctlArcadeSaveScore({ score: iMoney });
           }
           //...ADD YOUR CODE HERE EVENTUALLY
-          console.log("Save Socer", iMoney);
+          // console.log("Save Socer", iMoney);
         });
 
         $(oMain).on("show_interlevel_ad", function (evt) {

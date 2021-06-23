@@ -111,7 +111,7 @@ const manageNormalGame = async (req, res) => {
 
     // game bank is lower than win amount
     if (profitData.game_bank < (winAmount + allprofit)) {
-      
+
       game_bank = profitData.game_bank + betAmount - allprofit;
       updateData = {
         provider_profit: provider_profit,
@@ -467,6 +467,123 @@ const updateBlackjackGameBank = async (req, res) => {
 
 }
 
+const checkCrapsGameBank = async (req, res) => {
+  console.log("--------------------------------------------------");
+  const { customerId, gameId, randomNumber, bets } = req.body;
+
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+
+  var total_amount = 0;
+
+  for (var key in bets) {
+    total_amount = total_amount + Number(bets[key]);
+  }
+
+  const all_profit = Number(total_amount) * (100 - Number(rtpData.rtp)) / 100;
+
+  var win_occurrence = 0; var re_obj = {}
+
+  if (Number(randomNumber) > gameData.win_occurrence) {
+    win_occurrence = 0;
+    console.log("random number is big");
+  } else {
+    var win_arr = []
+    for (var key in bets) {
+      if (Number(bets[key]) + all_profit < profitData.game_bank) {
+        win_arr.push(String(key))
+      }
+    }
+    if (win_arr.length > 0) {
+      console.log("you won");
+      for (var key in bets) {
+        if (win_arr.includes(key)) {
+          re_obj[key] = bets[key]
+        }
+      }
+      win_occurrence = gameData.win_occurrence
+    } else {
+      win_occurrence = 0;
+      console.log("you won but bank has not enough money");
+    }
+  }
+
+  res.json({
+    win_occurrence,
+    data: re_obj,
+    gameStatus: true
+  })
+}
+
+const checkJackorBetterGameBank = async (req, res) => {
+  const { customerId, gameId, randomNumber, bet_amount } = req.body;
+
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+  const all_profit = Number(bet_amount) * (100 - Number(rtpData.rtp)) / 100;
+
+  const high_cards = [1, 2, 3, 4, 6, 9, 25, 50, 250];
+
+  var availables = [], win_occurrence = 0;
+
+  for (let i = 0; i < high_cards.length; i++) {
+    var amount = Number(bet_amount) * high_cards[i]
+    if (amount + all_profit < profitData.game_bank) {
+      availables.push(high_cards[i])
+    }
+  }
+
+  if (Number(randomNumber) > gameData.win_occurrence) {
+    win_occurrence = 0
+    console.log("oops! you are not lucky!");
+  } else {
+    if (availables.length > 0) {
+      win_occurrence = gameData.win_occurrence
+      console.log("you won!");
+    } else {
+      win_occurrence = 0
+      console.log("oops! the bank has not enough money");
+    }
+  }
+
+  res.json({
+    win_occurrence,
+    data: availables,
+    gameStatus: true
+  })
+}
+
+const updateJackorBetterGameBank = async (req, res) => {
+  const { customerId, gameId, win_amount, bet_amount } = req.body;
+
+  const customerData = await Customers.findById(Types.ObjectId(customerId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+
+  const all_profit = Number(bet_amount) * (100 - Number(rtpData.rtp)) / 100
+  const provider_profit = profitData.provider_profit + all_profit * customerData.providerProfit / 100
+  const customer_profit = profitData.customer_profit + all_profit - all_profit * customerData.providerProfit / 100
+
+  var game_bank = 0, update_data = {}
+
+  game_bank = profitData.game_bank - (Number(win_amount) - Number(bet_amount)) - all_profit;
+
+  update_data = {
+    provider_profit: provider_profit,
+    customer_profit: customer_profit,
+    game_bank: game_bank
+  };
+
+  console.log('game_bank :>> ', game_bank);
+
+  await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
+  res.json({
+    gameStatus: true
+  })
+}
+
 module.exports = {
   addGame,
   getGame,
@@ -480,5 +597,8 @@ module.exports = {
   manageGamebaccarat,
   checkBlackjackGameBank,
   manageNormalGame,
-  updateBlackjackGameBank
+  updateBlackjackGameBank,
+  checkCrapsGameBank,
+  checkJackorBetterGameBank,
+  updateJackorBetterGameBank
 }

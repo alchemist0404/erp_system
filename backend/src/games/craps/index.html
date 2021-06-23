@@ -34,12 +34,27 @@
       "
     ></div>
     <script>
+      var gameid = "";
+      var customerid = "";
       $(document).ready(function () {
+        var url_string = window.location.href; //window.location.href
+        var url = new URL(url_string);
+        var balance = Number(url.searchParams.get("balance"));
+        gameid = url.searchParams.get("gameid");
+        customerid = url.searchParams.get("customerid");
+
+        var gameConfig = $.ajax({
+          url: `http://localhost:6140/api/games/${gameid}`,
+          type: "GET",
+          async: false,
+          data: {},
+        });
+
         var oMain = new CMain({
-          money: 1000, //STARING CREDIT FOR THE USER
+          money: balance, //STARING CREDIT FOR THE USER
           min_bet: 1, //MINIMUM BET
           max_bet: 100, //MAXIMUM BET
-          win_occurrence: 30, //Win occurrence percentage (100 = always win).
+          win_occurrence: gameConfig.responseJSON.data.win_occurrence, //Win occurrence percentage (100 = always win).
           time_show_dice_result: 3000, //TIME IN MILLISECONDS OF DICE RESULT SHOWING.
           casino_cash: 400, //The starting casino cash that is recharged by the money lost by the user
           show_credits: true, //SET THIS VALUE TO FALSE IF YOU DON'T WANT TO SHOW CREDITS BUTTON
@@ -62,7 +77,7 @@
 
         $(oMain).on("bet_placed", function (evt, iTotBet) {
           //...ADD YOUR CODE HERE EVENTUALLY
-          console.log("Bet Placed", iTotBet);
+          // console.log("Bet Placed", iTotBet);
         });
 
         $(oMain).on("clear_bet", function (evt, iTotBet) {
@@ -88,7 +103,7 @@
             parent.__ctlArcadeSaveScore({ score: iMoney });
           }
           //...ADD YOUR CODE HERE EVENTUALLY
-          console.log(iMoney);
+          // console.log(iMoney);
         });
 
         $(oMain).on("show_interlevel_ad", function (evt) {

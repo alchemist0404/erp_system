@@ -2377,7 +2377,6 @@ function CGame(a) {
           betNumber: c
         }
       })
-      console.log('data :>> ', data);
       if(data.gameStatus == false) {
         alert("Sorry, Something went wrong, please login again");
         window.location.reload()
