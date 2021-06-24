@@ -1381,6 +1381,13 @@ var CANVAS_WIDTH = 1700,
   ENABLE_FULLSCREEN,
   ENABLE_CHECK_ORIENTATION,
   SHOW_CREDITS,
+  PAYOUT_MULT = {
+    0 : [5, 40],
+    1 : [4, 30],
+    2 : [1, 6],
+    3 : [1, 4],
+    4 : [1, 1]
+  },
   TEXT_DEAL = "DEAL",
   TEXT_MIN_BET = "MIN BET",
   TEXT_MAX_BET = "MAX BET",
@@ -2287,6 +2294,7 @@ function CGame(a) {
     "player" === w ? playSound("win", 1, !1) : playSound("lose", 1, !1);
     this.changeState(STATE_GAME_DISTRIBUTE_FICHES);
     let winAmount = e.getCredit() - oldCredit + e.getBetAnte() + e.getBetPlay() + e.getBetPlus();
+    this.updateBalanceToServer();
     $(s_oMain).trigger("hand_finished", [winAmount]);
     oldCredit = e.getCredit();
     y.refreshCredit(e.getCredit());
@@ -2386,6 +2394,27 @@ function CGame(a) {
         : s_oGame._showNextDealerCard());
   };
   this.endedHand = function () {};
+  this.updateBalanceToServer = function () {
+    let winAmount = e.getCredit() - oldCredit + e.getBetAnte() + e.getBetPlay() + e.getBetPlus();
+    let betAmount = e.getBetAnte() + e.getBetPlay() + e.getBetPlus();
+    console.log('winAmount :>> ', winAmount);
+    console.log('betAmount :>> ', betAmount);
+    const response = $.ajax({
+      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        bet_amount: betAmount,
+        win_amount: winAmount,
+      }
+    })
+    if(response.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please try again");
+      window.location.reload()
+    }
+  }
   this.setBet = function (a, b) {
     if (y.isResultPanelvisible())
       y.disableBetFiches(), e.clearBet(), (D = this.setBet);
@@ -2468,8 +2497,28 @@ function CGame(a) {
       const random = new Random();
       let randomNumber = random.integer(1, 100);
       // console.log(randomNumber);
-      console.log('a, e.getBetAnte() :>> ', a, e.getBetAnte(), e.getBetPlus());
-      console.log('k, q :>> ', k, q, h, p);
+
+      const response = $.ajax({
+        url: 'http://localhost:6140/api/games/check3CardPokerGameBank',
+        type: 'POST',
+        async: false,
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          ante_bet_amount: e.getBetAnte(),
+          plus_bet_amount: e.getBetPlus(),
+          payout_mult: PAYOUT_MULT,
+          randomNumber,
+        }
+      })
+  
+      if(response.responseJSON.gameStatus == false) {
+        alert("Sorry, Something went wrong, please try again");
+        window.location.reload()
+      }
+  
+      WIN_OCCURRENCE = response.responseJSON.win_occurrence;
+
       if (randomNumber < WIN_OCCURRENCE) {
         do {
           // Player win.
@@ -2481,7 +2530,7 @@ function CGame(a) {
           k = c.ret;
           w = H.getWinnerComparingHands(c.sort_hand, a.sort_hand, k, q);
           this._calculateTotalWin();
-        } while (w === "dealer");
+        } while (w === "dealer" && k >= Math.min.apply(null, response.responseJSON.data));
       } else {
         // Player lose
         do
@@ -2515,7 +2564,6 @@ function CGame(a) {
       (l = 0),
       this._showNextDealerCard());
     bl = e.getBetPlay();
-    console.log('bl :>> ', bl);
     $(s_oMain).trigger("bet_placed", bl);
   };
   this._showNextDealerCard = function () {

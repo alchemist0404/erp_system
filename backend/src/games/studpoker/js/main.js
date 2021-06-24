@@ -1408,6 +1408,19 @@ var CANVAS_WIDTH = 1700,
   BET_RAISE = 1,
   POS_BET = [],
   MULTIPLIERS = [],
+  WIN_TYPE_VALUE = {
+    0 : 100,
+    1 : 50,
+    2 : 20,
+    3 : 7,
+    4 : 5,
+    5 : 4,
+    6 : 3,
+    7 : 2,
+    8 : 1,
+    9 : 1,
+    10 : 0
+  },
   ENABLE_FULLSCREEN,
   ENABLE_CHECK_ORIENTATION,
   SHOW_CREDITS,
@@ -2295,6 +2308,27 @@ function CGame(a) {
     (!1 === b || (b && 9 === c)) && a.showCard();
     10 > c && s_oGame._dealing();
   };
+  this.updateBalanceToServer = function () {
+    let winAmount = x.getCredit() - oldCredit + x.getBetAnte() + x.getBetRaise();
+    let betAmount = x.getBetAnte() + x.getBetRaise();
+    console.log('winAmount :>> ', winAmount);
+    console.log('betAmount :>> ', betAmount);
+    const response = $.ajax({
+      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        bet_amount: betAmount,
+        win_amount: winAmount,
+      }
+    })
+    if(response.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please try again");
+      window.location.reload()
+    }
+  }
   this.setCredit = function (a) {
     x.setCredit(a);
     oldCredit = x.getCredit();
@@ -2314,6 +2348,7 @@ function CGame(a) {
     this.changeState(STATE_GAME_DISTRIBUTE_FICHES);
     z.refreshCredit(x.getCredit());
     let winAmount = x.getCredit() - oldCredit + x.getBetAnte() + x.getBetRaise();
+    this.updateBalanceToServer();
     $(s_oMain).trigger("hand_finished", [winAmount]);
     oldCredit = x.getCredit();
     setTimeout(function () {
@@ -2456,7 +2491,28 @@ function CGame(a) {
       y.removeAllChildren();
       const random = new Random();
       let randomNumber = random.integer(1, 100);
-      console.log(randomNumber);
+
+      const response = $.ajax({
+        url: 'http://localhost:6140/api/games/checkStudPokerGameBank',
+        type: 'POST',
+        async: false,
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          bet_amount: x.getBetAnte(),
+          payout_mult: PAYOUT_MULT,
+          randomNumber,
+        }
+      })
+  
+      if(response.responseJSON.gameStatus == false) {
+        alert("Sorry, Something went wrong, please try again");
+        window.location.reload()
+      }
+  
+      WIN_OCCURRENCE = response.responseJSON.win_occurrence;
+
+      // console.log(randomNumber);
       if (
         randomNumber >
         WIN_OCCURRENCE
@@ -2482,7 +2538,7 @@ function CGame(a) {
             (k = b.ret),
             (p = O.getWinnerComparingHands(b.sort_hand, a.sort_hand, k, l)),
             this._calculateTotalWin();
-        while (p === "dealer");
+        while (p === "dealer" && WIN_TYPE_VALUE[k] <= Math.min.apply(null, response.responseJSON.data));
       }
       x.setPrevBet();
       playSound("card", 1, !1);

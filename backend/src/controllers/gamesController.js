@@ -485,16 +485,17 @@ const checkCrapsGameBank = async (req, res) => {
 
   var win_occurrence = 0; var re_obj = {}
 
+  var win_arr = [];
+  for (var key in bets) {
+    if (Number(bets[key]) + all_profit < profitData.game_bank) {
+      win_arr.push(String(key))
+    }
+  }
+
   if (Number(randomNumber) > gameData.win_occurrence) {
     win_occurrence = 0;
     console.log("random number is big");
   } else {
-    var win_arr = []
-    for (var key in bets) {
-      if (Number(bets[key]) + all_profit < profitData.game_bank) {
-        win_arr.push(String(key))
-      }
-    }
     if (win_arr.length > 0) {
       console.log("you won");
       for (var key in bets) {
@@ -555,7 +556,7 @@ const checkJackorBetterGameBank = async (req, res) => {
   })
 }
 
-const updateJackorBetterGameBank = async (req, res) => {
+const updateGameBankWithWinAmount = async (req, res) => {
   const { customerId, gameId, win_amount, bet_amount } = req.body;
 
   const customerData = await Customers.findById(Types.ObjectId(customerId))
@@ -584,6 +585,80 @@ const updateJackorBetterGameBank = async (req, res) => {
   })
 }
 
+const checkStudPokerGameBank = async (req, res) => {
+  const { customerId, gameId, randomNumber, bet_amount, payout_mult } = req.body;
+
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+  const all_profit = Number(bet_amount) * (100 - Number(rtpData.rtp)) / 100;
+
+  var availables = [], win_occurrence = 0;
+
+  for (let i = 0; i < payout_mult.length; i++) {
+    var amount = Number(bet_amount) * Number(payout_mult[i])
+    if (amount + all_profit < profitData.game_bank) {
+      availables.push(Number(payout_mult[i]))
+    }
+  }
+
+  if (Number(randomNumber) > gameData.win_occurrence) {
+    win_occurrence = 0
+    console.log("oops! you are not lucky!");
+  } else {
+    if (availables.length > 0) {
+      win_occurrence = gameData.win_occurrence
+      console.log("you won!");
+    } else {
+      win_occurrence = 0
+      console.log("oops! the bank has not enough money");
+    }
+  }
+
+  res.json({
+    win_occurrence,
+    data: availables,
+    gameStatus: true
+  })
+}
+
+const check3CardPokerGameBank = async (req, res) => {
+  const { customerId, gameId, randomNumber, ante_bet_amount, plus_bet_amount, payout_mult } = req.body;
+
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+
+  const total_bet_amount = Number(ante_bet_amount) * 2 + Number(plus_bet_amount);
+  const all_profit = total_bet_amount * (100 - Number(rtpData.rtp)) / 100;
+
+  var availables = [], win_occurrence = 0;
+  for (let i in payout_mult) {
+    var amount = Number(ante_bet_amount) * 2 * Number(payout_mult[i][0]) + Number(plus_bet_amount) * Number(payout_mult[i][1])
+    if (amount + all_profit < profitData.game_bank) {
+      availables.push(i)
+    }
+  }
+  if (Number(randomNumber) > gameData.win_occurrence) {
+    win_occurrence = 0
+    console.log("oops! you are not lucky!");
+  } else {
+    if (availables.length > 0) {
+      win_occurrence = gameData.win_occurrence
+      console.log("you won!");
+    } else {
+      win_occurrence = 0
+      console.log("oops! the bank has not enough money");
+    }
+  }
+
+  res.json({
+    win_occurrence,
+    data: availables,
+    gameStatus: true
+  })
+}
+
 module.exports = {
   addGame,
   getGame,
@@ -600,5 +675,7 @@ module.exports = {
   updateBlackjackGameBank,
   checkCrapsGameBank,
   checkJackorBetterGameBank,
-  updateJackorBetterGameBank
+  updateGameBankWithWinAmount,
+  checkStudPokerGameBank,
+  check3CardPokerGameBank
 }
