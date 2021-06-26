@@ -10,7 +10,7 @@ const {
     deleteGame,
     deleteMultiGames,
     manageNormalGame,
-    manageGameameroullete,
+    checkAmericanRoulleteGameBank,
     manageGamebaccarat,
     checkBlackjackGameBank,
     updateBlackjackGameBank,
@@ -29,7 +29,7 @@ router.delete('/:id', deleteGame)
 router.post('/getByRoute', getByRouteGame)
 router.post('/delete', deleteMultiGames)
 router.post('/manageNormalGame', manageNormalGame)
-router.post('/manageGameameroullete', manageGameameroullete)
+router.post('/checkAmericanRoulleteGameBank', checkAmericanRoulleteGameBank)
 router.post('/manageGamebaccarat', manageGamebaccarat)
 router.post('/checkBlackjackGameBank', checkBlackjackGameBank)
 router.post('/updateBlackjackGameBank', updateBlackjackGameBank)

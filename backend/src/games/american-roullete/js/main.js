@@ -3052,6 +3052,28 @@ function CGame(a) {
     B = parseFloat(B.toFixed(2));
     const random = new Random();
     let randomNumber = random.integer(1, 100);
+
+    const response = $.ajax({
+      url: 'http://localhost:6140/api/games/checkAmericanRoulleteGameBank',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        bets_arr: JSON.stringify(a),
+        bets_p: c,
+        cur_bet: p.getCurBet()
+      }
+    })
+
+    if(response.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please login again");
+      window.location.reload()
+    }
+
+    a = response.responseJSON.win_arr;
+    c = response.responseJSON.win_pos;
+
     g = (WIN_OCCURRENCE * [].concat.apply([], c).length) / NUMBERS_TO_BET <= randomNumber ? !1 : !0;
 
     // if (B < d) {
@@ -3062,7 +3084,6 @@ function CGame(a) {
     //     ? ((c = NUMBERS_TO_BET - b), (e = Math.floor(38 * Math.random())))
     //     : ((c = WIN_OCCURRENCE), (e = Math.floor(100 * Math.random())));
 
-    g = true
     if (g) {
       do (e = Math.floor(Math.random() * a.length)), (d = a[e].win);
       while (0 === d);
@@ -3080,35 +3101,6 @@ function CGame(a) {
       } while (d >= p.getCurBet());
     }
 
-    var data = $.ajax({
-      url: 'http://localhost:6140/api/games/manageGameameroullete',
-      type: 'POST',
-      async: false,
-      data: {
-        customerId: customerid,
-        gameId: gameid,
-        betAmount: p.getCurBet(),
-        totalPrice: d
-      }
-    })
-
-    data = data.responseJSON;
-
-    var statusData = data.flag || false;
-    if (statusData == false) {
-      var aaa = a;
-      var temp = aaa[e]
-      aaa[e] = { win: 0, mc: null }
-      if (e != 0) {
-        aaa[e - 1] = temp
-      } else if (e != 37) {
-        aaa[e + 1] = temp
-      } else {
-        aaa[e - 1] = temp
-      }
-      a = aaa;
-      d = 0
-    }
 
     return (k = e);
   };
@@ -3146,6 +3138,24 @@ function CGame(a) {
     p.showWin(c);
     0 < c && (B -= c);
     B = parseFloat(B.toFixed(2));
+    
+    const response = $.ajax({
+      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        win_amount: c,
+        bet_amount: p.getCurBet(),
+      }
+    })
+
+    if(response.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please login again");
+      window.location.reload()
+    }
+
     $(s_oMain).trigger("save_score", p.getCredit());
     r.refreshMoney(p.getCredit() - c, c);
   };

@@ -258,52 +258,45 @@ const manageGamehilow = async (req, res) => {
   }
 };
 
-const manageGameameroullete = async (req, res) => {
-  try {
-    var re_data = req.body;
-    // var gameData = await Games.findById(Types.ObjectId(re_data.gameId))
+const checkAmericanRoulleteGameBank = async (req, res) => {
+  const { customerId, gameId, bets_arr, bets_p, cur_bet } = req.body;
+  var bets = JSON.parse(bets_arr);
 
-    var customerData = await Customers.findById(Types.ObjectId(re_data.customerId))
-    var profitData = await Profit.findOne({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) })
-    var rtpData = await Rtp.findOne({ game_id: Types.ObjectId(re_data.gameId) })
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+  const all_profit = Number(cur_bet) * (100 - Number(rtpData.rtp)) / 100;
 
-    var betNum = Number(re_data.betAmount)
+  var win_arr = [], lose_arr = [];
 
-    var allprofit = betNum * (100 - Number(rtpData.rtp)) / 100;
-    var provider_profit = profitData.provider_profit + allprofit * customerData.providerProfit / 100;
-    var customer_profit = profitData.customer_profit + allprofit - allprofit * customerData.providerProfit / 100;
-    var game_bank = 0;
-    var updateData = {}, flag = false;
-
-    // var hookreturndata = await sendHook()
-    if (profitData.game_bank < (Number(re_data.totalPrice) + allprofit)) {
-      game_bank = profitData.game_bank + betNum - allprofit;
-      updateData = {
-        provider_profit: provider_profit,
-        customer_profit: customer_profit,
-        game_bank: game_bank
-      };
-      flag = false;
+  for (let i = 0; i < bets.length; i++) {
+    if (Number(bets[i].win) + all_profit < profitData.game_bank) {
+      win_arr.push(bets[i])
     } else {
-      game_bank = profitData.game_bank - Number(re_data.totalPrice) - allprofit;
-      updateData = {
-        provider_profit: provider_profit,
-        customer_profit: customer_profit,
-        game_bank: game_bank
-      };
-      flag = true;
+      win_arr.push({win: 0, mc: null})
+      lose_arr.push(i)
     }
-    await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
-    res.json({
-      flag: flag,
-      gameStatus: true
-    })
-  } catch (err) {
-    res.json({
-      flag: false,
-      gameStatus: true
-    })
   }
+
+  var win_pos = []
+
+  for (let i = 0; i < bets_p.length; i++) {
+    var n = [];
+    for (let j = 0; j < bets_p[i].length; j++) {
+      if (-1 == lose_arr.indexOf(Number(bets_p[i][j]))) {
+        n.push(Number(bets_p[i][j]))
+      }
+    }
+    if (n.length !== 0) {
+      win_pos.push(n);
+    }
+  }
+
+  res.json({
+    gameStatus: true,
+    win_arr,
+    win_pos
+  })
 };
 
 const manageGamebaccarat = async (req, res) => {
@@ -492,17 +485,18 @@ const checkCrapsGameBank = async (req, res) => {
     }
   }
 
+  for (var key in bets) {
+    if (win_arr.includes(key)) {
+      re_obj[key] = bets[key]
+    }
+  }
+
   if (Number(randomNumber) > gameData.win_occurrence) {
     win_occurrence = 0;
     console.log("random number is big");
   } else {
     if (win_arr.length > 0) {
       console.log("you won");
-      for (var key in bets) {
-        if (win_arr.includes(key)) {
-          re_obj[key] = bets[key]
-        }
-      }
       win_occurrence = gameData.win_occurrence
     } else {
       win_occurrence = 0;
@@ -668,7 +662,7 @@ module.exports = {
   deleteMultiGames,
   deleteGame,
   manageGamehilow,
-  manageGameameroullete,
+  checkAmericanRoulleteGameBank,
   manageGamebaccarat,
   checkBlackjackGameBank,
   manageNormalGame,

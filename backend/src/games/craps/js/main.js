@@ -1384,6 +1384,19 @@ var CANVAS_WIDTH = 1280,
   FONT1 = "arialbold",
   FONT2 = "Digital-7",
   FONT_GAME_3 = "ariallight",
+  DICES = {
+    2: ["field", "horn2"],
+    3: ["field", "horn3"],
+    4: ["field", "hardway4", "number4"],
+    5: ["field", "horn2"],
+    6: ["field", "horn2"],
+    7: ["field", "horn2"],
+    8: ["field", "horn2"],
+    9: ["field", "horn2"],
+    10: ["field", "horn2"],
+    11: ["field", "horn2"],
+    12: ["field", "horn2"],
+  }
   prev_bet = 0;
 function CGameSettings() {
   var a, g, d, e;
@@ -1739,7 +1752,6 @@ function CGameSettings() {
   };
   // 
   this.checkBetWin = function (a, b, f, d, c, g) {
-    console.log('a, b, f, d, c, g :>> ', a, b, f, d, c, g);
     var e = -1;
     switch (c) {
       case "pass_line":
@@ -3137,6 +3149,7 @@ function CGame(a) {
     c,
     p,
     r,
+    s,
     y,
     m,
     A,
@@ -3147,7 +3160,9 @@ function CGame(a) {
     D,
     F,
     E,
-    t;
+    t,
+    win_amount,
+    bet_amount;
   this._init = function () {
     s_oTweenController = new CTweenController();
     s_oGameSettings = new CGameSettings();
@@ -3167,7 +3182,9 @@ function CGame(a) {
     E = new CGameOver();
     F = new CMsgBox();
     p = [];
+    s = {};
     h = 0;
+    win_amount = 0; bet_amount = 0;
     this._onSitDown();
     g = !0;
   };
@@ -3193,7 +3210,7 @@ function CGame(a) {
         }
         b = -1;
         f = 0;
-        l = Math.floor(3 * Math.random() + 3);
+        l = Math.floor(3 * Math.random() + 0);
         w.enableClearButton();
         0 === n.getCurBet() && w.enableRoll(!1);
         c++;
@@ -3220,11 +3237,12 @@ function CGame(a) {
 
     var se_obj = {}
     for (let k in m) {
-      se_obj[k] = m[k] * s_oGameSettings.getBetMultiplier(String(k))
+      if (k == "dont_pass1" || k == "dont_pass2" || k == "pass_line" || k == "dont_come" || k == "field" || k == "come") {
+        se_obj[k] = m[k] * s_oGameSettings.getBetMultiplier(String(k))
+      } else {
+        se_obj[k] = m[k] * s_oGameSettings.getBetMultiplier(String(k)) - m[k]
+      }
     }
-
-    console.log('m :>> ', m);
-    console.log('se_obj :>> ', se_obj);
 
     const response = $.ajax({
       url: 'http://localhost:6140/api/games/checkCrapsGameBank',
@@ -3238,56 +3256,18 @@ function CGame(a) {
       }
     })
 
-    // console.log('response.responseJSON :>> ', response.responseJSON);
-
     if(response.responseJSON.gameStatus == false) {
       alert("Sorry, Something went wrong, please login again");
       window.location.reload()
     }
 
-    // WIN_OCCURRENCE = response.responseJSON.win_occurrence;
+    WIN_OCCURRENCE = response.responseJSON.win_occurrence;
+    s = response.responseJSON.data
 
-    // var fields = ["pass_line", "come", "dont_pass1", "dont_pass2", "dont_come", "field", "big_6", "big_8", "lay_bet4", "lose_bet4", "lay_bet5", "lose_bet5", "lay_bet6", "lose_bet6", "lay_bet8", "lose_bet8", "lay_bet9", "lose_bet9", "lay_bet10", "lose_bet10", "number4", "win_bet4", "number5", "win_bet5", "number6", "win_bet6", "number8", "win_bet8", "number9", "win_bet9", "number10", "win_bet10", "any11_7", "any_craps_7", "seven_bet", "hardway6", "hardway10", "hardway8", "hardway4", "horn3", "horn2", "horn12"];
-    
-    // var lose_pos_arr = []
-    // for (let p = 0; p < fields.length; p++) {
-    //   if (m[fields[p]]) {
-    //     if (fields[p].includes("win_bet")) {
-    //       let n = fields[p].slice(7)
-    //       let number = "number" + n;
-    //       lose_pos_arr.push(number)
-    //     } else if (fields[p].includes("number")) {
-    //       let n = fields[p].slice(6)
-    //       let win_bet = "win_bet" + n;
-    //       lose_pos_arr.push(win_bet)
-    //     } else if (fields[p].includes("lay_bet")) {
-    //       let n = fields[p].slice(7)
-    //       let lose_bet = "lose_bet" + n;
-    //       lose_pos_arr.push(lose_bet)
-    //     } else if (fields[p].includes("lose_bet")) {
-    //       let n = fields[p].slice(8)
-    //       let lay_bet = "lay_bet" + n;
-    //       lose_pos_arr.push(lay_bet)
-    //     }
-    //     lose_pos_arr.push(fields[p])
-    //   }
-    // }
-
-    // for (let i = 0; i < lose_pos_arr.length; i++) {
-    //   var index = fields.indexOf(lose_pos_arr[i])
-    //   fields.splice(index, 1)
-    // }
-
-    // console.log('m :>> ', m);
-    
     for (c in m) {
       -1 !== c.indexOf("any11_")
       ? (c = "any11")
       : -1 !== c.indexOf("any_craps") && (c = "any_craps");
-      // if (Object.keys(response.responseJSON.data).length > 0 && !response.responseJSON.data[c] || WIN_OCCURRENCE == 0) {
-      //   var rn = Math.floor(Math.random() * fields.length)
-      //   c = fields[rn]
-      // }
       var d = s_oGameSettings.getBetWinLoss(e, b, c);
       var g = d.lose;
       d = d.win;
@@ -3307,16 +3287,22 @@ function CGame(a) {
     else if (f > l)
       if (-1 !== c.indexOf("hardway")) a = this._checkHardwayWin(c);
       else {
-        do (a = this._generateRandomDices()), (c = a[0] + a[1]);
-        while (0 === d[c - 1]);
+        let dice;
+        do {
+          a = this._generateRandomDices();
+          c = a[0] + a[1];
+          dice = this._checkDices(a, s, m);
+        } while (0 === d[c - 1] && dice == true);
       }
     else if (-1 !== c.indexOf("hardway")) a = this._checkHardwayWin(c);
     else {
-      do
-        (a = this._generateRandomDices()),
-          (c = a[0] + a[1]),
-          (c = 0 === g[c - 1] ? !1 : !0);
-      while (c);
+      let dice;
+      do {
+        a = this._generateRandomDices();
+        c = a[0] + a[1];
+        c = 0 === g[c - 1] ? !1 : !0;
+        dice = this._checkDices(a, s, m);
+      } while (c && dice == true);
     }
     r[0] = a[0];
     r[1] = a[1];
@@ -3331,7 +3317,8 @@ function CGame(a) {
   };
   this._checkHardwayWin = function (a) {
     var b = 6,
-      c = 6;
+      c = 6,
+      dice;
     switch (a) {
       case "hardway6":
         c = b = 3;
@@ -3345,10 +3332,82 @@ function CGame(a) {
       case "hardway4":
         c = b = 2;
     }
-    do a = this._generateRandomDices();
-    while (a[0] !== b || a[1] !== c);
+    do {
+      a = this._generateRandomDices();
+      dice = this._checkDices(a, s, m);
+    } while (a[0] !== b || a[1] !== c && dice == true);
     return a;
   };
+  this._checkDices = function (a, s, m) {
+    var win_dices = {
+      any11_7: 11,
+      any_craps_7: 3,
+      big_6: 6,
+      big_8: 8,
+      hardway4: 4,
+      hardway6: 6,
+      hardway8: 8,
+      hardway10: 10,
+      horn2: 2,
+      horn3: 3,
+      horn12: 12,
+      lay_bet4: 4,
+      lay_bet5: 5,
+      lay_bet6: 6,
+      lay_bet8: 8,
+      lay_bet9: 9,
+      lay_bet10: 10,
+      lose_bet4: 4,
+      lose_bet5: 5,
+      lose_bet6: 6,
+      lose_bet8: 8,
+      lose_bet9: 9,
+      lose_bet10: 10,
+      number4: 4,
+      number5: 5,
+      number6: 6,
+      number8: 8,
+      number9: 9,
+      number10: 10,
+      seven_bet: 7,
+      win_bet4: 4,
+      win_bet5: 5,
+      win_bet6: 6,
+      win_bet8: 8,
+      win_bet9: 9,
+      win_bet10: 10
+    }
+    var field_arr = [2, 3, 4, 9, 10, 11, 12],
+      dont_pass = [2, 3, 7], pass_line = [7, 11], any_craps = [2, 3, 12]
+    var lose_arr = []
+    if (Object.keys(m).length !== Object.keys(s).length) {
+      for (let k in m) {
+        if (!s[k]) {
+          if (k == "field") {
+            for (let i = 0; i < field_arr.length; i++) {
+              lose_arr.push(field_arr[i])
+            }
+          } else if (k == "dont_pass1" || k == "dont_pass2") {
+            for (let i = 0; i < dont_pass.length; i++) {
+              lose_arr.push(dont_pass[i])
+            }
+          } else if (k == "pass_line") {
+            for (let i = 0; i < pass_line.length; i++) {
+              lose_arr.push(pass_line[i])
+            }
+          } else if (k == "any_craps_7") {
+            for (let i = 0; i < any_craps.length; i++) {
+              lose_arr.push(any_craps[i])
+            }
+          } else {
+            lose_arr.push(win_dices[k])
+          }
+        }
+      }
+    }
+
+    return lose_arr.includes(a[0] + a[1]);
+  }
   this._startRollingAnim = function () {
     z.startRolling(r);
   };
@@ -3384,6 +3443,24 @@ function CGame(a) {
     0 < Object.keys(m).length && (w.enableRoll(!0), w.enableClearButton());
     w.hideBlock();
     w.enableBetFiches();
+    console.log('win_amount, bet_amount :>> ', win_amount, bet_amount);
+    const response = $.ajax({
+      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      type: 'POST',
+      async: false,
+      data: {
+        customerId: customerid,
+        gameId: gameid,
+        win_amount,
+        bet_amount,
+      }
+    })
+
+    if(response.responseJSON.gameStatus == false) {
+      alert("Sorry, Something went wrong, please login again");
+      window.location.reload()
+    }
+
     $(s_oMain).trigger("save_score", [n.getCredit()]);
     prev_bet = n.getCurBet();
   };
@@ -3398,6 +3475,7 @@ function CGame(a) {
       c = 0;
     y = [];
     A = [];
+    win_amount = 0; bet_amount = 0;
     for (var d in m) {
       var f = d;
       -1 !== d.indexOf("any11_")
@@ -3405,6 +3483,7 @@ function CGame(a) {
         : -1 !== d.indexOf("any_craps") && (d = "any_craps_7");
       var g = n.getBetAmountInPos(f),
         h = s_oGameSettings.checkBetWin(a, e, g, b, d, r);
+
       if (-1 !== h) {
         c += h;
         var l = n.getFicheMc(d);
@@ -3420,6 +3499,7 @@ function CGame(a) {
           l[t].setEndPoint(p.x, p.y);
         }
         n.decreaseBet(g);
+        bet_amount += n.getBetAmountInPos(f);
         0 < h &&
           (n.showWin(n.getBetAmountInPos(f) + h),
           (J -= h),
@@ -3427,6 +3507,7 @@ function CGame(a) {
           new CScoreText(h + TEXT_CURRENCY, f.x, f.y));
       }
     }
+    win_amount = c
     0 < c &&
       (w.refreshMsgHelp(TEXT_YOU_WIN + ": " + c),
       setTimeout(function () {
