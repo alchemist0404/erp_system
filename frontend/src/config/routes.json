@@ -22,5 +22,9 @@
     "customers" : {
         "path" : "/customers",
         "title" : "Customer Page"
+    },
+    "bet-history" : {
+        "path" : "/bet-history",
+        "title" : "Bet History"
     }
 }

@@ -20,6 +20,7 @@ import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 import QueuePlayNextIcon from '@material-ui/icons/QueuePlayNext';
 import FaceIcon from '@material-ui/icons/Face';
+import RestoreIcon from '@material-ui/icons/Restore';
 
 // import Collapse from '@material-ui/core/Collapse';
 // import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -267,6 +268,25 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
                             <ListItemText className={clsx(classes.listItemText, {
                                 [classes.hide] : !open
                             })} primary="Profit" />
+                        </ListItem>
+                        
+                        <ListItem 
+                            button 
+                            className={clsx(classes.listItem, {
+                                [classes.active] : values["bet-history"]
+                            })}
+                            
+                            onClick={() => {
+                                handleChange("bet-history")
+                                gotoPage("bet-history")
+                            }}
+                        >
+                            <ListItemIcon className={classes.listItemIcon}>
+                                <RestoreIcon />
+                            </ListItemIcon>
+                            <ListItemText className={clsx(classes.listItemText, {
+                                [classes.hide] : !open
+                            })} primary="Bet History" />
                         </ListItem>
 
                         {/* <ListItem 

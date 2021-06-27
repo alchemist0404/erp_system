@@ -12,3 +12,4 @@ export const ROLES = "ROLES";
 export const TRANSACTIONS = "TRANSACTIONS";
 export const RTP = "RTP";
 export const PROFITS = "PROFITS";
+export const BETHISTORY = "BETHISTORY";

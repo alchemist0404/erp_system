@@ -4,6 +4,7 @@ const Rtp = require("./rtp")
 const Profit = require("./profit")
 const Customers = require("./customers")
 const Api = require("./api")
+const BetHistory = require("./betHistory")
 
 module.exports = {
 	Games: Games,
@@ -11,5 +12,6 @@ module.exports = {
 	Customers: Customers,
 	Profit: Profit,
 	Rtp: Rtp,
-	Api: Api
+	Api: Api,
+	BetHistory
 }

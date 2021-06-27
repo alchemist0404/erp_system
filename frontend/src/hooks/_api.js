@@ -214,3 +214,11 @@ export const editProfit = async (params, gameId) => {
     });
     return result;
 }
+
+export const getBetHistory = async () => {
+    const result = await Axios({
+        endpoint : `/api/betHistory/getBetHistory`,
+        method : "GET",
+    });
+    return result;
+}

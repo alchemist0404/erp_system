@@ -12,6 +12,7 @@ const Games = lazy(() => import("./pages/games"));
 const RTP = lazy(() => import("./pages/rtp"));
 const Profit = lazy(() => import("./pages/profit"));
 const Customers = lazy(() => import("./pages/customers"));
+const BetHistory = lazy(() => import("./pages/betHistory"));
 
 const AppRouter = () => {
     return(
@@ -28,6 +29,7 @@ const AppRouter = () => {
                             <Route {...To("games")} component={Games} />
                             <Route {...To("rtp")} component={RTP} />
                             <Route {...To("profit")} component={Profit} />
+                            <Route {...To("bet-history")} component={BetHistory} />
                         </BaseLayout>
                     </Switch>
                 {/* </AuthProvider> */}

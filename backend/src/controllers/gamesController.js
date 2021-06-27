@@ -1,8 +1,9 @@
 const { Types } = require('mongoose');
-const { Games, Rtp, Profit, Customers } = require('../model');
+const { Games, Rtp, Profit, Customers, BetHistory } = require('../model');
 const fs = require('fs')
 const { DIR } = require('../../config')
 const sendHook = require('./axiosController')
+const betHistoryController = require('./betHistoryController')
 
 const addGame = async (req, res) => {
   try {
@@ -186,6 +187,7 @@ const manageNormalGame = async (req, res) => {
       }
     }
     await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
+    betHistoryController.addBetHistory(Types.ObjectId(re_data.customerId), Types.ObjectId(re_data.gameId), betAmount, winAmount)
     res.json({
       occurrence_type: occurrence_type,
       occurrence: occurrence,
@@ -322,8 +324,7 @@ const manageGamebaccarat = async (req, res) => {
 
     var updateData = {}, re_bets = [0, 0, 0], win_percent = 0;
 
-    var game_bank = 0;
-    console.log('--------------------------------------');
+    var game_bank = 0; var win_amount = 0;
     if (Number(randomNumber) > gameData.win_occurrence) {  //////////////  user lose
       if (Number(betNumber) === 3) {
         var n_index = null
@@ -342,12 +343,13 @@ const manageGamebaccarat = async (req, res) => {
 
         re_bets[n_index] = Number(bets[n_index]);
         win_percent = 100;
-        game_bank = profitData.game_bank + (total_amount - Number(bets_arr[n_index])) - all_profit
-
+        win_amount = Number(bets_arr[n_index]);
+        game_bank = profitData.game_bank + (total_amount - win_amount) - all_profit
       } else {
         console.log("you lost because random number is big");
         re_bets = [Number(bets[0]), Number(bets[1]), Number(bets[2])]
-        game_bank = profitData.game_bank + total_amount - all_profit
+        win_amount = 0;
+        game_bank = profitData.game_bank + (total_amount - win_amount) - all_profit
       }
     } else {                                              ///////////////   user won
       var win_arr = bets_arr.filter((val, index) => Number(val) !== 0 && (Number(val) - Number(bets[index]) + all_profit) < profitData.game_bank)
@@ -356,7 +358,8 @@ const manageGamebaccarat = async (req, res) => {
         console.log("you won but game bank has not enough money so you lost");
 
         re_bets = [Number(bets[0]), Number(bets[1]), Number(bets[2])]
-        game_bank = profitData.game_bank + total_amount - all_profit
+        win_amount = 0;
+        game_bank = profitData.game_bank + (total_amount + win_amount) - all_profit;
 
       } else {
         var win_val = win_arr[Math.floor(Math.random() * win_arr.length)]
@@ -366,8 +369,8 @@ const manageGamebaccarat = async (req, res) => {
 
         re_bets[win_index] = Number(bets[win_index]);
         win_percent = 100;
-        console.log('total_amount :>> ', total_amount, Number(bets_arr[win_index]), all_profit);
-        game_bank = profitData.game_bank + (total_amount - Number(bets_arr[win_index])) - all_profit;
+        win_amount = Number(bets_arr[win_index]);
+        game_bank = profitData.game_bank + (total_amount - win_amount) - all_profit;
 
       }
     }
@@ -383,6 +386,7 @@ const manageGamebaccarat = async (req, res) => {
     console.log('updateData :>> ', updateData);
 
     await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, updateData)
+    betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), total_amount, win_amount)
     res.json({
       win_percent,
       re_bets,
@@ -437,11 +441,13 @@ const updateBlackjackGameBank = async (req, res) => {
   const provider_profit = profitData.provider_profit + all_profit * customerData.providerProfit / 100
   const customer_profit = profitData.customer_profit + all_profit - all_profit * customerData.providerProfit / 100
 
-  var game_bank = 0, update_data = {}
+  var game_bank = 0, update_data = {}, win_amount = 0;
 
   if (is_win == "true") {
-    game_bank = profitData.game_bank - Number(current_bet) - all_profit
+    win_amount = Number(current_bet);
+    game_bank = profitData.game_bank - Number(current_bet) - all_profit;
   } else {
+    win_amount = 0;
     game_bank = profitData.game_bank + Number(current_bet) - all_profit
   }
 
@@ -454,6 +460,7 @@ const updateBlackjackGameBank = async (req, res) => {
   console.log('profitData.game_bank :>> ', profitData.game_bank);
 
   await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
+  betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), Number(current_bet), win_amount)
   res.json({
     gameStatus: true
   })
@@ -574,6 +581,7 @@ const updateGameBankWithWinAmount = async (req, res) => {
   console.log('game_bank :>> ', game_bank);
 
   await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
+  betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), Number(bet_amount), Number(win_amount))
   res.json({
     gameStatus: true
   })
@@ -671,5 +679,5 @@ module.exports = {
   checkJackorBetterGameBank,
   updateGameBankWithWinAmount,
   checkStudPokerGameBank,
-  check3CardPokerGameBank
+  check3CardPokerGameBank,
 }
