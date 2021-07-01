@@ -79,15 +79,17 @@ export default function Rtp() {
 
 	useEffect(() => {
 		var arr = []
-		rtp.filter(item => {
-			arr.push({
-				_id: item._id,
-				game_name: item.gameData.name,
-				rtp: item.rtp
+		if(rtp) {
+			rtp.filter(item => {
+				arr.push({
+					_id: item._id,
+					game_name: item.gameData.name,
+					rtp: item.rtp
+				})
+				return item
 			})
-			return item
-		})
-		setRtpData(arr)
+			setRtpData(arr)
+		}
 	}, [rtp])
 
 	return (

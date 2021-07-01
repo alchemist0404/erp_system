@@ -37,7 +37,7 @@ import SearchIcon from "../assets/icons/search.svg";
 
 import { session_expire, session_store } from "../redux/actions/auth";
 import { games_store } from "../redux/actions/games";
-import { customers_store, customer_id_store } from "../redux/actions/customers";
+import { users_store, user_id_store } from "../redux/actions/users";
 import { rtp_store } from "../redux/actions/rtp";
 import config from '../config/config.json';
 
@@ -78,8 +78,8 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
             openDrawer();
         }
     }
-    const gotoPage = (page, customerId = null) => {
-        dispatch(customer_id_store( customerId ))
+    const gotoPage = (page, userId = null) => {
+        dispatch(user_id_store( userId ))
         History.push(`/${page}`);
     };
     const logout = () => {
@@ -123,16 +123,16 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
         dispatch(rtp_store( rtp.data ))
     }
 
-    const getCustomersData = async () => {
-        var customers = { data: [] }
-        customers = await API.getCustomers();
-        dispatch(customers_store( customers.data ))
+    const getUsersData = async () => {
+        var users = { data: [] }
+        users = await API.getUsers();
+        dispatch(users_store( users.data ))
     }
 
     useEffect(() => {
         getGamesData()
         getRtpData()
-        getCustomersData()
+        getUsersData()
     // eslint-disable-next-line
     }, [])
     
@@ -197,12 +197,12 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
                         <ListItem 
                             button 
                             className={clsx(classes.listItem, {
-                                [classes.active] : values["customers"]
+                                [classes.active] : values["users"]
                             })}
                             
                             onClick={() => {
-                                handleChange("customers")
-                                gotoPage("customers")
+                                handleChange("users")
+                                gotoPage("users")
                             }}
                         >
                             <ListItemIcon className={classes.listItemIcon}>
@@ -210,7 +210,7 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
                             </ListItemIcon>
                             <ListItemText className={clsx(classes.listItemText, {
                                 [classes.hide] : !open
-                            })} primary="Customers" />
+                            })} primary="Users" />
                         </ListItem>
 
                         <ListItem 
@@ -311,7 +311,7 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
                         <Collapse in={openFlag} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
                                 {
-                                    customerdata.map((item, index) => {
+                                    userdata.map((item, index) => {
                                         return <ListItem 
                                                     key={index}
                                                     button 

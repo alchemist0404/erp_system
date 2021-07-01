@@ -1,4 +1,4 @@
 export * from './rtpModal'
 export * from './gameModal'
-export * from './customerModal'
+export * from './userModal'
 export * from './profitModal'

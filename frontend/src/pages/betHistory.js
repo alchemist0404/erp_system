@@ -32,8 +32,8 @@ export default function BetHistory() {
 			label: "Game Name"
 		},
 		{
-			name: 'customer_name',
-			label: "Customer Name"
+			name: 'user_name',
+			label: "User Name"
 		},
 		{
 			name: 'bet_amount',
@@ -58,20 +58,23 @@ export default function BetHistory() {
 
 	useEffect(() => {
         loadBetHistory()
+	// eslint-disable-next-line
 	}, [])
 
     useEffect(() => {
         var n_bets = [];
-        for (let i = 0; i < betHistories.length; i++) {
-            n_bets.push({
-                game_name: betHistories[i].game_id.name,
-                customer_name: betHistories[i].customer_id.firstName,
-                win_amount: betHistories[i].win_amount,
-                bet_amount: betHistories[i].bet_amount,
-                date: betHistories[i].date,
-            })
-        }
-        setBetHistoryData(n_bets)
+		if(betHistories) {
+			for (let i = 0; i < betHistories.length; i++) {
+				n_bets.push({
+					game_name: betHistories[i].game_id.name,
+					user_name: betHistories[i].user_id.firstName,
+					win_amount: betHistories[i].win_amount,
+					bet_amount: betHistories[i].bet_amount,
+					date: betHistories[i].date,
+				})
+			}
+			setBetHistoryData(n_bets)
+		}
     }, [betHistories])
 	
     const loadBetHistory = async () => {

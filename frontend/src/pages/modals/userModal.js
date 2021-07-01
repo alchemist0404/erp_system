@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -44,25 +43,25 @@ const Fade = React.forwardRef(function Fade(props, ref) {
         onEnter,
         onExited, ...other
     } = props;
-    const style = useSpring({
-        from: { opacity: 0 },
-        to: { opacity: open ? 1 : 0 },
-        onStart: () => {
-            if (open && onEnter) {
-                onEnter();
-            }
-        },
-        onRest: () => {
-            if (!open && onExited) {
-                onExited();
-            }
-        },
-    });
+    // const style = useSpring({
+    //     from: { opacity: 0 },
+    //     to: { opacity: open ? 1 : 0 },
+    //     onStart: () => {
+    //         if (open && onEnter) {
+    //             onEnter();
+    //         }
+    //     },
+    //     onRest: () => {
+    //         if (!open && onExited) {
+    //             onExited();
+    //         }
+    //     },
+    // });
 
     return (
-        <animated.div ref={ref} style={style} {...other}>
+        <div ref={ref} {...other}>
             {children}
-        </animated.div>
+        </div>
     );
 });
 
@@ -73,23 +72,23 @@ Fade.propTypes = {
     onExited: PropTypes.func,
 };
 
-export const EditCustomerModal = (props) => {
+export const EditUserModal = (props) => {
     const {
         open,
         setOpen,
         addStatus,
-        editCustomer,
-        customerFirstName,
-        customerLastName,
-        customerPhoneNumber,
-        customerEmail,
-        customerProfit,
-        setCustomerFirstName,
-        setCustomerLastName,
-        setCustomerPhoneNumber,
-        setCustomerEmail,
-        setCustomerProfit,
-        addNewCustomerHandle
+        editUser,
+        userFirstName,
+        userLastName,
+        userPhoneNumber,
+        userEmail,
+        userProfit,
+        setUserFirstName,
+        setUserLastName,
+        setUserPhoneNumber,
+        setUserEmail,
+        setUserProfit,
+        addNewUserHandle
     } = props;
     const classes = useStyles();
 
@@ -109,7 +108,7 @@ export const EditCustomerModal = (props) => {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="spring-modal-title">{addStatus === true ? 'Add': 'Edit'} Customer</h2>
+                        <h2 id="spring-modal-title">{addStatus === true ? 'Add': 'Edit'} User</h2>
                         <div className={classes.margin}>
                             <Grid container spacing={1} alignItems="flex-end">
                                 <Grid item>
@@ -118,8 +117,8 @@ export const EditCustomerModal = (props) => {
                                 <Grid item>
                                     <TextField
                                         label="First Name"
-                                        defaultValue={customerFirstName}
-                                        onChange={(e) => setCustomerFirstName(e.target.value)}
+                                        defaultValue={userFirstName}
+                                        onChange={(e) => setUserFirstName(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>
@@ -132,8 +131,8 @@ export const EditCustomerModal = (props) => {
                                 <Grid item>
                                     <TextField
                                         label="Last Name"
-                                        defaultValue={customerLastName}
-                                        onChange={(e) => setCustomerLastName(e.target.value)}
+                                        defaultValue={userLastName}
+                                        onChange={(e) => setUserLastName(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>
@@ -146,8 +145,8 @@ export const EditCustomerModal = (props) => {
                                 <Grid item>
                                     <TextField
                                         label="Phone"
-                                        defaultValue={customerPhoneNumber}
-                                        onChange={(e) => setCustomerPhoneNumber(e.target.value)}
+                                        defaultValue={userPhoneNumber}
+                                        onChange={(e) => setUserPhoneNumber(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>
@@ -160,8 +159,8 @@ export const EditCustomerModal = (props) => {
                                 <Grid item>
                                     <TextField
                                         label="Email"
-                                        defaultValue={customerEmail}
-                                        onChange={(e) => setCustomerEmail(e.target.value)}
+                                        defaultValue={userEmail}
+                                        onChange={(e) => setUserEmail(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>
@@ -175,8 +174,8 @@ export const EditCustomerModal = (props) => {
                                     <TextField
                                         label="Provider Profit"
                                         type="number"
-                                        defaultValue={customerProfit}
-                                        onChange={(e) => setCustomerProfit(e.target.value)}
+                                        defaultValue={userProfit}
+                                        onChange={(e) => setUserProfit(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>
@@ -187,9 +186,9 @@ export const EditCustomerModal = (props) => {
                                     <Button variant="contained" color="primary" 
                                         onClick={() => {
                                             if(addStatus) {
-                                                addNewCustomerHandle()
+                                                addNewUserHandle()
                                             } else {
-                                                editCustomer()
+                                                editUser()
                                             }
                                         }}
                                     >

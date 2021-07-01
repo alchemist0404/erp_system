@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
-import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -50,25 +49,11 @@ const Fade = React.forwardRef(function Fade(props, ref) {
         onEnter,
         onExited, ...other
     } = props;
-    const style = useSpring({
-        from: { opacity: 0 },
-        to: { opacity: open ? 1 : 0 },
-        onStart: () => {
-            if (open && onEnter) {
-                onEnter();
-            }
-        },
-        onRest: () => {
-            if (!open && onExited) {
-                onExited();
-            }
-        },
-    });
 
     return (
-        <animated.div ref={ref} style={style} {...other}>
+        <div ref={ref} {...other}>
             {children}
-        </animated.div>
+        </div>
     );
 });
 
@@ -85,19 +70,19 @@ export const EditProfitModal = (props) => {
         setOpen,
         addStatus,
         games,
-        customerdata,
+        userdata,
         firstName,
         gameName,
         gameBank,
-        customerProfit,
+        userProfit,
         providerProfit,
         status,
         setFirstName,
         setGameId,
-        setCustomerId,
+        setUserId,
         setGameName,
         setGameBank,
-        setCustomerProfit,
+        setUserProfit,
         setProviderProfit,
         setStatus,
         editProfit,
@@ -106,18 +91,22 @@ export const EditProfitModal = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        if(games.length > 0) {
-            setGameId(games[0]._id)
+        if(games) {
+            if(games.length > 0) {
+                setGameId(games[0]._id)
+            }
         }
     // eslint-disable-next-line
     }, [games])
 
     useEffect(() => {
-        if(customerdata.length > 0) {
-            setCustomerId(customerdata[0]._id)
+        if(userdata) {
+            if(userdata.length > 0) {
+                setUserId(userdata[0]._id)
+            }
         }
     // eslint-disable-next-line
-    }, [customerdata])
+    }, [userdata])
 
     return (
         <div>
@@ -191,10 +180,10 @@ export const EditProfitModal = (props) => {
                                         </Grid>
                                         <Grid item>
                                             <TextField
-                                                label="Customer Profit"
-                                                defaultValue={customerProfit}
+                                                label="User Profit"
+                                                defaultValue={userProfit}
                                                 type="number"
-                                                onChange={(e) => setCustomerProfit(e.target.value)}
+                                                onChange={(e) => setUserProfit(e.target.value)}
                                             />
                                         </Grid>
                                     </Grid>
@@ -256,22 +245,22 @@ export const EditProfitModal = (props) => {
                                 </div>
                                 <div className={classes.margin}>
                                     <FormControl className={classes.formControl}>
-                                        <InputLabel id="demo-simple-select-label">Customer</InputLabel>
+                                        <InputLabel id="demo-simple-select-label">User</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
                                             id="demo-simple-select"
-                                            defaultValue={customerdata[0] ? customerdata[0]._id : "Customer"}
+                                            defaultValue={userdata[0] ? userdata[0]._id : "User"}
                                             onChange={(e) => {
                                                 console.log(e.target.value)
-                                                setCustomerId(e.target.value)
+                                                setUserId(e.target.value)
                                             }}
                                         >
                                             {
-                                                customerdata.length > 0 ?
-                                                customerdata.map((item, index) => {
+                                                userdata.length > 0 ?
+                                                userdata.map((item, index) => {
                                                     return <MenuItem value={item._id} key={index}>{item.firstName}</MenuItem>
                                                 }) :
-                                                <MenuItem value={'Customer'} key={0}>Customer</MenuItem>
+                                                <MenuItem value={'User'} key={0}>User</MenuItem>
                                             }
                                         </Select>
                                     </FormControl>

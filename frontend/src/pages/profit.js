@@ -21,7 +21,7 @@ export default function Profit() {
 	const classes = useStyles.profit()
 	const dispatch = useDispatch()
 	const games = useSelector(state => state.games.gamedata)
-	const customerdata = useSelector(state => state.customers.customerdata)
+	const userdata = useSelector(state => state.users.userdata)
 
 	const [profitData, setProfitData] = useState([])
 	const [contentData, setContentData] = useState([])
@@ -31,10 +31,10 @@ export default function Profit() {
 	const [profitId, setProfitId] = useState("")
 	const [firstName, setFirstName] = useState("")
 	const [gameId, setGameId] = useState("")
-	const [currnetCustomerId, setCustomerId] = useState("")
+	const [currnetUserId, setUserId] = useState("")
 	const [gameName, setGameName] = useState("")
 	const [gameBank, setGameBank] = useState("")
-	const [customerProfit, setCustomerProfit] = useState("")
+	const [userProfit, setUserProfit] = useState("")
 	const [providerProfit, setProviderProfit] = useState("")
 	const [status, setStatus] = useState(false)
 
@@ -60,8 +60,8 @@ export default function Profit() {
 
 	const columnData = [
 		{
-			name: "customer_name",
-			label: "Customer Name"
+			name: "user_name",
+			label: "User Name"
 		},
 		{
 			name: "game_name",
@@ -72,8 +72,8 @@ export default function Profit() {
 			label: "Game Bank"
 		},
 		{
-			name: "customer_profit",
-			label: "Customer Profit"
+			name: "user_profit",
+			label: "User Profit"
 		},
 		{
 			name: "provider_profit",
@@ -100,7 +100,7 @@ export default function Profit() {
 								setFirstName(tableMeta.rowData[0])
 								setGameName(tableMeta.rowData[1])
 								setGameBank(tableMeta.rowData[2])
-								setCustomerProfit(tableMeta.rowData[3])
+								setUserProfit(tableMeta.rowData[3])
 								setProviderProfit(tableMeta.rowData[4])
 								setStatus(tableMeta.rowData[5])
 								setOpen(true)
@@ -117,7 +117,7 @@ export default function Profit() {
 	const editProfit = async () => {
 		await API.editProfit({
 			game_bank: gameBank,
-			customer_profit: customerProfit,
+			user_profit: userProfit,
 			provider_profit: providerProfit,
 			status: status
 		}, profitId)
@@ -135,11 +135,11 @@ export default function Profit() {
 
 	const addNewProfit = () => {
 		setAddStatus(true)
-		setProfitId(currnetCustomerId)
+		setProfitId(currnetUserId)
 		setFirstName("")
 		setGameName("")
 		setGameBank("")
-		setCustomerProfit("")
+		setUserProfit("")
 		setProviderProfit("")
 		setStatus(false)
 		setOpen(true)
@@ -147,10 +147,10 @@ export default function Profit() {
 
 	const addNewProfitHandle = async () => {
 		let addProfitResult = await API.addProfit({
-			customer_id: currnetCustomerId,
+			user_id: currnetUserId,
 			game_id: gameId,
 			game_bank: 0,
-			customer_profit: 0,
+			user_profit: 0,
 			provider_profit: 0,
 			status: true
 		});
@@ -173,7 +173,7 @@ export default function Profit() {
 		}
 	}
 
-	const setCustomer = async (value) => {
+	const setUser = async (value) => {
 		if(value === null) {
 			getAllProfitData()
 		} else {
@@ -195,11 +195,11 @@ export default function Profit() {
 			var arr = []
 			profitData.filter(item => {
 				arr.push({
-					customer_name: item.customerData.firstName,
+					user_name: item.userData.firstName,
 					game_name: item.gameData.name,
 					game_bank: item.game_bank,
 					provider_profit: item.provider_profit,
-					customer_profit: item.customer_profit,
+					user_profit: item.user_profit,
 					status: `${item.status}`
 				})
 				return item
@@ -219,13 +219,13 @@ export default function Profit() {
 				</Button>
 				<Autocomplete
 					id="combo-box-demo"
-					options={customerdata}
+					options={userdata}
 					getOptionLabel={(option) => option.firstName}
 					style={{ width: 300 }}
 					onChange={(event, newValue) => {
-						setCustomer(newValue);
+						setUser(newValue);
 					}}
-					renderInput={(params) => <TextField {...params} label="Customers" variant="outlined" />}
+					renderInput={(params) => <TextField {...params} label="Users" variant="outlined" />}
 				/>
 			</Grid>
 			<MDataTable
@@ -240,21 +240,21 @@ export default function Profit() {
 				addStatus={addStatus}
 				open={open}
 				status={status}
-				customerdata={customerdata}
+				userdata={userdata}
 				firstName={firstName}
 				gameName={gameName}
 				games={games}
 				gameBank={gameBank}
-				customerProfit={customerProfit}
+				userProfit={userProfit}
 				providerProfit={providerProfit}
 
 				setOpen={setOpen}
 				setGameId={setGameId}
-				setCustomerId={setCustomerId}
+				setUserId={setUserId}
 				setFirstName={setFirstName}
 				setGameName={setGameName}
 				setGameBank={setGameBank}
-				setCustomerProfit={setCustomerProfit}
+				setUserProfit={setUserProfit}
 				setProviderProfit={setProviderProfit}
 				setStatus={setStatus}
 				editProfit={editProfit}

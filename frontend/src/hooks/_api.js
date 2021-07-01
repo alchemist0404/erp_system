@@ -103,28 +103,28 @@ export const editRtp = async (params, rtpId) => {
     return result;
 }
 
-//  ** Declare Customers API
+//  ** Declare Users API
 
-export const getCustomers = async (params) => {
+export const getUsers = async (params) => {
     var result = await Axios({
-        endpoint : "/api/customers",
+        endpoint : "/api/users",
         method : "GET"
     });
     return result;
 }
 
-export const addCustomer = async (params) => {
+export const addUser = async (params) => {
     var result = await Axios({
-        endpoint : "/api/customers",
+        endpoint : "/api/users",
         method : "POST",
         params : params
     });
     return result;
 }
 
-export const deleteCustomer = async (params) => {
+export const deleteUser = async (params) => {
     var result = await Axios({
-        endpoint : `/api/customers/${params}`,
+        endpoint : `/api/users/${params}`,
         method : "DELETE",
         params : ""
     });
@@ -136,9 +136,9 @@ export const deleteCustomer = async (params) => {
     return result;
 }
 
-export const deleteMultiCustomer = async (params) => {
+export const deleteMultiUser = async (params) => {
     const result = await Axios({
-        endpoint : "/api/customers/delete",
+        endpoint : "/api/users/delete",
         method : "POST",
         params : params
     });
@@ -150,9 +150,9 @@ export const deleteMultiCustomer = async (params) => {
     return result;
 }
 
-export const editCustomer = async (params, gameId) => {
+export const editUser = async (params, gameId) => {
     const result = await Axios({
-        endpoint : `/api/customers/${gameId}`,
+        endpoint : `/api/users/${gameId}`,
         method : "PUT",
         params : params
     });

@@ -19,9 +19,9 @@
         "path" : "/profit",
         "title" : "Profit Page"
     },
-    "customers" : {
-        "path" : "/customers",
-        "title" : "Customer Page"
+    "users" : {
+        "path" : "/users",
+        "title" : "User Page"
     },
     "bet-history" : {
         "path" : "/bet-history",

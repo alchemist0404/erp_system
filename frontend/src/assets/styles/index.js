@@ -1,5 +1,6 @@
 import headerStyles from "./_header";
 import baseStyles from "./_base";
+import fullStyles from "./_full";
 import GridStyles from "./_grid";
 import FormStyles from "./_form";
 import Introduction from "./_introduction";
@@ -12,6 +13,7 @@ import Profit from "./_profit";
 const useStyles = {
     header : headerStyles,
     base : baseStyles,
+    full : fullStyles,
     grid : GridStyles,
     form : FormStyles,
     introduction : Introduction,

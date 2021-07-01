@@ -5,7 +5,7 @@ const API_URL = () => {
     if(process.env.NODE_ENV === "development"){
         return "http://localhost:6140";
     } else {
-        return "https://api.hellenium.com";
+        return "http://199.192.17.41";
     }
 }
 
