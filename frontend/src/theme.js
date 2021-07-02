@@ -66,26 +66,11 @@ export const AuthProvider = ({ children }) => {
     const isSession = localStorage.getItem("auth");
     const history = useHistory();
     useEffect(() => {
-        console.log('window.location.pathname :>> ', window.location.pathname);
         if (
-            window.location.pathname === "/3card" ||
-            window.location.pathname === "/american-roullete" ||
-            window.location.pathname === "/baccarat" ||
-            window.location.pathname === "/blackjack" ||
-            window.location.pathname === "/craps" ||
-            window.location.pathname === "/hilow" ||
-            window.location.pathname === "/jackorbetter" ||
-            window.location.pathname === "/paigow" ||
-            window.location.pathname === "/studpoker"
+            (isSession === null || isSession === "") &&
+            window.location.pathname !== "/signin"
         ) {
-            console.log("This is game");
-        } else {
-            if (
-                (isSession === null || isSession === "") &&
-                window.location.pathname !== "/signin"
-            ) {
-                history.push("signin");
-            }
+            history.push("signin");
         }
     }, [isSession, history])
     return children;
