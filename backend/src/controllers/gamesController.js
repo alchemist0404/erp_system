@@ -637,10 +637,12 @@ const check3CardPokerGameBank = async (req, res) => {
   var availables = [], win_occurrence = 0;
   for (let i in payout_mult) {
     var amount = Number(ante_bet_amount) * 2 * Number(payout_mult[i][0]) + Number(plus_bet_amount) * Number(payout_mult[i][1])
+    console.log('amount :>> ', amount);
     if (amount + all_profit < profitData.game_bank) {
       availables.push(i)
     }
   }
+  console.log('availables :>> ', availables);
   if (Number(randomNumber) > gameData.win_occurrence) {
     win_occurrence = 0
     console.log("oops! you are not lucky!");

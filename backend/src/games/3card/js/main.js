@@ -2466,9 +2466,9 @@ function CGame(a) {
     t = 0;
     plusMoney = 0;
     plusMoney = e.getBetPlus() * PAYOUT_PLUS[k];
-    k <= THREE_OF_A_KIND &&
-      e.getBetPlus() * PAYOUT_PLUS[k] > maxLimit[k] &&
-      (plusMoney = maxLimit[k]);
+    // k <= THREE_OF_A_KIND &&
+    //   e.getBetPlus() * PAYOUT_PLUS[k] > maxLimit[k] &&
+    //   (plusMoney = maxLimit[k]);
     0 < e.getBetPlus() && k <= ONE_PAIR && (t = plusMoney + e.getBetPlus());
     h = 0;
     k <= STRAIGHT && (h += e.getBetAnte() * PAYOUT_ANTE[k]);
@@ -2528,6 +2528,7 @@ function CGame(a) {
           var c = H.evaluate(R);
           q = a.ret;
           k = c.ret;
+          console.log('k :>> ', k, q, Math.min.apply(null, response.responseJSON.data));
           w = H.getWinnerComparingHands(c.sort_hand, a.sort_hand, k, q);
           this._calculateTotalWin();
         } while (w === "dealer" && k >= Math.min.apply(null, response.responseJSON.data));
@@ -2672,7 +2673,7 @@ function CGame(a) {
   var F = a.game_cash;
   PAYOUT_ANTE = a.ante_payout;
   PAYOUT_PLUS = a.plus_payouts;
-  maxLimit = a.max_limit;
+  // maxLimit = a.max_limit;
   TIME_END_HAND = a.time_show_hand;
   AD_SHOW_COUNTER = a.ad_show_counter;
   this._init();
@@ -3851,7 +3852,7 @@ function CGameOver() {
     new CTLText( // No money text.
       b,
       CANVAS_WIDTH / 2 - 210,
-      320,
+      280,
       400,
       70,
       32,
@@ -3867,19 +3868,19 @@ function CGameOver() {
       !0,
       !1
     );
-    // a = new CTextButton(
-    //   CANVAS_WIDTH / 2 - 100,
-    //   450,
-    //   s_oSpriteLibrary.getSprite("but_game_bg"),
-    //   TEXT_RECHARGE,
-    //   FONT_GAME_1,
-    //   "#fff",
-    //   14,
-    //   b
-    // );
-    // a.addEventListener(ON_MOUSE_UP, this._onRecharge, this);
+    a = new CTextButton(
+      CANVAS_WIDTH / 2 - 100,
+      450,
+      s_oSpriteLibrary.getSprite("but_game_bg"),
+      TEXT_RECHARGE,
+      FONT_GAME_1,
+      "#fff",
+      14,
+      b
+    );
+    a.addEventListener(ON_MOUSE_UP, this._onRecharge, this);
     d = new CTextButton(
-      CANVAS_WIDTH / 2,
+      CANVAS_WIDTH / 2 + 100,
       450,
       s_oSpriteLibrary.getSprite("but_game_bg"),
       TEXT_EXIT,
@@ -3892,7 +3893,7 @@ function CGameOver() {
     this.hide();
   };
   this.unload = function () {
-    // a.unload();
+    a.unload();
     d.unload();
     b.off("click", function () {});
   };
@@ -4401,8 +4402,7 @@ This bonus pays as "Ante Bonus Pays" on the game screen based on the ante bet.`;
     n.addChild(c);
     c = this.makeText("PairPlus", "30px ", "#ff0", FONT_GAME_2, 200, 640);
     n.addChild(c);
-    text = `This will pay entirely based on the poker value of the player's hand as shown in the "Pair Plus Pays" on the game screen.
-(Pairplus max pay is 1500USD for" Three of a Kind", 3000USD for "Straight Flush".`;
+    text = `This will pay entirely based on the poker value of the player's hand as shown in the "Pair Plus Pays" on the game screen.`;
     c = this.makeText(text, "20px ", "#fff", FONT_GAME_3, 200, 670);
     n.addChild(c);
   };

@@ -13,6 +13,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
+  loginContainer: {
+    height: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+  },
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -36,7 +41,7 @@ export default function SignIn() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs" className={classes.loginContainer}>
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -81,7 +86,7 @@ export default function SignIn() {
           >
             Sign In
           </Button>
-          <Grid container>
+          {/* <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">
                 Forgot password?
@@ -92,7 +97,7 @@ export default function SignIn() {
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
-          </Grid>
+          </Grid> */}
         </form>
       </div>
     </Container>

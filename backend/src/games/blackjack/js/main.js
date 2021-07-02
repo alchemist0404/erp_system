@@ -2650,7 +2650,7 @@ function CGame(a) {
     a += b;
     e.bet(a, !0);
     c = !0;
-    z.enable(!1, !1, !1, !1, !1);
+    z.enable(!1, !0, !0, !1, !1);
     e.setSplitHand();
     e.refreshCardValue();
     e.changeBet(a - b);
@@ -3336,7 +3336,7 @@ function CSeat() {
       setTimeout(() => {
         B[RESTORE_ACTION] &&
           B[RESTORE_ACTION].call(L[RESTORE_ACTION], !1, !0, !0, g, !1);
-      }, 1000);
+      }, 400);
     }
   };
   this.checkPlayerLastHand = function (a) {
@@ -3346,7 +3346,7 @@ function CSeat() {
         (K.x = x.getX()),
         setTimeout(() => {
           B[RESTORE_ACTION].call(L[RESTORE_ACTION], !1, !0, !0, !1, !1);
-        }, 600))
+        }, 300))
       : (B[a] && B[a].call(L[a], 0), this.removeArrow());
   };
   this.bet = function (a, b) {
@@ -3834,8 +3834,8 @@ function CGameSettings() {
     var a;
     let numOfCards =
       Math.random() < 0.1
-        ? Math.floor(Math.random() * 2 + 4)
-        : Math.floor(Math.random() * 2 + 2);
+        ? Math.floor(Math.random() * 4 + 2)
+        : Math.floor(Math.random() * 1.5 + 2);
     do {
       var b = [];
       for (var c = (a = 0); numOfCards > c; c++) {

@@ -20,21 +20,59 @@ const AppRouter = () => {
     return(
         <Router history={History}>
             <Suspense fallback={<Spinner />}>
-                <Fullayout>
-                    <Route {...To("signin")} component={Signin} />
-                </Fullayout>
+                <Route 
+                    {...To("signin")}
+                    render={props => (
+                        <Fullayout>
+                            <Signin />
+                        </Fullayout>
+                    )}
+                />
                 <AuthProvider>
                     <Switch>
-                        <BaseLayout>
-                            <Route exact path="/" >
-                                <Redirect to="/users" />
-                            </Route>
-                            <Route {...To("users")} component={Users} />
-                            <Route {...To("games")} component={Games} />
-                            <Route {...To("rtp")} component={RTP} />
-                            <Route {...To("profit")} component={Profit} />
-                            <Route {...To("bet-history")} component={BetHistory} />
-                        </BaseLayout>
+                        <Route exact path="/" >
+                            <Redirect to="/users" />
+                        </Route>
+                        <Route 
+                            {...To("users")}
+                            render={props => (
+                                <BaseLayout>
+                                    <Users />
+                                </BaseLayout>
+                            )}
+                        />
+                        <Route 
+                            {...To("games")}
+                            render={props => (
+                                <BaseLayout>
+                                    <Games />
+                                </BaseLayout>
+                            )}
+                        />
+                        <Route 
+                            {...To("rtp")}
+                            render={props => (
+                                <BaseLayout>
+                                    <RTP />
+                                </BaseLayout>
+                            )}
+                        />
+                        <Route 
+                            {...To("profit")}
+                            render={props => (
+                                <BaseLayout>
+                                    <Profit />
+                                </BaseLayout>
+                            )}
+                        />
+                        <Route 
+                            {...To("bet-history")}
+                            render={props => (
+                                <BaseLayout>
+                                    <BetHistory />
+                                </BaseLayout>
+                            )}
+                        />
                     </Switch>
                 </AuthProvider>
             </Suspense>
