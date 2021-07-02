@@ -4,25 +4,24 @@ import React, { useEffect } from "react";
 import Mode from "./config/theme.json";
 import Routes from "./config/routes.json";
 
-import { 
-    createMuiTheme, 
-    ThemeProvider 
-} from '@material-ui/core/styles'; 
+import {
+    createMuiTheme,
+    ThemeProvider
+} from '@material-ui/core/styles';
 import { useSnackbar } from 'notistack';
 import { CssBaseline } from '@material-ui/core';
 import { createBrowserHistory } from "history";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 // ** Import Sass files
 import "./assets/sass/index.scss";
 
 // ** Declare Theme Provider
-export const MuiTheme = ({children}) => {
+export const MuiTheme = ({ children }) => {
     const storedMode = localStorage.getItem("themeMode");
     const themeMode = storedMode ? storedMode : "dark";
     const theme = createMuiTheme(Mode[themeMode]);
-    return(
+    return (
         <ThemeProvider theme={theme}>
             {children}
         </ThemeProvider>
@@ -30,8 +29,8 @@ export const MuiTheme = ({children}) => {
 }
 
 // ** Declare Style Provider
-export const Styles = ({children}) => {
-    return(
+export const Styles = ({ children }) => {
+    return (
         <>
             <CssBaseline />
             {children}
@@ -42,51 +41,69 @@ export const Styles = ({children}) => {
 // ** Declare Route Provider
 export const To = (pageName) => {
     // document.title = Routes[pageName].title;
-    return({
-        exact : true,
-        path : Routes[pageName].path
+    return ({
+        exact: true,
+        path: Routes[pageName].path
     })
 }
 
 // ** Declare Notification Provider
-export const NotificationProvider = ({children}) => {
+export const NotificationProvider = ({ children }) => {
     const { enqueueSnackbar } = useSnackbar();
     useEffect(() => {
         const alert = (message, variant) => {
-            enqueueSnackbar(message, { variant : variant });
+            enqueueSnackbar(message, { variant: variant });
         }
         window.alert = alert;
     }, [enqueueSnackbar])
-    return( 
+    return (
         <>{children}</>
     )
 }
 
 // ** Declare Auth Provider
-export const AuthProvider = ({children}) => {
-    const isSession = useSelector((state) => state.auth.isSession);
+export const AuthProvider = ({ children }) => {
+    const isSession = localStorage.getItem("auth");
     const history = useHistory();
     useEffect(() => {
-        if(!isSession){
-            history.push("/signin");
+        console.log('window.location.pathname :>> ', window.location.pathname);
+        if (
+            window.location.pathname === "/3card" ||
+            window.location.pathname === "/american-roullete" ||
+            window.location.pathname === "/baccarat" ||
+            window.location.pathname === "/blackjack" ||
+            window.location.pathname === "/craps" ||
+            window.location.pathname === "/hilow" ||
+            window.location.pathname === "/jackorbetter" ||
+            window.location.pathname === "/paigow" ||
+            window.location.pathname === "/studpoker"
+        ) {
+            console.log("This is game");
+        } else {
+            if (
+                (isSession === null || isSession === "") &&
+                window.location.pathname !== "/signin"
+            ) {
+                history.push("signin");
+            }
         }
     }, [isSession, history])
     return children;
 }
 // ** Declare History As Global
-export const History = createBrowserHistory({ basename : "", forceRefresh : false });
+export const History = createBrowserHistory({ basename: "", forceRefresh: false });
 
 // ** Declare Check Response Func
 export const checkResponse = (response) => {
-    switch(response){
-        case "success":{
+    switch (response) {
+        case "success": {
             alert("Successful", "success");
             break;
-        } 
+        }
         case "exist": {
             alert("Alredy Exist", "info");
             break;
-        } 
+        }
         case "not found": {
             alert("Email or Password is incorrect.", "error");
             break;

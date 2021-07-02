@@ -147,7 +147,7 @@ export default function Profit() {
 
 	const addNewProfitHandle = async () => {
 		let addProfitResult = await API.addProfit({
-			user_id: currnetUserId,
+			customer_id: currnetUserId,
 			game_id: gameId,
 			game_bank: 0,
 			user_profit: 0,
@@ -195,7 +195,7 @@ export default function Profit() {
 			var arr = []
 			profitData.filter(item => {
 				arr.push({
-					user_name: item.userData.firstName,
+					user_name: item.customerData.firstName,
 					game_name: item.gameData.name,
 					game_bank: item.game_bank,
 					provider_profit: item.provider_profit,

@@ -2367,7 +2367,7 @@ function CGame(a) {
       if (c === 1 && betedPlace === 0) compareNumber /= 8;
 
       const data = await $.ajax({
-        url: 'http://localhost:6140/api/games/manageGamebaccarat',
+        url: `${home_url}/api/games/manageGamebaccarat`,
         type: 'POST',
         data: {
           customerId: customerid,

@@ -2454,7 +2454,7 @@ function CGame(e) {
         let n = new Random().integer(1, 100);
 
         const response = $.ajax({
-          url: 'http://localhost:6140/api/games/checkStudPokerGameBank',
+          url: `${home_url}/api/games/checkStudPokerGameBank`,
           type: 'POST',
           async: false,
           data: {

@@ -67,7 +67,7 @@ export default function BetHistory() {
 			for (let i = 0; i < betHistories.length; i++) {
 				n_bets.push({
 					game_name: betHistories[i].game_id.name,
-					user_name: betHistories[i].user_id.firstName,
+					user_name: betHistories[i].customer_id.firstName,
 					win_amount: betHistories[i].win_amount,
 					bet_amount: betHistories[i].bet_amount,
 					date: betHistories[i].date,
@@ -84,9 +84,6 @@ export default function BetHistory() {
 
 	return (
 		<Grid container spacing={2} className={classes.mainContainer}>
-        {
-            console.log(betHistoryData)
-        }
 			<MDataTable
 				title={"RTP"}
 				optionData={options}

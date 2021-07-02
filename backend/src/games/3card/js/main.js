@@ -2400,7 +2400,7 @@ function CGame(a) {
     console.log('winAmount :>> ', winAmount);
     console.log('betAmount :>> ', betAmount);
     const response = $.ajax({
-      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      url: `${home_url}/api/games/updateGameBankWithWinAmount`,
       type: 'POST',
       async: false,
       data: {
@@ -2499,7 +2499,7 @@ function CGame(a) {
       // console.log(randomNumber);
 
       const response = $.ajax({
-        url: 'http://localhost:6140/api/games/check3CardPokerGameBank',
+        url: `${home_url}/api/games/check3CardPokerGameBank`,
         type: 'POST',
         async: false,
         data: {

@@ -2439,7 +2439,7 @@ function CGame(a) {
       $(s_oMain).trigger("bet_placed", h);
       
       var reData = $.ajax({
-        url:'http://localhost:6140/api/games/manageNormalGame',
+        url:`${home_url}/api/games/manageNormalGame`,
         type: "POST",
         async: false,
         data: {

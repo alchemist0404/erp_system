@@ -3054,7 +3054,7 @@ function CGame(a) {
     let randomNumber = random.integer(1, 100);
 
     const response = $.ajax({
-      url: 'http://localhost:6140/api/games/checkAmericanRoulleteGameBank',
+      url: `${home_url}/api/games/checkAmericanRoulleteGameBank`,
       type: 'POST',
       async: false,
       data: {
@@ -3140,7 +3140,7 @@ function CGame(a) {
     B = parseFloat(B.toFixed(2));
     
     const response = $.ajax({
-      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      url: `${home_url}/api/games/updateGameBankWithWinAmount`,
       type: 'POST',
       async: false,
       data: {

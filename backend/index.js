@@ -21,8 +21,8 @@ app.use(bodyParser.raw());
 mongoose()
 
 app.use('/api', route)
-app.use('/', express.static(__dirname + '/src/games/build'));
-app.get('/', (req, res) => {
+app.use(express.static(__dirname + '/src/build'));
+app.get('*', (req, res) => {
   res.sendFile(__dirname + '/src/build/index.html');
 });
 

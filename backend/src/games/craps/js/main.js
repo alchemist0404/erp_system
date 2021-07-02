@@ -3245,7 +3245,7 @@ function CGame(a) {
     }
 
     const response = $.ajax({
-      url: 'http://localhost:6140/api/games/checkCrapsGameBank',
+      url: `${home_url}/api/games/checkCrapsGameBank`,
       type: 'POST',
       async: false,
       data: {
@@ -3445,7 +3445,7 @@ function CGame(a) {
     w.enableBetFiches();
     console.log('win_amount, bet_amount :>> ', win_amount, bet_amount);
     const response = $.ajax({
-      url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+      url: `${home_url}/api/games/updateGameBankWithWinAmount`,
       type: 'POST',
       async: false,
       data: {

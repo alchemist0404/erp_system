@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 import React, {useEffect, useState} from "react";
 import clsx from 'clsx';
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 // ** Import Material-Ui Components
 import AppBar from '@material-ui/core/AppBar';
@@ -54,6 +54,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 // ** import API from hooks
 import { API } from '../hooks'
+import { useHistory } from "react-router-dom";
 
 const Header = ({ open, openDrawer, closeDrawer }) => {
     // ** Declare Maintainers
@@ -62,8 +63,9 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
     const [values, setValues] = useState({});
     // const [openFlag, setOpenFlag] = useState(false);
 
-    const isSession = useSelector(state => state.auth.isSession)
-    const dispatch = useDispatch()
+    const isSession = localStorage.getItem("auth") === null || localStorage.getItem("auth") === "" ? false : true;
+    const dispatch = useDispatch();
+    const history = useHistory();
 
     // ** Declare Actions
     const handleChange = (prop) => {
@@ -83,7 +85,8 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
         History.push(`/${page}`);
     };
     const logout = () => {
-        dispatch(session_expire('SESSIONEXPIRE'))
+        dispatch(session_expire())
+        history.push('signin')
     };
 
     // let pageName = History.location.pathname.split("/");
@@ -164,7 +167,6 @@ const Header = ({ open, openDrawer, closeDrawer }) => {
                         isSession === true ?
                         <Button 
                             href="#" 
-                            color="primary" 
                             variant="outlined" 
                             className={classes.link}
                             onClick={() => logout()}

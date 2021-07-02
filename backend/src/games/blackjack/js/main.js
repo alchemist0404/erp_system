@@ -2277,7 +2277,7 @@ function CGame(a) {
 
     var c_bet = e.getCurBet();
     const data = $.ajax({
-      url: 'http://localhost:6140/api/games/checkBlackjackGameBank',
+      url: `${home_url}/api/games/checkBlackjackGameBank`,
       type: 'POST',
       async: false,
       data: {
@@ -3395,7 +3395,7 @@ function CSeat() {
     }
     if (b !== TEXT_SHOW_STANDOFF) {
       const response = $.ajax({
-        url: 'http://localhost:6140/api/games/updateBlackjackGameBank',
+        url: `${home_url}/api/games/updateBlackjackGameBank`,
         type: 'POST',
         async: false,
         data: {

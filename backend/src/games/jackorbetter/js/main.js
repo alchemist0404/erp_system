@@ -2263,7 +2263,7 @@ function CGame(a) {
       F.removeAllChildren();
 
       const response = $.ajax({
-        url: 'http://localhost:6140/api/games/checkJackorBetterGameBank',
+        url: `${home_url}/api/games/checkJackorBetterGameBank`,
         type: 'POST',
         async: false,
         data: {
@@ -2379,7 +2379,7 @@ function CGame(a) {
           let winAmount = d - oldCredit + m;
 
           const response = $.ajax({
-            url: 'http://localhost:6140/api/games/updateGameBankWithWinAmount',
+            url: `${home_url}/api/games/updateGameBankWithWinAmount`,
             type: 'POST',
             async: false,
             data: {

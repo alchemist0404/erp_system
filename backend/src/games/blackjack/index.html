@@ -33,15 +33,19 @@
       "
     ></div>
     <script>
+      var gameid = "";
+      var customerid = "";
+      var home_url = "";
       $(document).ready(function () {
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var balance = Number(url.searchParams.get("balance"));
+        home_url = location.origin;
         gameid = url.searchParams.get("gameid");
         customerid = url.searchParams.get("customerid");
 
         $.ajax({
-          url: `http://localhost:6140/api/games/${gameid}`,
+          url: `${home_url}/api/games/${gameid}`,
           type: "GET",
           data: {},
           success: (gameConfig) => {
@@ -63,7 +67,7 @@
               /////////////////// YOU CAN GET IT AT: /////////////////////////////////////////////////////////
               // http://codecanyon.net/item/ctl-arcade-wordpress-plugin/13856421 ///////////
             });
-    
+
             $(oMain).on("recharge", function (evt) {
               //INSERT HERE YOUR RECHARGE SCRIPT THAT RETURN MONEY TO RECHARGE
               var iMoney = 1000;
@@ -71,26 +75,26 @@
                 s_oGame.setMoney(iMoney);
               }
             });
-    
+
             $(oMain).on("bet_placed", function (evt, iTotBet) {
               //...ADD YOUR CODE HERE EVENTUALLY
               // console.log("Bet Placed", iTotBet);
             });
-    
+
             $(oMain).on("start_session", function (evt) {
               if (getParamValue("ctl-arcade") === "true") {
                 parent.__ctlArcadeStartSession();
               }
               //...ADD YOUR CODE HERE EVENTUALLY
             });
-    
+
             $(oMain).on("end_session", function (evt) {
               if (getParamValue("ctl-arcade") === "true") {
                 parent.__ctlArcadeEndSession();
               }
               //...ADD YOUR CODE HERE EVENTUALLY
             });
-    
+
             $(oMain).on("save_score", function (evt, iScore) {
               if (getParamValue("ctl-arcade") === "true") {
                 parent.__ctlArcadeSaveScore({ score: iScore });
@@ -98,14 +102,14 @@
               //...ADD YOUR CODE HERE EVENTUALLY
               //  console.log("Save Score", iScore);
             });
-    
+
             $(oMain).on("show_interlevel_ad", function (evt) {
               if (getParamValue("ctl-arcade") === "true") {
                 parent.__ctlArcadeShowInterlevelAD();
               }
               //...ADD YOUR CODE HERE EVENTUALLY
             });
-    
+
             $(oMain).on("share_event", function (evt, iScore) {
               if (getParamValue("ctl-arcade") === "true") {
                 parent.__ctlArcadeShareEvent({
@@ -116,7 +120,7 @@
                 });
               }
             });
-    
+
             if (isIOS()) {
               setTimeout(function () {
                 sizeHandler();

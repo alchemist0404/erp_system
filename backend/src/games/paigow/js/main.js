@@ -2512,7 +2512,7 @@ function CGame(a) {
       let randomNumber = random.integer(1, 100);
 
       var reData = $.ajax({
-        url:'http://localhost:6140/api/games/manageNormalGame',
+        url: `${home_url}/api/games/manageNormalGame`,
         type: "POST",
         async: false,
         data: {

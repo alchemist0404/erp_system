@@ -37,15 +37,17 @@
     <script>
       var gameid = "";
       var customerid = "";
+      var home_url = "";
       $(document).ready(function () {
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var balance = Number(url.searchParams.get("balance"));
+        home_url = location.origin;
         gameid = url.searchParams.get("gameid");
         customerid = url.searchParams.get("customerid");
 
         var gameConfig = $.ajax({
-          url: `http://localhost:6140/api/games/${gameid}`,
+          url: `${home_url}/api/games/${gameid}`,
           type: "GET",
           async: false,
           data: {},
