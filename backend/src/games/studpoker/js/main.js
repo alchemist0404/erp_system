@@ -2313,6 +2313,25 @@ function CGame(e) {
         this.changeState(STATE_GAME_DISTRIBUTE_FICHES),
         R.refreshCredit(y.getCredit());
       let e = y.getCredit() - F + y.getBetAnte() + y.getBetRaise();
+      let cur_bet = y.getBetAnte() + y.getBetRaise();
+      
+      $.ajax({
+        url: `${home_url}/api/games/updateGameBankWithWinAmount`,
+        type: 'POST',
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          bet_amount: cur_bet,
+          win_amount: e,
+        },
+        success: (data) => {
+          if(data.gameStatus == false) {
+            alert("Sorry, Something went wrong, please try again");
+            window.location.reload()
+          }
+        }
+      })
+
       $(s_oMain).trigger("hand_finished", [e]),
         (F = y.getCredit()),
         setTimeout(function () {

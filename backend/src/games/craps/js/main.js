@@ -3444,7 +3444,7 @@ function CGame(a) {
     w.hideBlock();
     w.enableBetFiches();
     console.log('win_amount, bet_amount :>> ', win_amount, bet_amount);
-    const response = $.ajax({
+    $.ajax({
       url: `${home_url}/api/games/updateGameBankWithWinAmount`,
       type: 'POST',
       async: false,
@@ -3453,13 +3453,14 @@ function CGame(a) {
         gameId: gameid,
         win_amount,
         bet_amount,
+      },
+      success: (data) => {
+        if(data.gameStatus == false) {
+          alert("Sorry, Something went wrong, please try again");
+          window.location.reload()
+        }
       }
     })
-
-    if(response.responseJSON.gameStatus == false) {
-      alert("Sorry, Something went wrong, please login again");
-      window.location.reload()
-    }
 
     $(s_oMain).trigger("save_score", [n.getCredit()]);
     prev_bet = n.getCurBet();

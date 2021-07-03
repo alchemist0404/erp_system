@@ -2399,21 +2399,22 @@ function CGame(a) {
     let betAmount = e.getBetAnte() + e.getBetPlay() + e.getBetPlus();
     console.log('winAmount :>> ', winAmount);
     console.log('betAmount :>> ', betAmount);
-    const response = $.ajax({
+    $.ajax({
       url: `${home_url}/api/games/updateGameBankWithWinAmount`,
       type: 'POST',
-      async: false,
       data: {
         customerId: customerid,
         gameId: gameid,
         bet_amount: betAmount,
         win_amount: winAmount,
+      },
+      success: (data) => {
+        if(data.gameStatus == false) {
+          alert("Sorry, Something went wrong, please try again");
+          window.location.reload()
+        }
       }
     })
-    if(response.responseJSON.gameStatus == false) {
-      alert("Sorry, Something went wrong, please try again");
-      window.location.reload()
-    }
   }
   this.setBet = function (a, b) {
     if (y.isResultPanelvisible())

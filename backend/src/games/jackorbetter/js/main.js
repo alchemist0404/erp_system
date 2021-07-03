@@ -2378,21 +2378,22 @@ function CGame(a) {
             : (playSound("lose", 1, !1), z.showLosePanel());
           let winAmount = d - oldCredit + m;
 
-          const response = $.ajax({
+          $.ajax({
             url: `${home_url}/api/games/updateGameBankWithWinAmount`,
             type: 'POST',
-            async: false,
             data: {
               customerId: customerid,
               gameId: gameid,
               bet_amount: m,
               win_amount: winAmount,
+            },
+            success: (data) => {
+              if(data.gameStatus == false) {
+                alert("Sorry, Something went wrong, please try again");
+                window.location.reload()
+              }
             }
           })
-          if(response.responseJSON.gameStatus == false) {
-            alert("Sorry, Something went wrong, please try again");
-            window.location.reload()
-          }
 
           $(s_oMain).trigger("save_score", [d]);
           oldCredit = d;

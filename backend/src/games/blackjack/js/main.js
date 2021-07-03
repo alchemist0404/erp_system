@@ -3394,7 +3394,7 @@ function CSeat() {
       is_win = true
     }
     if (b !== TEXT_SHOW_STANDOFF) {
-      const response = $.ajax({
+      $.ajax({
         url: `${home_url}/api/games/updateBlackjackGameBank`,
         type: 'POST',
         async: false,
@@ -3403,13 +3403,16 @@ function CSeat() {
           gameId: gameid,
           current_bet: cur_bet,
           is_win,
+        },
+        success: (data) => {
+          if(data.gameStatus == false) {
+            alert("Sorry, Something went wrong, please try again");
+            window.location.reload()
+          }
         }
       })
-      if(response.responseJSON.gameStatus == false) {
-        alert("Sorry, Something went wrong, please try again");
-        window.location.reload()
-      }
     }
+    
     0 < c
       ? (0 === a ? (D.text = b + ": " + c) : (G.text = b + ": " + c),
         playSound("win", 1, !1))

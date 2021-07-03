@@ -3,10 +3,10 @@ import axios from "axios";
 // ** Declare API Func
 const API_URL = () => {
     // if(process.env.NODE_ENV === "development"){
-    //     return "http://localhost:6140";
+        return "http://localhost:6140";
     // } else {
     // }
-    return "http://199.192.17.41";
+    // return "http://199.192.17.41";
 }
 
 // ** Declare Custome Axios
