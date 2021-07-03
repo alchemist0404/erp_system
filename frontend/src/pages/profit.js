@@ -72,8 +72,8 @@ export default function Profit() {
 			label: "Game Bank"
 		},
 		{
-			name: "user_profit",
-			label: "User Profit"
+			name: "customer_profit",
+			label: "Customer Profit"
 		},
 		{
 			name: "provider_profit",
@@ -150,7 +150,7 @@ export default function Profit() {
 			customer_id: currnetUserId,
 			game_id: gameId,
 			game_bank: 0,
-			user_profit: 0,
+			customer_profit: 0,
 			provider_profit: 0,
 			status: true
 		});
@@ -199,7 +199,7 @@ export default function Profit() {
 					game_name: item.gameData.name,
 					game_bank: item.game_bank,
 					provider_profit: item.provider_profit,
-					user_profit: item.user_profit,
+					customer_profit: item.customer_profit,
 					status: `${item.status}`
 				})
 				return item

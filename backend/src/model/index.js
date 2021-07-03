@@ -7,11 +7,5 @@ const Api = require("./api")
 const BetHistory = require("./betHistory")
 
 module.exports = {
-	Games: Games,
-	Sessions: Sessions,
-	Customers: Customers,
-	Profit: Profit,
-	Rtp: Rtp,
-	Api: Api,
-	BetHistory
+	Games, Sessions, Customers, Profit, Rtp, Api, BetHistory
 }
