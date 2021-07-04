@@ -3244,68 +3244,67 @@ function CGame(a) {
       }
     }
 
-    const response = $.ajax({
+    $.ajax({
       url: `${home_url}/api/games/checkCrapsGameBank`,
       type: 'POST',
-      async: false,
       data: {
         customerId: customerid,
         gameId: gameid,
         randomNumber,
         bets: se_obj
+      },
+    }).done((data) => {
+      if(data.gameStatus == false) {
+        alert("Sorry, Something went wrong, please login again");
+        window.location.reload()
       }
-    })
-
-    if(response.responseJSON.gameStatus == false) {
-      alert("Sorry, Something went wrong, please login again");
-      window.location.reload()
-    }
-
-    WIN_OCCURRENCE = response.responseJSON.win_occurrence;
-    s = response.responseJSON.data
-
-    for (c in m) {
-      -1 !== c.indexOf("any11_")
-      ? (c = "any11")
-      : -1 !== c.indexOf("any_craps") && (c = "any_craps");
-      var d = s_oGameSettings.getBetWinLoss(e, b, c);
-      var g = d.lose;
-      d = d.win;
-    }
-    -1 !== c.indexOf("hardway") && (randomNumber *= 10);
-    if (randomNumber >= WIN_OCCURRENCE)
-      if (f > l) {
-        do (a = this._generateRandomDices()), (c = a[0] + a[1]);
-        while (0 === g[c - 1]);
-      } else {
-        do
-          (a = this._generateRandomDices()),
-            (c = a[0] + a[1]),
-            (c = 0 === d[c - 1] ? !0 : !1);
-        while (!c);
+  
+      WIN_OCCURRENCE = data.win_occurrence;
+      s = data.data
+  
+      for (c in m) {
+        -1 !== c.indexOf("any11_")
+        ? (c = "any11")
+        : -1 !== c.indexOf("any_craps") && (c = "any_craps");
+        var d = s_oGameSettings.getBetWinLoss(e, b, c);
+        var g = d.lose;
+        d = d.win;
       }
-    else if (f > l)
-      if (-1 !== c.indexOf("hardway")) a = this._checkHardwayWin(c);
+      -1 !== c.indexOf("hardway") && (randomNumber *= 10);
+      if (randomNumber >= WIN_OCCURRENCE)
+        if (f > l) {
+          do (a = this._generateRandomDices()), (c = a[0] + a[1]);
+          while (0 === g[c - 1]);
+        } else {
+          do
+            (a = this._generateRandomDices()),
+              (c = a[0] + a[1]),
+              (c = 0 === d[c - 1] ? !0 : !1);
+          while (!c);
+        }
+      else if (f > l)
+        if (-1 !== c.indexOf("hardway")) a = this._checkHardwayWin(c);
+        else {
+          let dice;
+          do {
+            a = this._generateRandomDices();
+            c = a[0] + a[1];
+            dice = this._checkDices(a, s, m);
+          } while (0 === d[c - 1] && dice == true);
+        }
+      else if (-1 !== c.indexOf("hardway")) a = this._checkHardwayWin(c);
       else {
         let dice;
         do {
           a = this._generateRandomDices();
           c = a[0] + a[1];
+          c = 0 === g[c - 1] ? !1 : !0;
           dice = this._checkDices(a, s, m);
-        } while (0 === d[c - 1] && dice == true);
+        } while (c && dice == true);
       }
-    else if (-1 !== c.indexOf("hardway")) a = this._checkHardwayWin(c);
-    else {
-      let dice;
-      do {
-        a = this._generateRandomDices();
-        c = a[0] + a[1];
-        c = 0 === g[c - 1] ? !1 : !0;
-        dice = this._checkDices(a, s, m);
-      } while (c && dice == true);
-    }
-    r[0] = a[0];
-    r[1] = a[1];
+      r[0] = a[0];
+      r[1] = a[1];
+    })
   };
   this._generateRandomDices = function () {
     var a = [],
@@ -3454,11 +3453,10 @@ function CGame(a) {
         win_amount,
         bet_amount,
       },
-      success: (data) => {
-        if(data.gameStatus == false) {
-          alert("Sorry, Something went wrong, please try again");
-          window.location.reload()
-        }
+    }).done((data) => {
+      if(data.gameStatus == false) {
+        alert("Sorry, Something went wrong, please try again");
+        window.location.reload()
       }
     })
 

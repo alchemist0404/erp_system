@@ -2354,7 +2354,7 @@ function CGame(a) {
     m = [];
     m = s_oGameSettings.getShuffledCardDeck();
   };
-  this.changeState = async function (a) {
+  this.changeState = function (a) {
     f = a;
     if (f === STATE_GAME_DEALING) {
       y.disableBetFiches();
@@ -2366,7 +2366,7 @@ function CGame(a) {
       for (var c = 0, d = 0; d < a.length; d++) 0 < a[d] && (c++, betedPlace = d);
       if (c === 1 && betedPlace === 0) compareNumber /= 8;
 
-      const data = await $.ajax({
+      $.ajax({
         url: `${home_url}/api/games/manageGamebaccarat`,
         type: 'POST',
         data: {
@@ -2375,69 +2375,69 @@ function CGame(a) {
           bets: a,
           randomNumber,
           betNumber: c
+        },
+      }).done((data) => {
+        if (data.gameStatus == false) {
+          alert("Sorry, Something went wrong, please login again");
+          window.location.reload()
         }
-      })
-      if(data.gameStatus == false) {
-        alert("Sorry, Something went wrong, please login again");
-        window.location.reload()
-      }
-      compareNumber = data.win_percent
-      c = 1;
-      a = data.re_bets
-      if (randomNumber < compareNumber) {
-        if (1 === c) {
-          for (d = 0; d < a.length; d++) {
-            var e = 0;
-            if (0 !== a[d]) {
-              e = d;
-              break;
+        compareNumber = data.win_percent
+        c = 1;
+        a = data.re_bets
+        if (randomNumber < compareNumber) {
+          if (1 === c) {
+            for (d = 0; d < a.length; d++) {
+              var e = 0;
+              if (0 !== a[d]) {
+                e = d;
+                break;
+              }
             }
+            d = e;
+          } else {
+            do d = r[Math.floor(Math.random() * r.length)];
+            while (0 === a[d]);
           }
-          d = e;
+          do
+            6 > m.length && this.shuffleCard(),
+              (a = []),
+              a.push(m.splice(0, 1)),
+              a.push(m.splice(0, 1)),
+              (b = []),
+              b.push(m.splice(0, 1)),
+              b.push(m.splice(0, 1)),
+              (e = this._simulateHand(a, b));
+          while (d !== e);
         } else {
-          do d = r[Math.floor(Math.random() * r.length)];
-          while (0 === a[d]);
+          if (3 === c)
+            (b = Math.random()), (d = 0.5 < b ? BET_BANKER : BET_PLAYER);
+          else {
+            d = [];
+            for (b = 0; b < a.length; b++) 0 === a[b] && d.push(b);
+            b = Math.floor(Math.random() * d.length);
+            d = d[b];
+          }
+          do
+            6 > m.length && this.shuffleCard(),
+              (a = []),
+              a.push(m.splice(0, 1)),
+              a.push(m.splice(0, 1)),
+              (b = []),
+              b.push(m.splice(0, 1)),
+              b.push(m.splice(0, 1)),
+              (e = this._simulateHand(a, b));
+          while (d !== e);
         }
-        do
-          6 > m.length && this.shuffleCard(),
-            (a = []),
-            a.push(m.splice(0, 1)),
-            a.push(m.splice(0, 1)),
-            (b = []),
-            b.push(m.splice(0, 1)),
-            b.push(m.splice(0, 1)),
-            (e = this._simulateHand(a, b));
-        while (d !== e);
-      } else {
-        if (3 === c)
-          (b = Math.random()), (d = 0.5 < b ? BET_BANKER : BET_PLAYER);
-        else {
-          d = [];
-          for (b = 0; b < a.length; b++) 0 === a[b] && d.push(b);
-          b = Math.floor(Math.random() * d.length);
-          d = d[b];
-        }
-        do
-          6 > m.length && this.shuffleCard(),
-            (a = []),
-            a.push(m.splice(0, 1)),
-            a.push(m.splice(0, 1)),
-            (b = []),
-            b.push(m.splice(0, 1)),
-            b.push(m.splice(0, 1)),
-            (e = this._simulateHand(a, b));
-        while (d !== e);
-      }
-      g = [];
-      for (d = 0; d < a.length; d++) g[d] = a[d];
-      h = [];
-      for (d = 0; d < b.length; d++) h[d] = b[d];
+        g = [];
+        for (d = 0; d < a.length; d++) g[d] = a[d];
+        h = [];
+        for (d = 0; d < b.length; d++) h[d] = b[d];
 
-      console.log('======', d, '=======', a, "==========", c)
-      y.disableButtons();
-      y.disableBetFiches();
-      y.displayMsg(TEXT_DISPLAY_MSG_DEALING, "");
-      this._dealing();
+        y.disableButtons();
+        y.disableBetFiches();
+        y.displayMsg(TEXT_DISPLAY_MSG_DEALING, "");
+        this._dealing();
+      })
     }
   };
   this._simulateHand = function (a, b) {

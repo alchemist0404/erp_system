@@ -2408,11 +2408,10 @@ function CGame(a) {
         bet_amount: betAmount,
         win_amount: winAmount,
       },
-      success: (data) => {
-        if(data.gameStatus == false) {
-          alert("Sorry, Something went wrong, please try again");
-          window.location.reload()
-        }
+    }).done((data) => {
+      if(data.gameStatus == false) {
+        alert("Sorry, Something went wrong, please try again");
+        window.location.reload()
       }
     })
   }
@@ -2499,10 +2498,9 @@ function CGame(a) {
       let randomNumber = random.integer(1, 100);
       // console.log(randomNumber);
 
-      const response = $.ajax({
+      $.ajax({
         url: `${home_url}/api/games/check3CardPokerGameBank`,
         type: 'POST',
-        async: false,
         data: {
           customerId: customerid,
           gameId: gameid,
@@ -2511,47 +2509,46 @@ function CGame(a) {
           payout_mult: PAYOUT_MULT,
           randomNumber,
         }
-      })
+      }).done((data) => {
+        if(data.gameStatus == false) {
+          alert("Sorry, Something went wrong, please try again");
+          window.location.reload()
+        }
+    
+        WIN_OCCURRENCE = data.win_occurrence;
   
-      if(response.responseJSON.gameStatus == false) {
-        alert("Sorry, Something went wrong, please try again");
-        window.location.reload()
-      }
-  
-      WIN_OCCURRENCE = response.responseJSON.win_occurrence;
-
-      if (randomNumber < WIN_OCCURRENCE) {
-        do {
-          // Player win.
-          R = this._generateRandPlayerCards();
-          N = this._generateRandDealerCards();
-          a = H.evaluate(N);
-          var c = H.evaluate(R);
-          q = a.ret;
-          k = c.ret;
-          console.log('k :>> ', k, q, Math.min.apply(null, response.responseJSON.data));
-          w = H.getWinnerComparingHands(c.sort_hand, a.sort_hand, k, q);
-          this._calculateTotalWin();
-        } while (w === "dealer" && k >= Math.min.apply(null, response.responseJSON.data));
-      } else {
-        // Player lose
-        do
-          (R = this._generateRandPlayerCards()),
-            (N = this._generateRandDealerCards()),
-            (a = H.evaluate(N)),
-            (c = H.evaluate(R)),
-            (q = a.ret),
-            (k = c.ret),
-            (w = H.getWinnerComparingHands(c.sort_hand, a.sort_hand, k, q)),
+        if (randomNumber < WIN_OCCURRENCE) {
+          do {
+            // Player win.
+            R = this._generateRandPlayerCards();
+            N = this._generateRandDealerCards();
+            a = H.evaluate(N);
+            var c = H.evaluate(R);
+            q = a.ret;
+            k = c.ret;
+            w = H.getWinnerComparingHands(c.sort_hand, a.sort_hand, k, q);
             this._calculateTotalWin();
-        while (w !== "dealer");
-      }
-      e.setPrevBet();
-      bl = e.getBetAnte() + e.getBetPlus();
-      $(s_oMain).trigger("bet_placed", bl);
-      playSound("card", 1, !1);
-      b = !1;
-      this.changeState(STATE_GAME_DEALING);
+          } while (w === "dealer" && k >= Math.min.apply(null, data.data));
+        } else {
+          // Player lose
+          do
+            (R = this._generateRandPlayerCards()),
+              (N = this._generateRandDealerCards()),
+              (a = H.evaluate(N)),
+              (c = H.evaluate(R)),
+              (q = a.ret),
+              (k = c.ret),
+              (w = H.getWinnerComparingHands(c.sort_hand, a.sort_hand, k, q)),
+              this._calculateTotalWin();
+          while (w !== "dealer");
+        }
+        e.setPrevBet();
+        bl = e.getBetAnte() + e.getBetPlus();
+        $(s_oMain).trigger("bet_placed", bl);
+        playSound("card", 1, !1);
+        b = !1;
+        this.changeState(STATE_GAME_DEALING);
+      });
     }
   };
   this.onFold = function () {

@@ -2262,38 +2262,37 @@ function CGame(a) {
       c = !0;
       F.removeAllChildren();
 
-      const response = $.ajax({
+      $.ajax({
         url: `${home_url}/api/games/checkJackorBetterGameBank`,
         type: 'POST',
-        async: false,
         data: {
           customerId: customerid,
           gameId: gameid,
           bet_amount: m,
           randomNumber,
         }
-      })
-
-      if(response.responseJSON.gameStatus == false) {
-        alert("Sorry, Something went wrong, please login again");
-        window.location.reload()
-      }
+      }).done((data) => {
+        if(data.gameStatus == false) {
+          alert("Sorry, Something went wrong, please login again");
+          window.location.reload()
+        }
+    
+        WIN_OCCURRENCE = data.win_occurrence;
+        AVAILABLE_WIN_TYPES = data.data;
   
-      WIN_OCCURRENCE = response.responseJSON.win_occurrence;
-      AVAILABLE_WIN_TYPES = response.responseJSON.data;
-
-      if (randomNumber > WIN_OCCURRENCE) {
-        do this._createCard();
-        while (A.evaluate(h) < HIGH_CARD);
-        b = !1;
-      } else this._createCard(), (b = !0);
-      d -= m;
-      d = parseFloat(d.toFixed(2));
-      k += m;
-      z.refreshMoney(d, m);
-      playSound("card", 1, !1);
-      $(s_oMain).trigger("bet_placed", m);
-      q = STATE_GAME_DEAL;
+        if (randomNumber > WIN_OCCURRENCE) {
+          do this._createCard();
+          while (A.evaluate(h) < HIGH_CARD);
+          b = !1;
+        } else this._createCard(), (b = !0);
+        d -= m;
+        d = parseFloat(d.toFixed(2));
+        k += m;
+        z.refreshMoney(d, m);
+        playSound("card", 1, !1);
+        $(s_oMain).trigger("bet_placed", m);
+        q = STATE_GAME_DEAL;
+      })
     }
   };
   this._createCard = function () {
@@ -2377,7 +2376,8 @@ function CGame(a) {
             ? s_oGame.assignWin(a)
             : (playSound("lose", 1, !1), z.showLosePanel());
           let winAmount = d - oldCredit + m;
-
+          console.log('winAmount :>> ', winAmount);
+          console.log('betAmount :>> ', m);
           $.ajax({
             url: `${home_url}/api/games/updateGameBankWithWinAmount`,
             type: 'POST',
@@ -2387,11 +2387,10 @@ function CGame(a) {
               bet_amount: m,
               win_amount: winAmount,
             },
-            success: (data) => {
-              if(data.gameStatus == false) {
-                alert("Sorry, Something went wrong, please try again");
-                window.location.reload()
-              }
+          }).done((data) => {
+            if(data.gameStatus == false) {
+              alert("Sorry, Something went wrong, please try again");
+              window.location.reload()
             }
           })
 

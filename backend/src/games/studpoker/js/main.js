@@ -2324,13 +2324,12 @@ function CGame(e) {
           bet_amount: cur_bet,
           win_amount: e,
         },
-        success: (data) => {
-          if(data.gameStatus == false) {
-            alert("Sorry, Something went wrong, please try again");
-            window.location.reload()
-          }
+      }).done((data) => {
+        if(data.gameStatus == false) {
+          alert("Sorry, Something went wrong, please try again");
+          window.location.reload()
         }
-      })
+      });
 
       $(s_oMain).trigger("hand_finished", [e]),
         (F = y.getCredit()),
@@ -2472,10 +2471,9 @@ function CGame(e) {
         v.removeAllChildren();
         let n = new Random().integer(1, 100);
 
-        const response = $.ajax({
+        $.ajax({
           url: `${home_url}/api/games/checkStudPokerGameBank`,
           type: 'POST',
-          async: false,
           data: {
             customerId: customerid,
             gameId: gameid,
@@ -2483,42 +2481,43 @@ function CGame(e) {
             payout_mult: PAYOUT_MULT,
             randomNumber: n,
           }
+        }).done((data) => {
+          if(data.gameStatus == false) {
+            alert("Sorry, Something went wrong, please try again");
+            window.location.reload()
+          }
+      
+          WIN_OCCURRENCE = data.win_occurrence;
+  
+          if (n > WIN_OCCURRENCE)
+            do {
+              (T = this._generateRandPlayerCards()),
+                (b = this._generateRandDealerCards());
+              var e = N.evaluate(b),
+                i = N.evaluate(T);
+              (c = e.ret),
+                (_ = i.ret),
+                (h = N.getWinnerComparingHands(i.sort_hand, e.sort_hand, _, c)),
+                this._calculateTotalWin();
+            } while ("dealer" !== h);
+          else
+            do {
+              (T = this._generateRandPlayerCards()),
+                (b = this._generateRandDealerCards()),
+                (e = N.evaluate(b)),
+                (i = N.evaluate(T)),
+                (c = e.ret),
+                (_ = i.ret),
+                (h = N.getWinnerComparingHands(i.sort_hand, e.sort_hand, _, c)),
+                this._calculateTotalWin();
+            } while ("dealer" === h && WIN_TYPE_VALUE[_] <= Math.min.apply(null, data.data));
+          y.setPrevBet(),
+            playSound("card", 1, !1),
+            (t = !1),
+            this.changeState(STATE_GAME_DEALING),
+            $(s_oMain).trigger("bet_placed", y.getBetAnte());
         })
     
-        if(response.responseJSON.gameStatus == false) {
-          alert("Sorry, Something went wrong, please try again");
-          window.location.reload()
-        }
-    
-        WIN_OCCURRENCE = response.responseJSON.win_occurrence;
-
-        if (n > WIN_OCCURRENCE)
-          do {
-            (T = this._generateRandPlayerCards()),
-              (b = this._generateRandDealerCards());
-            var e = N.evaluate(b),
-              i = N.evaluate(T);
-            (c = e.ret),
-              (_ = i.ret),
-              (h = N.getWinnerComparingHands(i.sort_hand, e.sort_hand, _, c)),
-              this._calculateTotalWin();
-          } while ("dealer" !== h);
-        else
-          do {
-            (T = this._generateRandPlayerCards()),
-              (b = this._generateRandDealerCards()),
-              (e = N.evaluate(b)),
-              (i = N.evaluate(T)),
-              (c = e.ret),
-              (_ = i.ret),
-              (h = N.getWinnerComparingHands(i.sort_hand, e.sort_hand, _, c)),
-              this._calculateTotalWin();
-          } while ("dealer" === h && WIN_TYPE_VALUE[_] <= Math.min.apply(null, response.responseJSON.data));
-        y.setPrevBet(),
-          playSound("card", 1, !1),
-          (t = !1),
-          this.changeState(STATE_GAME_DEALING),
-          $(s_oMain).trigger("bet_placed", y.getBetAnte());
       }
     }),
     (this.onFold = function () {

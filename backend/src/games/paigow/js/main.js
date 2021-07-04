@@ -2511,10 +2511,9 @@ function CGame(a) {
       const random = new Random();
       let randomNumber = random.integer(1, 100);
 
-      var reData = $.ajax({
+      $.ajax({
         url: `${home_url}/api/games/manageNormalGame`,
         type: "POST",
-        async: false,
         data: {
           gameId: gameid,
           customerId: customerid,
@@ -2523,30 +2522,30 @@ function CGame(a) {
           tie: true,
           randomNumber: randomNumber
         }
+      }).done((data) => {
+        if(data.occurrence_type === 'lose') {
+          LOSE_OCCURRENCE = data.occurrence
+        }
+        if (
+          randomNumber >
+          100 - LOSE_OCCURRENCE
+        ) {
+          do this._generateRandomCards();
+          while ("dealer" !== I || c);
+        } else if (randomNumber > 100 - LOSE_OCCURRENCE - WIN_OCCURRENCE) {
+          do this._generateRandomCards();
+          while ("player" !== I || !c);
+        } else {
+          do this._generateRandomCards();
+          while (("player" === I && c) || ("dealer" === I && !c));
+        }
+  
+        y.setPrevBet();
+  
+        playSound("card", 1, !1);
+        this.changeState(STATE_GAME_DEALING);
       })
 
-      if(reData.responseJSON.occurrence_type === 'lose') {
-        LOSE_OCCURRENCE = reData.responseJSON.occurrence
-      }
-      console.log(LOSE_OCCURRENCE)
-      if (
-        randomNumber >
-        100 - LOSE_OCCURRENCE
-      ) {
-        do this._generateRandomCards();
-        while ("dealer" !== I || c);
-      } else if (randomNumber > 100 - LOSE_OCCURRENCE - WIN_OCCURRENCE) {
-        do this._generateRandomCards();
-        while ("player" !== I || !c);
-      } else {
-        do this._generateRandomCards();
-        while (("player" === I && c) || ("dealer" === I && !c));
-      }
-
-      y.setPrevBet();
-
-      playSound("card", 1, !1);
-      this.changeState(STATE_GAME_DEALING);
     }
   };
   this._generateRandomCards = function () {

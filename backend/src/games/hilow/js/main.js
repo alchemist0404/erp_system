@@ -2438,10 +2438,9 @@ function CGame(a) {
       let randomNumber = random.integer(1, 100);
       $(s_oMain).trigger("bet_placed", h);
       
-      var reData = $.ajax({
+      $.ajax({
         url:`${home_url}/api/games/manageNormalGame`,
         type: "POST",
-        async: false,
         data: {
           gameId: gameid,
           customerId: customerid,
@@ -2450,33 +2449,34 @@ function CGame(a) {
           tie: false,
           randomNumber: randomNumber
         }
+      }).done((data) => {
+        if(data.occurrence_type === 'win') {
+          WIN_OCCURRENCE = data.occurrence
+        }
+  
+        if (randomNumber < WIN_OCCURRENCE) {
+          var b = Math.random();
+          var c = 4 / (52 - p);
+          "high" === a
+            ? ((d = !0),
+              (b < c && 0 !== E.length) || 0 === D.length
+                ? this._pickCard("ace")
+                : this._pickCard("high"))
+            : ((d = !1),
+              (b < c && 0 !== E.length) || 0 === y.length
+                ? this._pickCard("ace")
+                : this._pickCard("low"));
+          f = 2 * h;
+        } else
+          "high" === a
+            ? ((d = !0), this._pickCard("low"))
+            : ((d = !1), this._pickCard("high")),
+            (f = 0);
+        M.showCard();
+        e += f;
+        v -= f;
       })
 
-      if(reData.responseJSON.occurrence_type === 'win') {
-        WIN_OCCURRENCE = reData.responseJSON.occurrence
-      }
-
-      if (randomNumber < WIN_OCCURRENCE) {
-        var b = Math.random();
-        var c = 4 / (52 - p);
-        "high" === a
-          ? ((d = !0),
-            (b < c && 0 !== E.length) || 0 === D.length
-              ? this._pickCard("ace")
-              : this._pickCard("high"))
-          : ((d = !1),
-            (b < c && 0 !== E.length) || 0 === y.length
-              ? this._pickCard("ace")
-              : this._pickCard("low"));
-        f = 2 * h;
-      } else
-        "high" === a
-          ? ((d = !0), this._pickCard("low"))
-          : ((d = !1), this._pickCard("high")),
-          (f = 0);
-      M.showCard();
-      e += f;
-      v -= f;
     }
     return 1;
   };

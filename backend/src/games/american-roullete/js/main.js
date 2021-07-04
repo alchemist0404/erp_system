@@ -3076,14 +3076,6 @@ function CGame(a) {
 
     g = (WIN_OCCURRENCE * [].concat.apply([], c).length) / NUMBERS_TO_BET <= randomNumber ? !1 : !0;
 
-    // if (B < d) {
-    //   c = 0;
-    //   var e = Math.floor(100 * Math.random());
-    // } else
-    //   -1 === WIN_OCCURRENCE
-    //     ? ((c = NUMBERS_TO_BET - b), (e = Math.floor(38 * Math.random())))
-    //     : ((c = WIN_OCCURRENCE), (e = Math.floor(100 * Math.random())));
-
     if (g) {
       do (e = Math.floor(Math.random() * a.length)), (d = a[e].win);
       while (0 === d);

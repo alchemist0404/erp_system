@@ -16,7 +16,7 @@
     var d = -1,
       f = a ? a.length : 0;
     if ("number" == typeof f && -1 < f && f <= q)
-      for (; ++d < f; ) b(a[d], d, a);
+      for (; ++d < f;) b(a[d], d, a);
     else c(a, b);
   }
   function b(b) {
@@ -63,13 +63,13 @@
           ).split("/"))[1] &&
             !/[\d.]+/.test(c[0]) &&
             (c[0] += " " + c[1]),
-          (e = e.label || e),
-          (c = b(
-            c[0]
-              .replace(RegExp(d, "i"), e)
-              .replace(RegExp("; *(?:" + e + "[_-])?", "i"), " ")
-              .replace(RegExp("(" + e + ")[-_.]?(\\w)", "i"), "$1 $2")
-          )));
+            (e = e.label || e),
+            (c = b(
+              c[0]
+                .replace(RegExp(d, "i"), e)
+                .replace(RegExp("; *(?:" + e + "[_-])?", "i"), " ")
+                .replace(RegExp("(" + e + ")[-_.]?(\\w)", "i"), "$1 $2")
+            )));
         return c;
       });
     }
@@ -92,8 +92,8 @@
       h = q.userAgent || "";
     a || (a = h);
     var y = m
-        ? !!q.likeChrome
-        : /\bChrome\b/.test(a) && !/internal|\n/i.test(x.toString()),
+      ? !!q.likeChrome
+      : /\bChrome\b/.test(a) && !/internal|\n/i.test(x.toString()),
       U = m ? "Object" : "ScriptBridgingProxyObject",
       D = m ? "Object" : "Environment",
       A = m && p.java ? "JavaPackage" : g(p.java),
@@ -111,24 +111,24 @@
       J = a == h;
     h = J && P && "function" == typeof P.version && P.version();
     var C = (function (b) {
-        return t(b, function (b, c) {
-          return (
-            b ||
-            (RegExp("\\b" + (c.pattern || k(c)) + "\\b", "i").exec(a) &&
-              (c.label || c))
-          );
-        });
-      })([
-        { label: "EdgeHTML", pattern: "Edge" },
-        "Trident",
-        { label: "WebKit", pattern: "AppleWebKit" },
-        "iCab",
-        "Presto",
-        "NetFront",
-        "Tasman",
-        "KHTML",
-        "Gecko",
-      ]),
+      return t(b, function (b, c) {
+        return (
+          b ||
+          (RegExp("\\b" + (c.pattern || k(c)) + "\\b", "i").exec(a) &&
+            (c.label || c))
+        );
+      });
+    })([
+      { label: "EdgeHTML", pattern: "Edge" },
+      "Trident",
+      { label: "WebKit", pattern: "AppleWebKit" },
+      "iCab",
+      "Presto",
+      "NetFront",
+      "Tasman",
+      "KHTML",
+      "Gecko",
+    ]),
       u = (function (b) {
         return t(b, function (b, c) {
           return (
@@ -343,39 +343,39 @@
         (N = e.manufacturer),
         (F = e.product))
       : /^iP/.test(F)
-      ? (u || (u = "Safari"),
-        (w =
-          "iOS" +
-          ((e = / OS ([\d_]+)/i.exec(a)) ? " " + e[1].replace(/_/g, ".") : "")))
-      : "Konqueror" != u || /buntu/i.test(w)
-      ? (N &&
-          "Google" != N &&
-          ((/Chrome/.test(u) && !/\bMobile Safari\b/i.test(a)) ||
-            /\bVita\b/.test(F))) ||
-        (/\bAndroid\b/.test(w) && /^Chrome/.test(u) && /\bVersion\//i.test(a))
-        ? ((u = "Android Browser"), (w = /\bAndroid\b/.test(w) ? w : "Android"))
-        : "Silk" == u
-        ? (/\bMobi/i.test(a) || ((w = "Android"), m.unshift("desktop mode")),
-          /Accelerated *= *true/i.test(a) && m.unshift("accelerated"))
-        : "PaleMoon" == u && (e = /\bFirefox\/([\d.]+)\b/.exec(a))
-        ? m.push("identifying as Firefox " + e[1])
-        : "Firefox" == u && (e = /\b(Mobile|Tablet|TV)\b/i.exec(a))
-        ? (w || (w = "Firefox OS"), F || (F = e[1]))
-        : !u ||
-          (e = !/\bMinefield\b/i.test(a) && /\b(?:Firefox|Safari)\b/.exec(u))
-        ? (u &&
-            !F &&
-            /[\/,]|^[^(]+?\)/.test(a.slice(a.indexOf(e + "/") + 8)) &&
-            (u = null),
-          (e = F || N || w) &&
-            (F || N || /\b(?:Android|Symbian OS|Tablet OS|webOS)\b/.test(w)) &&
-            (u =
-              /[a-z]+(?: Hat)?/i.exec(/\bAndroid\b/.test(w) ? w : e) +
-              " Browser"))
-        : "Electron" == u &&
-          (e = (/\bChrome\/([\d.]+)\b/.exec(a) || 0)[1]) &&
-          m.push("Chromium " + e)
-      : (w = "Kubuntu");
+        ? (u || (u = "Safari"),
+          (w =
+            "iOS" +
+            ((e = / OS ([\d_]+)/i.exec(a)) ? " " + e[1].replace(/_/g, ".") : "")))
+        : "Konqueror" != u || /buntu/i.test(w)
+          ? (N &&
+            "Google" != N &&
+            ((/Chrome/.test(u) && !/\bMobile Safari\b/i.test(a)) ||
+              /\bVita\b/.test(F))) ||
+            (/\bAndroid\b/.test(w) && /^Chrome/.test(u) && /\bVersion\//i.test(a))
+            ? ((u = "Android Browser"), (w = /\bAndroid\b/.test(w) ? w : "Android"))
+            : "Silk" == u
+              ? (/\bMobi/i.test(a) || ((w = "Android"), m.unshift("desktop mode")),
+                /Accelerated *= *true/i.test(a) && m.unshift("accelerated"))
+              : "PaleMoon" == u && (e = /\bFirefox\/([\d.]+)\b/.exec(a))
+                ? m.push("identifying as Firefox " + e[1])
+                : "Firefox" == u && (e = /\b(Mobile|Tablet|TV)\b/i.exec(a))
+                  ? (w || (w = "Firefox OS"), F || (F = e[1]))
+                  : !u ||
+                    (e = !/\bMinefield\b/i.test(a) && /\b(?:Firefox|Safari)\b/.exec(u))
+                    ? (u &&
+                      !F &&
+                      /[\/,]|^[^(]+?\)/.test(a.slice(a.indexOf(e + "/") + 8)) &&
+                      (u = null),
+                      (e = F || N || w) &&
+                      (F || N || /\b(?:Android|Symbian OS|Tablet OS|webOS)\b/.test(w)) &&
+                      (u =
+                        /[a-z]+(?: Hat)?/i.exec(/\bAndroid\b/.test(w) ? w : e) +
+                        " Browser"))
+                    : "Electron" == u &&
+                    (e = (/\bChrome\/([\d.]+)\b/.exec(a) || 0)[1]) &&
+                    m.push("Chromium " + e)
+          : (w = "Kubuntu");
     h ||
       (h = l([
         "(?:Cloud9|CriOS|CrMo|Edge|FxiOS|IEMobile|Iron|Opera ?Mini|OPiOS|OPR|Raven|SamsungBrowser|Silk(?!/[\\d.]+$))",
@@ -399,26 +399,26 @@
         (w = "Windows Phone " + (/\+$/.test(e) ? e : e + ".x")),
         m.unshift("desktop mode"))
       : /\bWPDesktop\b/i.test(a)
-      ? ((u = "IE Mobile"),
-        (w = "Windows Phone 8.x"),
-        m.unshift("desktop mode"),
-        h || (h = (/\brv:([\d.]+)/.exec(a) || 0)[1]))
-      : "IE" != u &&
+        ? ((u = "IE Mobile"),
+          (w = "Windows Phone 8.x"),
+          m.unshift("desktop mode"),
+          h || (h = (/\brv:([\d.]+)/.exec(a) || 0)[1]))
+        : "IE" != u &&
         "Trident" == C &&
         (e = /\brv:([\d.]+)/.exec(a)) &&
         (u && m.push("identifying as " + u + (h ? " " + h : "")),
-        (u = "IE"),
-        (h = e[1]));
+          (u = "IE"),
+          (h = e[1]));
     if (J) {
       if (f(p, "global"))
         if (
           (A &&
             ((e = A.lang.System),
-            (S = e.getProperty("os.arch")),
-            (w =
-              w ||
-              e.getProperty("os.name") + " " + e.getProperty("os.version"))),
-          D)
+              (S = e.getProperty("os.arch")),
+              (w =
+                w ||
+                e.getProperty("os.name") + " " + e.getProperty("os.version"))),
+            D)
         ) {
           try {
             (h = p.require("ringo/engine").version.join(".")), (u = "RingoJS");
@@ -438,35 +438,35 @@
                   (u = "Electron"),
                   (h = e.versions.electron))
                 : "string" == typeof e.versions.nw &&
-                  (m.push("Chromium " + h, "Node " + e.versions.node),
+                (m.push("Chromium " + h, "Node " + e.versions.node),
                   (u = "NW.js"),
                   (h = e.versions.nw))),
-            u ||
+              u ||
               ((u = "Node.js"),
-              (S = e.arch),
-              (w = e.platform),
-              (h = (h = /[\d.]+/.exec(e.version)) ? h[0] : null)));
+                (S = e.arch),
+                (w = e.platform),
+                (h = (h = /[\d.]+/.exec(e.version)) ? h[0] : null)));
       else
         g((e = p.runtime)) == U
           ? ((u = "Adobe AIR"), (w = e.flash.system.Capabilities.os))
           : g((e = p.phantom)) == M
-          ? ((u = "PhantomJS"),
-            (h =
-              (e = e.version || null) &&
-              e.major + "." + e.minor + "." + e.patch))
-          : "number" == typeof R.documentMode &&
-            (e = /\bTrident\/(\d+)/i.exec(a))
-          ? ((h = [h, R.documentMode]),
-            (e = +e[1] + 4) != h[1] &&
-              (m.push("IE " + h[1] + " mode"), C && (C[1] = ""), (h[1] = e)),
-            (h = "IE" == u ? String(h[1].toFixed(1)) : h[0]))
-          : "number" == typeof R.documentMode &&
-            /^(?:Chrome|Firefox)\b/.test(u) &&
-            (m.push("masking as " + u + " " + h),
-            (u = "IE"),
-            (h = "11.0"),
-            (C = ["Trident"]),
-            (w = "Windows"));
+            ? ((u = "PhantomJS"),
+              (h =
+                (e = e.version || null) &&
+                e.major + "." + e.minor + "." + e.patch))
+            : "number" == typeof R.documentMode &&
+              (e = /\bTrident\/(\d+)/i.exec(a))
+              ? ((h = [h, R.documentMode]),
+                (e = +e[1] + 4) != h[1] &&
+                (m.push("IE " + h[1] + " mode"), C && (C[1] = ""), (h[1] = e)),
+                (h = "IE" == u ? String(h[1].toFixed(1)) : h[0]))
+              : "number" == typeof R.documentMode &&
+              /^(?:Chrome|Firefox)\b/.test(u) &&
+              (m.push("masking as " + u + " " + h),
+                (u = "IE"),
+                (h = "11.0"),
+                (C = ["Trident"]),
+                (w = "Windows"));
       w = w && b(w);
     }
     h &&
@@ -475,10 +475,10 @@
         /(?:alpha|beta)(?: ?\d)?/i.exec(a + ";" + (J && q.appMinorVersion)) ||
         (/\bMinefield\b/i.test(a) && "a")) &&
       ((Q = /b/i.test(e) ? "beta" : "alpha"),
-      (h =
-        h.replace(RegExp(e + "\\+?$"), "") +
-        ("beta" == Q ? V : O) +
-        (/\d+\+?/.exec(e) || "")));
+        (h =
+          h.replace(RegExp(e + "\\+?$"), "") +
+          ("beta" == Q ? V : O) +
+          (/\d+\+?/.exec(e) || "")));
     if (
       "Fennec" == u ||
       ("Firefox" == u && /\b(?:Android|Firefox OS)\b/.test(w))
@@ -501,9 +501,9 @@
         }
       else
         (/\bBlackBerry\b/.test(F) || /\bBB10\b/.test(a)) &&
-        (e =
-          (RegExp(F.replace(/ +/g, " *") + "/([.\\d]+)", "i").exec(a) ||
-            0)[1] || h)
+          (e =
+            (RegExp(F.replace(/ +/g, " *") + "/([.\\d]+)", "i").exec(a) ||
+              0)[1] || h)
           ? ((e = [e, /BB10/.test(a)]),
             (w =
               (e[1] ? ((F = null), (N = "BlackBerry")) : "Device Software") +
@@ -511,17 +511,17 @@
               e[0]),
             (h = null))
           : this != c &&
-            "Wii" != F &&
-            ((J && P) ||
-              (/Opera/.test(u) && /\b(?:MSIE|Firefox)\b/i.test(a)) ||
-              ("Firefox" == u && /\bOS X (?:\d+\.){2,}/.test(w)) ||
-              ("IE" == u &&
-                ((w && !/^Win/.test(w) && 5.5 < h) ||
-                  (/\bWindows XP\b/.test(w) && 8 < h) ||
-                  (8 == h && !/\bTrident\b/.test(a))))) &&
-            !r.test((e = n.call(c, a.replace(r, "") + ";"))) &&
-            e.name &&
-            ((e = "ing as " + e.name + ((e = e.version) ? " " + e : "")),
+          "Wii" != F &&
+          ((J && P) ||
+            (/Opera/.test(u) && /\b(?:MSIE|Firefox)\b/i.test(a)) ||
+            ("Firefox" == u && /\bOS X (?:\d+\.){2,}/.test(w)) ||
+            ("IE" == u &&
+              ((w && !/^Win/.test(w) && 5.5 < h) ||
+                (/\bWindows XP\b/.test(w) && 8 < h) ||
+                (8 == h && !/\bTrident\b/.test(a))))) &&
+          !r.test((e = n.call(c, a.replace(r, "") + ";"))) &&
+          e.name &&
+          ((e = "ing as " + e.name + ((e = e.version) ? " " + e : "")),
             r.test(u)
               ? (/\bIE\b/.test(e) && "Mac OS" == w && (w = null),
                 (e = "identify" + e))
@@ -552,79 +552,79 @@
           (e =
             e[1] ||
             ((e = e[0]),
-            530 > e
-              ? 1
-              : 532 > e
-              ? 2
-              : 532.05 > e
-              ? 3
-              : 533 > e
-              ? 4
-              : 534.03 > e
-              ? 5
-              : 534.07 > e
-              ? 6
-              : 534.1 > e
-              ? 7
-              : 534.13 > e
-              ? 8
-              : 534.16 > e
-              ? 9
-              : 534.24 > e
-              ? 10
-              : 534.3 > e
-              ? 11
-              : 535.01 > e
-              ? 12
-              : 535.02 > e
-              ? "13+"
-              : 535.07 > e
-              ? 15
-              : 535.11 > e
-              ? 16
-              : 535.19 > e
-              ? 17
-              : 536.05 > e
-              ? 18
-              : 536.1 > e
-              ? 19
-              : 537.01 > e
-              ? 20
-              : 537.11 > e
-              ? "21+"
-              : 537.13 > e
-              ? 23
-              : 537.18 > e
-              ? 24
-              : 537.24 > e
-              ? 25
-              : 537.36 > e
-              ? 26
-              : "Blink" != C
-              ? "27"
-              : "28")))
+              530 > e
+                ? 1
+                : 532 > e
+                  ? 2
+                  : 532.05 > e
+                    ? 3
+                    : 533 > e
+                      ? 4
+                      : 534.03 > e
+                        ? 5
+                        : 534.07 > e
+                          ? 6
+                          : 534.1 > e
+                            ? 7
+                            : 534.13 > e
+                              ? 8
+                              : 534.16 > e
+                                ? 9
+                                : 534.24 > e
+                                  ? 10
+                                  : 534.3 > e
+                                    ? 11
+                                    : 535.01 > e
+                                      ? 12
+                                      : 535.02 > e
+                                        ? "13+"
+                                        : 535.07 > e
+                                          ? 15
+                                          : 535.11 > e
+                                            ? 16
+                                            : 535.19 > e
+                                              ? 17
+                                              : 536.05 > e
+                                                ? 18
+                                                : 536.1 > e
+                                                  ? 19
+                                                  : 537.01 > e
+                                                    ? 20
+                                                    : 537.11 > e
+                                                      ? "21+"
+                                                      : 537.13 > e
+                                                        ? 23
+                                                        : 537.18 > e
+                                                          ? 24
+                                                          : 537.24 > e
+                                                            ? 25
+                                                            : 537.36 > e
+                                                              ? 26
+                                                              : "Blink" != C
+                                                                ? "27"
+                                                                : "28")))
         : (C && (C[1] = "like Safari"),
           (e =
             ((e = e[0]),
-            400 > e
-              ? 1
-              : 500 > e
-              ? 2
-              : 526 > e
-              ? 3
-              : 533 > e
-              ? 4
-              : 534 > e
-              ? "4+"
-              : 535 > e
-              ? 5
-              : 537 > e
-              ? 6
-              : 538 > e
-              ? 7
-              : 601 > e
-              ? 8
-              : "8")));
+              400 > e
+                ? 1
+                : 500 > e
+                  ? 2
+                  : 526 > e
+                    ? 3
+                    : 533 > e
+                      ? 4
+                      : 534 > e
+                        ? "4+"
+                        : 535 > e
+                          ? 5
+                          : 537 > e
+                            ? 6
+                            : 538 > e
+                              ? 7
+                              : 601 > e
+                                ? 8
+                                : "8")));
       C &&
         (C[1] +=
           " " + (e += "number" == typeof e ? ".x" : /[.+]/.test(e) ? "" : "+"));
@@ -636,8 +636,8 @@
         "zvav" == e ? ((u += "Mini"), (h = null)) : (u += "Mobile"),
         (w = w.replace(RegExp(" *" + e + "$"), "")))
       : "Safari" == u &&
-        /\bChrome\b/.exec(C && C[1]) &&
-        (m.unshift("desktop mode"),
+      /\bChrome\b/.exec(C && C[1]) &&
+      (m.unshift("desktop mode"),
         (u = "Chrome Mobile"),
         (h = null),
         /\bOS X\b/.test(w) ? ((N = "Apple"), (w = "iOS 4.3+")) : (w = null));
@@ -678,19 +678,19 @@
     }
     (e = /\b(?:AMD|IA|Win|WOW|x86_|x)64\b/i.exec(S)) && !/\bi686\b/i.test(S)
       ? (w &&
-          ((w.architecture = 64),
+        ((w.architecture = 64),
           (w.family = w.family.replace(RegExp(" *" + e), ""))),
         u &&
-          (/\bWOW64\b/i.test(a) ||
-            (J &&
-              /\w(?:86|32)$/.test(q.cpuClass || q.platform) &&
-              !/\bWin64; x64\b/i.test(a))) &&
-          m.unshift("32-bit"))
+        (/\bWOW64\b/i.test(a) ||
+          (J &&
+            /\w(?:86|32)$/.test(q.cpuClass || q.platform) &&
+            !/\bWin64; x64\b/i.test(a))) &&
+        m.unshift("32-bit"))
       : w &&
-        /^OS X/.test(w.family) &&
-        "Chrome" == u &&
-        39 <= parseFloat(h) &&
-        (w.architecture = 64);
+      /^OS X/.test(w.family) &&
+      "Chrome" == u &&
+      39 <= parseFloat(h) &&
+      (w.architecture = 64);
     a || (a = null);
     p = {};
     p.description = a;
@@ -740,23 +740,23 @@
         return p;
       }))
     : h && l
-    ? c(p, function (a, b) {
+      ? c(p, function (a, b) {
         h[b] = a;
       })
-    : (v.platform = p);
+      : (v.platform = p);
 }.call(this));
 function buildIOSMeta() {
   for (
     var a = [
-        {
-          name: "viewport",
-          content:
-            "width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no",
-        },
-        { name: "apple-mobile-web-app-capable", content: "yes" },
-        { name: "apple-mobile-web-app-status-bar-style", content: "black" },
-      ],
-      d = 0;
+      {
+        name: "viewport",
+        content:
+          "width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no",
+      },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black" },
+    ],
+    d = 0;
     d < a.length;
     d++
   ) {
@@ -873,33 +873,33 @@ jQuery(window).resize(function () {
 });
 (function () {
   var a =
-      "undefined" !== typeof window && "undefined" !== typeof window.document
-        ? window.document
-        : {},
+    "undefined" !== typeof window && "undefined" !== typeof window.document
+      ? window.document
+      : {},
     d = "undefined" !== typeof module && module.exports,
     b = (function () {
       for (
         var b,
-          c = [
-            "requestFullscreen exitFullscreen fullscreenElement fullscreenEnabled fullscreenchange fullscreenerror".split(
-              " "
-            ),
-            "webkitRequestFullscreen webkitExitFullscreen webkitFullscreenElement webkitFullscreenEnabled webkitfullscreenchange webkitfullscreenerror".split(
-              " "
-            ),
-            "webkitRequestFullScreen webkitCancelFullScreen webkitCurrentFullScreenElement webkitCancelFullScreen webkitfullscreenchange webkitfullscreenerror".split(
-              " "
-            ),
-            "mozRequestFullScreen mozCancelFullScreen mozFullScreenElement mozFullScreenEnabled mozfullscreenchange mozfullscreenerror".split(
-              " "
-            ),
-            "msRequestFullscreen msExitFullscreen msFullscreenElement msFullscreenEnabled MSFullscreenChange MSFullscreenError".split(
-              " "
-            ),
-          ],
-          d = 0,
-          g = c.length,
-          l = {};
+        c = [
+          "requestFullscreen exitFullscreen fullscreenElement fullscreenEnabled fullscreenchange fullscreenerror".split(
+            " "
+          ),
+          "webkitRequestFullscreen webkitExitFullscreen webkitFullscreenElement webkitFullscreenEnabled webkitfullscreenchange webkitfullscreenerror".split(
+            " "
+          ),
+          "webkitRequestFullScreen webkitCancelFullScreen webkitCurrentFullScreenElement webkitCancelFullScreen webkitfullscreenchange webkitfullscreenerror".split(
+            " "
+          ),
+          "mozRequestFullScreen mozCancelFullScreen mozFullScreenElement mozFullScreenEnabled mozfullscreenchange mozfullscreenerror".split(
+            " "
+          ),
+          "msRequestFullscreen msExitFullscreen msFullscreenElement msFullscreenEnabled MSFullscreenChange MSFullscreenError".split(
+            " "
+          ),
+        ],
+        d = 0,
+        g = c.length,
+        l = {};
         d < g;
         d++
       )
@@ -959,28 +959,28 @@ jQuery(window).resize(function () {
     };
   b
     ? (Object.defineProperties(g, {
-        isFullscreen: {
-          get: function () {
-            return !!a[b.fullscreenElement];
-          },
+      isFullscreen: {
+        get: function () {
+          return !!a[b.fullscreenElement];
         },
-        element: {
-          enumerable: !0,
-          get: function () {
-            return a[b.fullscreenElement];
-          },
+      },
+      element: {
+        enumerable: !0,
+        get: function () {
+          return a[b.fullscreenElement];
         },
-        isEnabled: {
-          enumerable: !0,
-          get: function () {
-            return !!a[b.fullscreenEnabled];
-          },
+      },
+      isEnabled: {
+        enumerable: !0,
+        get: function () {
+          return !!a[b.fullscreenEnabled];
         },
-      }),
+      },
+    }),
       d ? (module.exports = g) : (window.screenfull = g))
     : d
-    ? (module.exports = { isEnabled: !1 })
-    : (window.screenfull = { isEnabled: !1 });
+      ? (module.exports = { isEnabled: !1 })
+      : (window.screenfull = { isEnabled: !1 });
 })();
 var s_iOffsetX, s_iOffsetY, s_bIsRetina;
 (function (a) {
@@ -1122,12 +1122,12 @@ function sizeHandler() {
         (s_iScaleFactor = 2 * d),
         (s_oStage.scaleX = s_oStage.scaleY = 2 * d))
       : s_bMobile
-      ? ($("#canvas").css("width", c + "px"),
-        $("#canvas").css("height", b + "px"))
-      : ((s_oStage.canvas.width = c),
-        (s_oStage.canvas.height = b),
-        (s_iScaleFactor = Math.min(c / CANVAS_WIDTH, b / CANVAS_HEIGHT)),
-        (s_oStage.scaleX = s_oStage.scaleY = s_iScaleFactor));
+        ? ($("#canvas").css("width", c + "px"),
+          $("#canvas").css("height", b + "px"))
+        : ((s_oStage.canvas.width = c),
+          (s_oStage.canvas.height = b),
+          (s_iScaleFactor = Math.min(c / CANVAS_WIDTH, b / CANVAS_HEIGHT)),
+          (s_oStage.scaleX = s_oStage.scaleY = s_iScaleFactor));
     0 > g || (g = (a - b) / 2);
     $("#canvas").css("top", g + "px");
     $("#canvas").css("left", f + "px");
@@ -1144,10 +1144,10 @@ function _checkOrientation(a, d) {
         : ($(".orientation-msg-container").css("display", "block"),
           s_oMain.stopUpdate())
       : "portrait" === $(".orientation-msg-container").attr("data-orientation")
-      ? ($(".orientation-msg-container").css("display", "none"),
-        s_oMain.startUpdate())
-      : ($(".orientation-msg-container").css("display", "block"),
-        s_oMain.stopUpdate()));
+        ? ($(".orientation-msg-container").css("display", "none"),
+          s_oMain.startUpdate())
+        : ($(".orientation-msg-container").css("display", "block"),
+          s_oMain.stopUpdate()));
 }
 function createBitmap(a, d, b) {
   var c = new createjs.Bitmap(a),
@@ -1170,7 +1170,7 @@ function randomFloatBetween(a, d, b) {
   return parseFloat(Math.min(a + Math.random() * (d - a), d).toFixed(b));
 }
 function shuffle(a) {
-  for (var d = a.length, b, c; 0 !== d; )
+  for (var d = a.length, b, c; 0 !== d;)
     (c = Math.floor(Math.random() * d)),
       --d,
       (b = a[d]),
@@ -1191,7 +1191,7 @@ Array.prototype.sortOn = function () {
   if (!arguments.length) return a.sort();
   var d = Array.prototype.slice.call(arguments);
   return a.sort(function (a, c) {
-    for (var b = d.slice(), f = b.shift(); a[f] == c[f] && b.length; )
+    for (var b = d.slice(), f = b.shift(); a[f] == c[f] && b.length;)
       f = b.shift();
     return a[f] == c[f] ? 0 : a[f] > c[f] ? 1 : -1;
   });
@@ -1298,8 +1298,8 @@ function fullscreenHandler() {
   ENABLE_FULLSCREEN &&
     !1 !== screenfull.isEnabled &&
     ((s_bFullscreen = screenfull.isFullscreen),
-    null !== s_oInterface && s_oInterface.resetFullscreenBut(),
-    null !== s_oMenu && s_oMenu.resetFullscreenBut());
+      null !== s_oInterface && s_oInterface.resetFullscreenBut(),
+      null !== s_oMenu && s_oMenu.resetFullscreenBut());
 }
 if (screenfull.isEnabled)
   screenfull.on("change", function () {
@@ -1482,7 +1482,7 @@ function CPreloader() {
   this.unload = function () {
     n.removeAllChildren();
   };
-  this._onImagesLoaded = function () {};
+  this._onImagesLoaded = function () { };
   this._onAllImagesLoaded = function () {
     this.attachSprites();
     s_oMain.preloaderReady();
@@ -1673,7 +1673,7 @@ function CMain(a) {
     b++;
     f.refreshLoader(Math.floor((b / c) * 100));
   };
-  this._onAllImagesLoaded = function () {};
+  this._onAllImagesLoaded = function () { };
   this._onRemovePreloader = function () {
     f.unload();
     this.gotoMenu();
@@ -1823,15 +1823,15 @@ function CTextButton(a, d, b, c, g, f, k, t) {
   this.buttonRelease = function () {
     n ||
       (playSound("press_but", 1, !1),
-      (p.scaleX = l),
-      (p.scaleY = l),
-      m[ON_MOUSE_UP] && m[ON_MOUSE_UP].call(q[ON_MOUSE_UP], x));
+        (p.scaleX = l),
+        (p.scaleY = l),
+        m[ON_MOUSE_UP] && m[ON_MOUSE_UP].call(q[ON_MOUSE_UP], x));
   };
   this.buttonDown = function () {
     n ||
       ((p.scaleX = 0.9 * l),
-      (p.scaleY = 0.9 * l),
-      m[ON_MOUSE_DOWN] && m[ON_MOUSE_DOWN].call(q[ON_MOUSE_DOWN]));
+        (p.scaleY = 0.9 * l),
+        m[ON_MOUSE_DOWN] && m[ON_MOUSE_DOWN].call(q[ON_MOUSE_DOWN]));
   };
   this.setPosition = function (a, b) {
     p.x = a;
@@ -1920,15 +1920,15 @@ function CGfxButton(a, d, b) {
   this.buttonRelease = function () {
     c ||
       (playSound("press_but", 1, !1),
-      (h.scaleX = 1),
-      (h.scaleY = 1),
-      k[ON_MOUSE_UP] && k[ON_MOUSE_UP].call(t[ON_MOUSE_UP], n));
+        (h.scaleX = 1),
+        (h.scaleY = 1),
+        k[ON_MOUSE_UP] && k[ON_MOUSE_UP].call(t[ON_MOUSE_UP], n));
   };
   this.buttonDown = function () {
     c ||
       ((h.scaleX = 0.9),
-      (h.scaleY = 0.9),
-      k[ON_MOUSE_DOWN] && k[ON_MOUSE_DOWN].call(t[ON_MOUSE_DOWN], n));
+        (h.scaleY = 0.9),
+        k[ON_MOUSE_DOWN] && k[ON_MOUSE_DOWN].call(t[ON_MOUSE_DOWN], n));
   };
   this.setPosition = function (a, b) {
     h.x = a;
@@ -2098,7 +2098,7 @@ function CMenu() {
       : ((a = 10 + A.width / 2), (d = A.height / 2 + 10));
     SHOW_CREDITS &&
       ((h = new CGfxButton(a, d, A)),
-      h.addEventListener(ON_MOUSE_UP, this._onCredits, this));
+        h.addEventListener(ON_MOUSE_UP, this._onCredits, this));
     l = new createjs.Shape();
     l.graphics.beginFill("black").drawRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     s_oStage.addChild(l);
@@ -2275,38 +2275,37 @@ function CGame(a) {
   this.changeState = function (a) {
     h = a;
 
-    var c_bet = e.getCurBet();
-    const data = $.ajax({
-      url: `${home_url}/api/games/checkBlackjackGameBank`,
-      type: 'POST',
-      async: false,
-      data: {
-        customerId: customerid,
-        gameId: gameid,
-        current_bet: c_bet,
-        randomNumber,
-      }
-    })
-
-    if(data.responseJSON.gameStatus == false) {
-      alert("Sorry, Something went wrong, please try again");
-      window.location.reload()
-    }
-
-    WIN_OCCURRENCE = data.responseJSON.occurrence;
-
     switch (h) {
       case STATE_GAME_DEALING:
-        if (randomNumber < WIN_OCCURRENCE) {
-          f = !0;
-          do a = s_oGameSettings.getRandDealerPattern();
-          while (!1 === this._checkIfDealerPatternCanBeUsed(a));
-          U = [];
-          for (var b = 0; b < a.length; b++) U[b] = a[b];
-        } else f = !1;
-        z.disableButtons();
-        z.displayMsg(TEXT_DISPLAY_MSG_DEALING);
-        this._dealing();
+        var c_bet = e.getCurBet();
+        $.ajax({
+          url: `${home_url}/api/games/checkBlackjackGameBank`,
+          type: 'POST',
+          data: {
+            customerId: customerid,
+            gameId: gameid,
+            current_bet: c_bet,
+            randomNumber,
+          },
+        }).done((data) => {
+          if (data.gameStatus == false) {
+            alert("Sorry, Something went wrong, please try again");
+            window.location.reload()
+          }
+
+          WIN_OCCURRENCE = data.occurrence;
+
+          if (randomNumber < WIN_OCCURRENCE) {
+            f = !0;
+            do a = s_oGameSettings.getRandDealerPattern();
+            while (!1 === this._checkIfDealerPatternCanBeUsed(a));
+            U = [];
+            for (var b = 0; b < a.length; b++) U[b] = a[b];
+          } else f = !1;
+          z.disableButtons();
+          z.displayMsg(TEXT_DISPLAY_MSG_DEALING);
+          this._dealing();
+        })
     }
   };
   this._checkIfDealerPatternCanBeUsed = function (a) {
@@ -2384,11 +2383,11 @@ function CGame(a) {
     else if (21 === q && 2 === H.length)
       for (
         0 < t &&
-          2 === H.length &&
-          (e.increaseCredit(2 * t + t),
+        2 === H.length &&
+        (e.increaseCredit(2 * t + t),
           (J -= 2 * t),
           z.refreshCredit(e.getCredit())),
-          a = 0;
+        a = 0;
         a < e.getNumHands();
         a++
       )
@@ -2402,8 +2401,8 @@ function CGame(a) {
             17 > q ? this.hitDealer() : this._checkWinner())
           : this._checkWinner()
         : 17 > q
-        ? this.hitDealer()
-        : this._checkWinner();
+          ? this.hitDealer()
+          : this._checkWinner();
   };
   this._playerWin = function (a) {
     var b = 1;
@@ -2458,8 +2457,8 @@ function CGame(a) {
           !f &&
           1 === x &&
           18 <
-            s_oGameSettings.getCardValue(B[x]) +
-              s_oGameSettings.getCardValue(B[x - 1])
+          s_oGameSettings.getCardValue(B[x]) +
+          s_oGameSettings.getCardValue(B[x - 1])
         ) {
           c = s_oGameSettings.getCardValue(B[x - 1]);
           do B.shift();
@@ -2496,12 +2495,12 @@ function CGame(a) {
       21 < e.getHandValue(a)
         ? this._playerLose(a)
         : 21 < q
-        ? this._playerWin(a)
-        : 22 > e.getHandValue(a) && e.getHandValue(a) > q
-        ? this._playerWin(a)
-        : e.getHandValue(a) === q
-        ? this.playerStandOff(a)
-        : this._playerLose(a);
+          ? this._playerWin(a)
+          : 22 > e.getHandValue(a) && e.getHandValue(a) > q
+            ? this._playerWin(a)
+            : e.getHandValue(a) === q
+              ? this.playerStandOff(a)
+              : this._playerLose(a);
   };
   this._onEndHand = function () {
     var a = new CVector2(V.getX(), V.getY());
@@ -2525,15 +2524,15 @@ function CGame(a) {
     a > e.getCredit()
       ? Q.show(TEXT_NO_MONEY)
       : c + a > l
-      ? Q.show(TEXT_ERROR_MAX_BET)
-      : ((c = Number((c + a).toFixed(1))),
-        e.decreaseCredit(a),
-        (J += a),
-        e.changeBet(c),
-        e.refreshFiches(a, b, 0, 0),
-        e.bet(c, !1),
-        z.enable(!0, !1, !1, !1, !1),
-        z.refreshCredit(e.getCredit()));
+        ? Q.show(TEXT_ERROR_MAX_BET)
+        : ((c = Number((c + a).toFixed(1))),
+          e.decreaseCredit(a),
+          (J += a),
+          e.changeBet(c),
+          e.refreshFiches(a, b, 0, 0),
+          e.bet(c, !1),
+          z.enable(!0, !1, !1, !1, !1),
+          z.refreshCredit(e.getCredit()));
   };
   this._checkAvailableActionForPlayer = function () {
     this.changeState(-1);
@@ -2570,10 +2569,10 @@ function CGame(a) {
   this._passTurnToDealer = function () {
     b &&
       ((b = !1),
-      z.disableButtons(),
-      H[1].showCard(),
-      playSound("card", 1, !1),
-      z.displayMsg(TEXT_DISPLAY_MSG_DEALER_TURN));
+        z.disableButtons(),
+        H[1].showCard(),
+        playSound("card", 1, !1),
+        z.displayMsg(TEXT_DISPLAY_MSG_DEALER_TURN));
   };
   this._gameOver = function () {
     S.show();
@@ -2597,11 +2596,11 @@ function CGame(a) {
     e.getCredit() + e.getCurBet() < s_oGameSettings.getFichesValueAt(0)
       ? this._gameOver()
       : v > e.getCurBet()
-      ? (Q.show(TEXT_ERROR_MIN_BET),
-        s_oInterface.enableBetFiches(),
-        s_oInterface.enable(!0, !1, !1, !1, !1))
-      : (this.changeState(STATE_GAME_DEALING),
-        $(s_oMain).trigger("bet_placed", e.getCurBet()));
+        ? (Q.show(TEXT_ERROR_MIN_BET),
+          s_oInterface.enableBetFiches(),
+          s_oInterface.enable(!0, !1, !1, !1, !1))
+        : (this.changeState(STATE_GAME_DEALING),
+          $(s_oMain).trigger("bet_placed", e.getCurBet()));
   };
   this.onHit = function () {
     var a = new CVector2(E.getX(), E.getY()),
@@ -2663,9 +2662,9 @@ function CGame(a) {
     var a = e.getStartingBet();
     0 < a &&
       (e.clearBet(),
-      e.increaseCredit(a),
-      (J -= a),
-      z.refreshCredit(e.getCredit()));
+        e.increaseCredit(a),
+        (J -= a),
+        z.refreshCredit(e.getCredit()));
   };
   this.rebet = function () {
     this.clearBets();
@@ -2732,12 +2731,12 @@ function CGame(a) {
     n += s_iTimeElaps;
     n > TIME_END_HAND &&
       ((n = 0),
-      this.reset(!1),
-      z.reset(),
-      e.getCredit() < s_oGameSettings.getFichesValueAt(0)
-        ? (this._gameOver(), this.changeState(-1))
-        : this.changeState(STATE_GAME_WAITING_FOR_BET),
-      z.refreshCredit(e.getCredit()));
+        this.reset(!1),
+        z.reset(),
+        e.getCredit() < s_oGameSettings.getFichesValueAt(0)
+          ? (this._gameOver(), this.changeState(-1))
+          : this.changeState(STATE_GAME_WAITING_FOR_BET),
+        z.refreshCredit(e.getCredit()));
   };
   this.update = function () {
     //=================
@@ -2832,8 +2831,8 @@ function CInterface(a) {
     B &&
       screenfull.isEnabled &&
       ((y = s_oSpriteLibrary.getSprite("but_fullscreen")),
-      (I = new CToggle(d, b, y, s_bFullscreen, s_oStage)),
-      I.addEventListener(ON_MOUSE_UP, this._onFullscreenRelease, this));
+        (I = new CToggle(d, b, y, s_bFullscreen, s_oStage)),
+        I.addEventListener(ON_MOUSE_UP, this._onFullscreenRelease, this));
     y = createBitmap(s_oSpriteLibrary.getSprite("display_bg"));
     y.x = 280;
     y.y = 6;
@@ -3314,25 +3313,25 @@ function CSeat() {
           21 === f[b].getValue()
             ? this.checkPlayerLastHand(PASS_TURN)
             : a
-            ? this.checkPlayerLastHand(PASS_TURN)
-            : B[RESTORE_ACTION] &&
+              ? this.checkPlayerLastHand(PASS_TURN)
+              : B[RESTORE_ACTION] &&
               B[RESTORE_ACTION].call(L[RESTORE_ACTION], !1, !0, !0, !1, !1),
           this.refreshCardValue())
         : (1 < f.length || d) && splited < 2
-        ? (this.checkPlayerLastHand(PASS_TURN),
-          (passturned = !0),
-          (splited = 2))
-        : this.checkPlayerLastHand(PLAYER_LOSE);
+          ? (this.checkPlayerLastHand(PASS_TURN),
+            (passturned = !0),
+            (splited = 2))
+          : this.checkPlayerLastHand(PLAYER_LOSE);
     else if (a) this.checkPlayerLastHand(PASS_TURN);
     else {
       var g = !1;
       2 === f[b].getNumCards() && 7 < c && 13 > c
         ? (g = !0)
         : 0 < this.getAces() &&
-          (21 < c
-            ? ((c -= 10), this.removeAce(), 7 < c && 13 > c && (g = !0))
-            : ((c -= 10),
-              2 === f[b].getNumCards() && 7 < c && 13 > c && (g = !0)));
+        (21 < c
+          ? ((c -= 10), this.removeAce(), 7 < c && 13 > c && (g = !0))
+          : ((c -= 10),
+            2 === f[b].getNumCards() && 7 < c && 13 > c && (g = !0)));
       setTimeout(() => {
         B[RESTORE_ACTION] &&
           B[RESTORE_ACTION].call(L[RESTORE_ACTION], !1, !0, !0, g, !1);
@@ -3389,7 +3388,6 @@ function CSeat() {
   this.showWinner = function (a, b, c) {
     var cur_bet = f[0].getCurBet();
     var is_win = false
-    console.log('oldCredit :>> ', oldCredit, cur_bet);
     if (b == TEXT_SHOW_WIN_PLAYER) {
       is_win = true
     }
@@ -3405,14 +3403,14 @@ function CSeat() {
           is_win,
         },
         success: (data) => {
-          if(data.gameStatus == false) {
+          if (data.gameStatus == false) {
             alert("Sorry, Something went wrong, please try again");
             window.location.reload()
           }
         }
       })
     }
-    
+
     0 < c
       ? (0 === a ? (D.text = b + ": " + c) : (G.text = b + ": " + c),
         playSound("win", 1, !1))
@@ -3420,15 +3418,15 @@ function CSeat() {
     var d = this;
     0 === a
       ? createjs.Tween.get(D)
-          .to({ alpha: 1 }, TIME_SHOW_FINAL_CARDS)
-          .call(function () {
-            d.endWinAnim();
-          })
+        .to({ alpha: 1 }, TIME_SHOW_FINAL_CARDS)
+        .call(function () {
+          d.endWinAnim();
+        })
       : createjs.Tween.get(G)
-          .to({ alpha: 1 }, TIME_SHOW_FINAL_CARDS)
-          .call(function () {
-            d.endWinAnim();
-          });
+        .to({ alpha: 1 }, TIME_SHOW_FINAL_CARDS)
+        .call(function () {
+          d.endWinAnim();
+        });
     let winAmount = g - oldCredit + f[0].getCurBet();
     !!f[1] && (winAmount += f[1].getCurBet());
     oldCredit = g;
@@ -3442,8 +3440,8 @@ function CSeat() {
     D &&
       G &&
       ((D.text = ""),
-      (G.text = ""),
-      B[END_HAND] && B[END_HAND].call(L[END_HAND]));
+        (G.text = ""),
+        B[END_HAND] && B[END_HAND].call(L[END_HAND]));
   };
   this.newCardDealed = function () {
     c++;
@@ -3627,7 +3625,7 @@ function CFichesController(a, d) {
     var c = s_oGameSettings.getFichesValues(),
       d = [];
     do {
-      for (var g = c[c.length - 1], f = c.length - 1; g > a; ) f--, (g = c[f]);
+      for (var g = c[c.length - 1], f = c.length - 1; g > a;) f--, (g = c[f]);
       f = Math.floor(a / g);
       for (var k = 0; k < f; k++)
         d.push({ value: g, index: s_oGameSettings.getIndexForFiches(g) });
@@ -3826,7 +3824,7 @@ function CGameSettings() {
   };
   this.getShuffledCardDeck = function () {
     for (var b = [], c = 0; c < a.length; c++) b[c] = a[c];
-    for (d = []; 0 < b.length; )
+    for (d = []; 0 < b.length;)
       d.push(b.splice(Math.round(Math.random() * (b.length - 1)), 1)[0]);
     return d;
   };
@@ -3884,10 +3882,10 @@ function easeOutBounce(a, d, b, c) {
   return (a /= c) < 1 / 2.75
     ? 7.5625 * b * a * a + d
     : a < 2 / 2.75
-    ? b * (7.5625 * (a -= 1.5 / 2.75) * a + 0.75) + d
-    : a < 2.5 / 2.75
-    ? b * (7.5625 * (a -= 2.25 / 2.75) * a + 0.9375) + d
-    : b * (7.5625 * (a -= 2.625 / 2.75) * a + 0.984375) + d;
+      ? b * (7.5625 * (a -= 1.5 / 2.75) * a + 0.75) + d
+      : a < 2.5 / 2.75
+        ? b * (7.5625 * (a -= 2.25 / 2.75) * a + 0.9375) + d
+        : b * (7.5625 * (a -= 2.625 / 2.75) * a + 0.984375) + d;
 }
 function easeInBounce(a, d, b, c) {
   return b - easeOutBounce(c - a, 0, b, c) + d;
@@ -3950,16 +3948,16 @@ function easeInOutElastic(a, d, b, c, g, f, k) {
     : (g = (k / (2 * Math.PI)) * Math.asin(b / f));
   return 1 > a
     ? -0.5 *
-        f *
-        Math.pow(2, 10 * --a) *
-        Math.sin((2 * (a * c - g) * Math.PI) / k) +
-        d
+    f *
+    Math.pow(2, 10 * --a) *
+    Math.sin((2 * (a * c - g) * Math.PI) / k) +
+    d
     : f *
-        Math.pow(2, -10 * --a) *
-        Math.sin((2 * (a * c - g) * Math.PI) / k) *
-        0.5 +
-        b +
-        d;
+    Math.pow(2, -10 * --a) *
+    Math.sin((2 * (a * c - g) * Math.PI) / k) *
+    0.5 +
+    b +
+    d;
 }
 function easeInExpo(a, d, b, c) {
   return 0 == a ? d : b * Math.pow(2, 10 * (a / c - 1)) + d;
@@ -3971,10 +3969,10 @@ function easeInOutExpo(a, d, b, c) {
   return 0 == a
     ? d
     : a == c
-    ? d + b
-    : 1 > (a /= c / 2)
-    ? (b / 2) * Math.pow(2, 10 * (a - 1)) + d
-    : (b / 2) * (-Math.pow(2, -10 * --a) + 2) + d;
+      ? d + b
+      : 1 > (a /= c / 2)
+        ? (b / 2) * Math.pow(2, 10 * (a - 1)) + d
+        : (b / 2) * (-Math.pow(2, -10 * --a) + 2) + d;
 }
 function easeLinear(a, d, b, c) {
   return (b * a) / c + d;
@@ -4273,12 +4271,12 @@ function CCard(a, d, b) {
         (r.y = h.getY()),
         (r.rotation = 360),
         m[ON_CARD_ANIMATION_ENDING] &&
-          m[ON_CARD_ANIMATION_ENDING].call(
-            q[ON_CARD_ANIMATION_ENDING],
-            this,
-            c,
-            n
-          ),
+        m[ON_CARD_ANIMATION_ENDING].call(
+          q[ON_CARD_ANIMATION_ENDING],
+          this,
+          c,
+          n
+        ),
         !1 === (c && 2 === n) && this.showCard();
     else {
       this.visible = !0;
@@ -4295,7 +4293,7 @@ function CCard(a, d, b) {
     if (l > TIME_CARD_DEALING)
       (l = 0),
         m[SPLIT_CARD_END_ANIM] &&
-          m[SPLIT_CARD_END_ANIM].call(q[SPLIT_CARD_END_ANIM]),
+        m[SPLIT_CARD_END_ANIM].call(q[SPLIT_CARD_END_ANIM]),
         (f = -1);
     else {
       var a = easeInOutCubic(l, 0, 1, TIME_CARD_DEALING),
@@ -4313,7 +4311,7 @@ function CCard(a, d, b) {
         (g = r.visible = !1),
         (f = -1),
         m[ON_CARD_TO_REMOVE] &&
-          m[ON_CARD_TO_REMOVE].call(q[ON_CARD_TO_REMOVE], this);
+        m[ON_CARD_TO_REMOVE].call(q[ON_CARD_TO_REMOVE], this);
     else {
       var a = easeInOutCubic(l, 0, 1, TIME_CARD_REMOVE),
         b = new CVector2();
@@ -4414,7 +4412,7 @@ function CGameOver() {
   this._init = function () {
     c = new createjs.Container();
     s_oStage.addChild(c);
-    c.on("click", function () {});
+    c.on("click", function () { });
     var g = createBitmap(s_oSpriteLibrary.getSprite("msg_box"));
     c.addChild(g);
     a = new CTLText(
@@ -4464,7 +4462,7 @@ function CGameOver() {
   this.unload = function () {
     // d.unload();
     b.unload();
-    c.off("click", function () {});
+    c.off("click", function () { });
   };
   this.show = function () {
     c.visible = !0;
@@ -4652,12 +4650,12 @@ function CFiche(a, d, b, c, g, f) {
     );
     g &&
       ((k = !1),
-      (t = a.width),
-      (n = a.height),
-      (l = []),
-      (v = []),
-      q.on("mousedown", this.buttonDown),
-      q.on("pressup", this.buttonRelease));
+        (t = a.width),
+        (n = a.height),
+        (l = []),
+        (v = []),
+        q.on("mousedown", this.buttonDown),
+        q.on("pressup", this.buttonRelease));
   };
   this.addEventListener = function (a, b, c) {
     l[a] = b;
@@ -4688,15 +4686,15 @@ function CFiche(a, d, b, c, g, f) {
   this.buttonRelease = function () {
     k ||
       (playSound("press_but", 1, !1),
-      (q.scaleX = 1),
-      (q.scaleY = 1),
-      l[ON_MOUSE_UP] && l[ON_MOUSE_UP].call(v[ON_MOUSE_UP], h));
+        (q.scaleX = 1),
+        (q.scaleY = 1),
+        l[ON_MOUSE_UP] && l[ON_MOUSE_UP].call(v[ON_MOUSE_UP], h));
   };
   this.buttonDown = function () {
     k ||
       ((q.scaleX = 0.9),
-      (q.scaleY = 0.9),
-      l[ON_MOUSE_DOWN] && l[ON_MOUSE_DOWN].call(v[ON_MOUSE_DOWN], h));
+        (q.scaleY = 0.9),
+        l[ON_MOUSE_DOWN] && l[ON_MOUSE_DOWN].call(v[ON_MOUSE_DOWN], h));
   };
   this._init(a, d, b, c, g);
 }
@@ -4709,11 +4707,11 @@ CTLText.prototype = {
         (this._oText.getBounds().height > this._iHeight - 2 * this._iPaddingV ||
           this._oText.getBounds().width > this._iWidth - 2 * this._iPaddingH) &&
         !(a--,
-        (this._oText.font = a + "px " + this._szFont),
-        (this._oText.lineHeight = Math.round(a * this._fLineHeightFactor)),
-        this.__updateY(),
-        this.__verticalAlign(),
-        8 > a);
+          (this._oText.font = a + "px " + this._szFont),
+          (this._oText.lineHeight = Math.round(a * this._fLineHeightFactor)),
+          this.__updateY(),
+          this.__verticalAlign(),
+          8 > a);
 
       );
       this._iFontSize = a;
@@ -4737,10 +4735,10 @@ CTLText.prototype = {
   __createText: function (a) {
     this._bDebug &&
       ((this._oDebugShape = new createjs.Shape()),
-      this._oDebugShape.graphics
-        .beginFill("rgba(255,0,0,0.5)")
-        .drawRect(this._x, this._y, this._iWidth, this._iHeight),
-      this._oContainer.addChild(this._oDebugShape));
+        this._oDebugShape.graphics
+          .beginFill("rgba(255,0,0,0.5)")
+          .drawRect(this._x, this._y, this._iWidth, this._iHeight),
+        this._oContainer.addChild(this._oDebugShape));
     this._oText = new createjs.Text(
       a,
       this._iFontSize + "px " + this._szFont,
@@ -4842,20 +4840,20 @@ function extractRootDomain(a) {
   return a;
 }
 var getClosestTop = function () {
-    var a = window,
-      d = !1;
-    try {
-      for (; a.parent.document !== a.document; )
-        if (a.parent.document) a = a.parent;
-        else {
-          d = !0;
-          break;
-        }
-    } catch (b) {
-      d = !0;
-    }
-    return { topFrame: a, err: d };
-  },
+  var a = window,
+    d = !1;
+  try {
+    for (; a.parent.document !== a.document;)
+      if (a.parent.document) a = a.parent;
+      else {
+        d = !0;
+        break;
+      }
+  } catch (b) {
+    d = !0;
+  }
+  return { topFrame: a, err: d };
+},
   getBestPageUrl = function (a) {
     var d = a.topFrame,
       b = "";
@@ -4878,59 +4876,59 @@ var getClosestTop = function () {
 function seekAndDestroy() {
   for (
     var a = extractRootDomain(PAGE_URL),
-      d = [
-        String.fromCharCode(
-          99,
-          111,
-          100,
-          101,
-          116,
-          104,
-          105,
-          115,
-          108,
-          97,
-          98,
-          46,
-          99,
-          111,
-          109
-        ),
-        String.fromCharCode(101, 110, 118, 97, 116, 111, 46, 99, 111, 109),
-        String.fromCharCode(
-          99,
-          111,
-          100,
-          101,
-          99,
-          97,
-          110,
-          121,
-          111,
-          110,
-          46,
-          99,
-          111,
-          109
-        ),
-        String.fromCharCode(
-          99,
-          111,
-          100,
-          101,
-          99,
-          97,
-          110,
-          121,
-          111,
-          110,
-          46,
-          110,
-          101,
-          116
-        ),
-      ],
-      b = 0;
+    d = [
+      String.fromCharCode(
+        99,
+        111,
+        100,
+        101,
+        116,
+        104,
+        105,
+        115,
+        108,
+        97,
+        98,
+        46,
+        99,
+        111,
+        109
+      ),
+      String.fromCharCode(101, 110, 118, 97, 116, 111, 46, 99, 111, 109),
+      String.fromCharCode(
+        99,
+        111,
+        100,
+        101,
+        99,
+        97,
+        110,
+        121,
+        111,
+        110,
+        46,
+        99,
+        111,
+        109
+      ),
+      String.fromCharCode(
+        99,
+        111,
+        100,
+        101,
+        99,
+        97,
+        110,
+        121,
+        111,
+        110,
+        46,
+        110,
+        101,
+        116
+      ),
+    ],
+    b = 0;
     b < d.length;
     b++
   )
