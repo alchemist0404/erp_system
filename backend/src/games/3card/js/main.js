@@ -2488,7 +2488,6 @@ function CGame(a) {
     this.rebet();
   };
   this.onDeal = function () {
-    cursorHelper.hide();
     var a = e.getBetAnte() + e.getBetAnte();
     if (e.getBetAnte() < MIN_BET)
       P.show(TEXT_ERROR_MIN_BET), y.enableBetFiches(!1), y.enable(!1, !1, !1);
@@ -2496,7 +2495,6 @@ function CGame(a) {
       U.removeAllChildren();
       const random = new Random();
       let randomNumber = random.integer(1, 100);
-      // console.log(randomNumber);
 
       $.ajax({
         url: `${home_url}/api/games/check3CardPokerGameBank`,
@@ -2542,6 +2540,7 @@ function CGame(a) {
               this._calculateTotalWin();
           while (w !== "dealer");
         }
+        cursorHelper.hide();
         e.setPrevBet();
         bl = e.getBetAnte() + e.getBetPlus();
         $(s_oMain).trigger("bet_placed", bl);
@@ -4317,12 +4316,12 @@ function CHelpCursor(a, d, b, c) {
   this.show = function (a) {
     0 > a && (f.scaleX *= -1);
     // this._move(a, g + 30 * a, 600);
-    f.visible = !0;
+    f.visible = true;
   };
   this.hide = function () {
     createjs.Tween.removeTweens(f);
     f.x = g;
-    f.visible = !1;
+    f.visible = false;
   };
   // this._move = function (a, b, c) {
   //   var d = 0 < a ? createjs.Ease.cubicIn : createjs.Ease.cubicOut;
