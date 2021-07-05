@@ -59,8 +59,8 @@
           tie_occurrence: 50,
           lose_occurrence: gameConfig.responseJSON.data.lose_occurrence || 30,
           win_occurrence: gameConfig.responseJSON.data.win_occurrence || 20, //WIN OCCURRENCE PERCENTAGE. VALUES BETWEEN 0-100
-          min_bet: 1, //MIN BET PLAYABLE BY USER. DEFAULT IS 0.1$
-          max_bet: 300, //MAX BET PLAYABLE BY USER.
+          min_bet: gameConfig.responseJSON.data.min, //MIN BET PLAYABLE BY USER. DEFAULT IS 0.1$
+          max_bet: gameConfig.responseJSON.data.max, //MAX BET PLAYABLE BY USER.
           money: balance, //STARING CREDIT FOR THE USER
           game_cash: 100, //GAME CASH AVAILABLE WHEN GAME STARTS
           chip_values: [1, 5, 10, 25, 100], //VALUE OF CHIPS

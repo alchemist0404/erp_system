@@ -12,6 +12,9 @@ import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 import StoreMallDirectoryIcon from '@material-ui/icons/StoreMallDirectory';
 import RouterIcon from '@material-ui/icons/Router';
 import EmojiPeopleIcon from '@material-ui/icons/EmojiPeople';
+import MinimizeIcon from '@material-ui/icons/Minimize';
+import MaximizeIcon from '@material-ui/icons/Maximize';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -85,6 +88,12 @@ export const EditGameModal = (props) => {
         setGameRoute,
         winPercentage,
         setWinPercentage,
+        losePercentage,
+        setLosePercentage,
+        min,
+        setMin,
+        max,
+        setMax,
         addNewGameHandle
     } = props;
     const classes = useStyles();
@@ -159,6 +168,51 @@ export const EditGameModal = (props) => {
                                         type="number"
                                         defaultValue={winPercentage}
                                         onChange={(e) => setWinPercentage(e.target.value)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </div>
+                        <div className={classes.margin}>
+                            <Grid container spacing={1} alignItems="flex-end">
+                                <Grid item>
+                                    <HighlightOffIcon />
+                                </Grid>
+                                <Grid item>
+                                    <TextField
+                                        label="Game Lose Percentage"
+                                        type="number"
+                                        defaultValue={losePercentage}
+                                        onChange={(e) => setLosePercentage(e.target.value)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </div>
+                        <div className={classes.margin}>
+                            <Grid container spacing={1} alignItems="flex-end">
+                                <Grid item>
+                                    <MinimizeIcon />
+                                </Grid>
+                                <Grid item>
+                                    <TextField
+                                        label="Game Min Bet Amount"
+                                        type="number"
+                                        defaultValue={min}
+                                        onChange={(e) => setMin(e.target.value)}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </div>
+                        <div className={classes.margin}>
+                            <Grid container spacing={1} alignItems="flex-end">
+                                <Grid item>
+                                    <MaximizeIcon />
+                                </Grid>
+                                <Grid item>
+                                    <TextField
+                                        label="Game Max Bet Amount"
+                                        type="number"
+                                        defaultValue={max}
+                                        onChange={(e) => setMax(e.target.value)}
                                     />
                                 </Grid>
                             </Grid>

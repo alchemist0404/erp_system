@@ -18,6 +18,12 @@ const gamesSchema = new Schema({
 	},
 	lose_occurrence: {
 		type: Number
+	},
+	min: {
+		type: Number
+	},
+	max: {
+		type: Number
 	}
 })
 

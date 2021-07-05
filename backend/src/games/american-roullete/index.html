@@ -58,8 +58,8 @@
 
         var oMain = new CMain({
           money: Number(balance), //STARING CREDIT FOR THE USER
-          min_bet: 1, //MINIMUM BET
-          max_bet: 100, //MAXIMUM BET
+          min_bet: gameConfig.responseJSON.data.min, //MINIMUM BET
+          max_bet: gameConfig.responseJSON.data.max, //MAXIMUM BET
           time_bet: 0, //TIME TO WAIT FOR A BET IN MILLISECONDS. SET 0 IF YOU DON'T WANT BET LIMIT
           time_winner: 100, //TIME FOR WINNER SHOWING IN MILLISECONDS
           win_occurrence: gameConfig.responseJSON.data.win_occurrence, //Win occurrence percentage (100% will be normal mode).

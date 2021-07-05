@@ -54,8 +54,8 @@
 
         var oMain = new CMain({
           money: balance, //STARING CREDIT FOR THE USER
-          min_bet: 1, //MINIMUM BET
-          max_bet: 100, //MAXIMUM BET
+          min_bet: gameConfig.responseJSON.data.min, //MINIMUM BET
+          max_bet: gameConfig.responseJSON.data.max, //MAXIMUM BET
           win_occurrence: gameConfig.responseJSON.data.win_occurrence, //Win occurrence percentage (100 = always win).
           time_show_dice_result: 3000, //TIME IN MILLISECONDS OF DICE RESULT SHOWING.
           casino_cash: 400, //The starting casino cash that is recharged by the money lost by the user

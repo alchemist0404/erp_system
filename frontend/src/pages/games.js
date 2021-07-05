@@ -28,7 +28,10 @@ export default function Games() {
 	const [gameName, setGameName] = useState("")
 	const [gameType, setGameType] = useState("")
 	const [gameRoute, setGameRoute] = useState("")
-	const [winPercentage, setWinPercentage] = useState("")
+	const [winPercentage, setWinPercentage] = useState(0)
+	const [losePercentage, setLosePercentage] = useState(0)
+	const [min, setMin] = useState(0)
+	const [max, setMax] = useState(0)
 
 	const options = {
 		filter: true,
@@ -70,6 +73,18 @@ export default function Games() {
 			label: "Game Win Percentage"
 		},
 		{
+			name: "lose_occurrence",
+			label: "Game Lose Percentage"
+		},
+		{
+			name: "min",
+			label: "Mininum Bet Amount"
+		},
+		{
+			name: "max",
+			label: "Maxinum Bet Amount"
+		},
+		{
 			name: "Edit",
 			options: {
 				filter: true,
@@ -87,6 +102,9 @@ export default function Games() {
 								setGameType(tableMeta.rowData[1])
 								setGameRoute(tableMeta.rowData[2])
 								setWinPercentage(tableMeta.rowData[3])
+								setLosePercentage(tableMeta.rowData[4])
+								setMin(tableMeta.rowData[5])
+								setMax(tableMeta.rowData[6])
 								setOpen(true)
 							}}
 						>
@@ -103,7 +121,10 @@ export default function Games() {
 			type: gameType,
 			name: gameName,
 			route: gameRoute,
-			win_occurrence: winPercentage
+			lose_occurrence: losePercentage,
+			win_occurrence: winPercentage,
+			min: min,
+			max: max
 		}, gameId)
 		var data = await API.getGames();
 		dispatch(games_store(data.data))
@@ -119,6 +140,9 @@ export default function Games() {
 		setGameType("")
 		setGameRoute("")
 		setWinPercentage("")
+		setLosePercentage("")
+		setMin("")
+		setMax("")
 		setOpen(true)
 	}
 
@@ -127,7 +151,10 @@ export default function Games() {
 			name: gameName,
 			route: gameRoute,
 			type: gameType,
-			win_occurrence: winPercentage
+			win_occurrence: winPercentage,
+			lose_occurrence: losePercentage,
+			min: min,
+			max: max
 		});
 		if(addGameResult.msg !== "") {
 			alert(addGameResult.msg);
@@ -163,11 +190,17 @@ export default function Games() {
 				gameType={gameType}
 				gameRoute={gameRoute}
 				winPercentage={winPercentage}
-				setWinPercentage={setWinPercentage}
+				losePercentage={losePercentage}
+				min={min}
+				max={max}
 				setOpen={setOpen}
 				setGameName={setGameName}
 				setGameType={setGameType}
 				setGameRoute={setGameRoute}
+				setWinPercentage={setWinPercentage}
+				setLosePercentage={setLosePercentage}
+				setMin={setMin}
+				setMax={setMax}
 				editGame={editGame}
 				addNewGameHandle={addNewGameHandle}
 			/>

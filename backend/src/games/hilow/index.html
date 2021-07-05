@@ -53,8 +53,8 @@
 
       var oMain = new CMain({
         win_occurrence: gameConfig.responseJSON.data.win_occurrence, //Win occurrence percentage (100 = always win)
-        min_bet: 1, //MIN BET PLAYABLE BY USER.
-        max_bet: 100, //MAX BET PLAYABLE BY USER.
+        min_bet: gameConfig.responseJSON.data.min, //MIN BET PLAYABLE BY USER.
+        max_bet: gameConfig.responseJSON.data.max, //MAX BET PLAYABLE BY USER.
         starting_money: balance, //STARING CREDIT FOR THE USER
         starting_cash: 500, //GAME CASH AVAILABLE WHEN GAME STARTS
         fiches_value: [
