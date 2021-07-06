@@ -15,11 +15,13 @@ const Profit = lazy(() => import("./pages/profit"));
 const Users = lazy(() => import("./pages/users"));
 const BetHistory = lazy(() => import("./pages/betHistory"));
 const Signin = lazy(() => import("./pages/auth/signin"));
+const GamesList = lazy(() => import("./pages/games-list"));
 
 const AppRouter = () => {
     const isSession = localStorage.getItem("auth");
-    console.log(`window.location.pathname`, window.location.pathname)
     if (
+        window.location.pathname === "/games-list/" ||
+        window.location.pathname === "/games-list" ||
         window.location.pathname === "/3card/" ||
         window.location.pathname === "/3card" ||
         window.location.pathname === "/american-roullete/" ||
@@ -52,28 +54,36 @@ const AppRouter = () => {
     return (
         <Router history={History}>
             <Suspense fallback={<Spinner />}>
-                <AuthProvider>
-                    <Switch>
-                        <Route
-                            {...To("signin")}
-                            render={props => (
-                                <Fullayout>
-                                    <Signin />
-                                </Fullayout>
-                            )}
-                        />
+                <Switch>
+                    <Route
+                        {...To("signin")}
+                        render={props => (
+                            <Fullayout>
+                                <Signin />
+                            </Fullayout>
+                        )}
+                    />
+                    <Route
+                        {...To("games-list")}
+                        render={props => (
+                            <Fullayout>
+                                <GamesList />
+                            </Fullayout>
+                        )}
+                    />
+                    <AuthProvider>
                         <BaseLayout>
                             <Route exact path="/" >
                                 <Redirect to="/users" />
                             </Route>
-                            <Route {...To("users")} render={props => ( <Users /> )} />
-                            <Route {...To("games")} render={props => ( <Games /> )} />
-                            <Route {...To("rtp")} render={props => ( <RTP /> )} />
-                            <Route {...To("profit")} render={props => ( <Profit /> )} />
-                            <Route {...To("bet-history")} render={props => ( <BetHistory /> )} />
+                            <Route {...To("users")} render={props => (<Users />)} />
+                            <Route {...To("games")} render={props => (<Games />)} />
+                            <Route {...To("rtp")} render={props => (<RTP />)} />
+                            <Route {...To("profit")} render={props => (<Profit />)} />
+                            <Route {...To("bet-history")} render={props => (<BetHistory />)} />
                         </BaseLayout>
-                    </Switch>
-                </AuthProvider>
+                    </AuthProvider>
+                </Switch>
             </Suspense>
         </Router>
     )

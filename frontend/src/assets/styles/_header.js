@@ -45,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
     toolbar: {
         borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
         padding: theme.spacing(2, 1),
-        ...theme.mixins.toolbar
+        ...theme.mixins.toolbar,
+        justifyContent: 'space-between'
     },
     toolbarNested: {
         minHeight: 50,

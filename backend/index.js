@@ -9,7 +9,6 @@ const mongoose = require("./src/configuration/mongoose");
 dotenv.config();
 
 const route = require('./src/route');
-// const GameMiddleWare = require('./src/middleware/gameMiddleware');
 const { Games } = require('./src/model');
 const app = express();
 
@@ -23,10 +22,6 @@ mongoose()
 app.use('/api', route)
 
 app.use(express.static(__dirname + '/src/build'));
-app.use('/webpage', express.static(__dirname + '/src/webpage'));
-app.get('/webpage', (req, res) => {
-  res.sendFile(__dirname + '/src/webpage/index.html');
-});
 Games.find({}).then(result => {
   if (result.length == 0) {
     console.log("There is no Games");

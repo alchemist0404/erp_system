@@ -30,7 +30,7 @@ export const subscribe = async (params) => {
 
 //  ** Declare Games API
 
-export const getGames = async (params) => {
+export const getGames = async () => {
     var result = await Axios({
         endpoint : "/api/games",
         method : "GET"

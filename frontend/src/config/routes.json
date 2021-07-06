@@ -26,5 +26,9 @@
     "bet-history" : {
         "path" : "/bet-history",
         "title" : "Bet History"
+    },
+    "games-list" : {
+        "path" : "/games-list",
+        "title" : "Games List"
     }
 }
