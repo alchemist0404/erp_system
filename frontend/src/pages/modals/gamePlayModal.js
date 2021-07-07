@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
     gameIframe: {
         width: "100%",
         border: 0,
+        marginTop: "10px",
+        paddingBottom: '10px'
     },
     gameHeader: {
         display: "flex",
@@ -29,7 +31,10 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: "20px"
     },
     closeButton: {
-        marginRight: '20px'
+        position: 'absolute',
+        top: 0,
+        left: "50%",
+        transform: "translate(-50%, 10px)",
     }
 }));
 
@@ -52,12 +57,12 @@ export const GamePlayModal = (props) => {
             onClose={() => setOpen(!open)}
         >
             <Grid className={classes.gameWindow}>
-                <Grid className={classes.gameHeader}>
+                {/* <Grid className={classes.gameHeader}>
                     <Typography className={classes.gameName}>{gameName}</Typography>
-                    <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpen(!open)}>
-                        <Close fontSize="small" />
-                    </IconButton>
-                </Grid>
+                </Grid> */}
+                <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpen(!open)}>
+                    <Close fontSize="small" />
+                </IconButton>
                 <iframe
                     title="game window"
                     className={clsx("game-window-iframe", classes.gameIframe)}
