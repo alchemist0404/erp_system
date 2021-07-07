@@ -1,1 +1,1 @@
-export const home_url = process.env.NODE_ENV === "development" ? "http://localhost:6140" : "http://199.192.17.41"
+export const home_url = process.env.NODE_ENV === "development" ? "http://localhost:6140" : "https://actiongame.xyz"

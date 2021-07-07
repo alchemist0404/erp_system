@@ -3386,31 +3386,6 @@ function CSeat() {
     H.initInsuranceMov(a, b);
   };
   this.showWinner = function (a, b, c) {
-    var cur_bet = f[0].getCurBet();
-    var is_win = false
-    if (b == TEXT_SHOW_WIN_PLAYER) {
-      is_win = true
-    }
-    if (b !== TEXT_SHOW_STANDOFF) {
-      $.ajax({
-        url: `${home_url}/api/games/updateBlackjackGameBank`,
-        type: 'POST',
-        async: false,
-        data: {
-          customerId: customerid,
-          gameId: gameid,
-          current_bet: cur_bet,
-          is_win,
-        },
-        success: (data) => {
-          if (data.gameStatus == false) {
-            alert("Sorry, Something went wrong, please try again");
-            window.location.reload()
-          }
-        }
-      })
-    }
-
     0 < c
       ? (0 === a ? (D.text = b + ": " + c) : (G.text = b + ": " + c),
         playSound("win", 1, !1))
@@ -3430,6 +3405,32 @@ function CSeat() {
     let winAmount = g - oldCredit + f[0].getCurBet();
     !!f[1] && (winAmount += f[1].getCurBet());
     oldCredit = g;
+    
+    //////////////// update balance
+
+    var cur_bet = f[0].getCurBet();
+    var is_win = false
+    if (b == TEXT_SHOW_WIN_PLAYER) {
+      is_win = true
+    }
+    if (b !== TEXT_SHOW_STANDOFF) {
+      $.ajax({
+        url: `${home_url}/api/games/updateBlackjackGameBank`,
+        type: 'POST',
+        data: {
+          customerId: customerid,
+          gameId: gameid,
+          current_bet: cur_bet,
+          is_win,
+        },
+        success: (data) => {
+          if (data.gameStatus == false) {
+            alert("Sorry, Something went wrong, please try again");
+            window.location.reload()
+          }
+        }
+      })
+    }
 
     setTimeout(() => {
       beted && $(s_oMain).trigger("save_score", [this.getCredit()]);

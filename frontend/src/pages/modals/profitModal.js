@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -31,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
-        width: '100%'
     },
     margin: {
         margin: theme.spacing(1),
@@ -41,28 +39,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
 }));
-
-const Fade = React.forwardRef(function Fade(props, ref) {
-    const {
-        in: open,
-        children,
-        onEnter,
-        onExited, ...other
-    } = props;
-
-    return (
-        <div ref={ref} {...other}>
-            {children}
-        </div>
-    );
-});
-
-Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-};
 
 export const EditProfitModal = (props) => {
     const {
@@ -91,21 +67,21 @@ export const EditProfitModal = (props) => {
     const classes = useStyles();
 
     useEffect(() => {
-        if(games) {
-            if(games.length > 0) {
+        if (games) {
+            if (games.length > 0) {
                 setGameId(games[0]._id)
             }
         }
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [games])
 
     useEffect(() => {
-        if(userdata) {
-            if(userdata.length > 0) {
+        if (userdata) {
+            if (userdata.length > 0) {
                 setUserId(userdata[0]._id)
             }
         }
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [userdata])
 
     return (
@@ -122,11 +98,10 @@ export const EditProfitModal = (props) => {
                     timeout: 200,
                 }}
             >
-                <Fade in={open}>
-                    <div className={classes.paper}>
-                        <h2 id="spring-modal-title">{addStatus === true ? 'Add': 'Edit'} Profit</h2>
-                        {
-                            addStatus === false ?
+                <div className={classes.paper}>
+                    <h2 id="spring-modal-title">{addStatus === true ? 'Add' : 'Edit'} Profit</h2>
+                    {
+                        addStatus === false ?
                             <>
                                 <div className={classes.margin}>
                                     <Grid container spacing={1} alignItems="flex-end">
@@ -235,10 +210,10 @@ export const EditProfitModal = (props) => {
                                         >
                                             {
                                                 games.length > 0 ?
-                                                games.map((item, index) => {
-                                                    return <MenuItem value={item._id} key={index}>{item.name}</MenuItem>
-                                                }) :
-                                                <MenuItem value={'Game'} key={0}>Game</MenuItem>
+                                                    games.map((item, index) => {
+                                                        return <MenuItem value={item._id} key={index}>{item.name}</MenuItem>
+                                                    }) :
+                                                    <MenuItem value={'Game'} key={0}>Game</MenuItem>
                                             }
                                         </Select>
                                     </FormControl>
@@ -257,40 +232,39 @@ export const EditProfitModal = (props) => {
                                         >
                                             {
                                                 userdata.length > 0 ?
-                                                userdata.map((item, index) => {
-                                                    return <MenuItem value={item._id} key={index}>{item.firstName}</MenuItem>
-                                                }) :
-                                                <MenuItem value={'User'} key={0}>User</MenuItem>
+                                                    userdata.map((item, index) => {
+                                                        return <MenuItem value={item._id} key={index}>{item.firstName}</MenuItem>
+                                                    }) :
+                                                    <MenuItem value={'User'} key={0}>User</MenuItem>
                                             }
                                         </Select>
                                     </FormControl>
                                 </div>
                             </>
-                        }
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end" className={classes.customBtnGroup}>
-                                <Grid item>
-                                    <Button variant="contained" color="primary" 
-                                        onClick={() => {
-                                            if(addStatus) {
-                                                addNewProfitHandle()
-                                            } else {
-                                                editProfit()
-                                            }
-                                        }}
-                                    >
-                                        Save
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button variant="contained" color="primary" onClick={() => setOpen(false)}>
-                                        Cancel
-                                    </Button>
-                                </Grid>
+                    }
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end" className={classes.customBtnGroup}>
+                            <Grid item>
+                                <Button variant="contained" color="primary"
+                                    onClick={() => {
+                                        if (addStatus) {
+                                            addNewProfitHandle()
+                                        } else {
+                                            editProfit()
+                                        }
+                                    }}
+                                >
+                                    Save
+                                </Button>
                             </Grid>
-                        </div>
+                            <Grid item>
+                                <Button variant="contained" color="primary" onClick={() => setOpen(false)}>
+                                    Cancel
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </div>
-                </Fade>
+                </div>
             </Modal>
         </div>
     );

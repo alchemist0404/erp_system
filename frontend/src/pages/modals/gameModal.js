@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -26,8 +25,7 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        width: '100%'
+        padding: theme.spacing(2, 4, 3)
     },
     margin: {
         margin: theme.spacing(1),
@@ -37,42 +35,6 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-between'
     },
 }));
-
-const Fade = React.forwardRef(function Fade(props, ref) {
-    const {
-        in: open,
-        children,
-        onEnter,
-        onExited, ...other
-    } = props;
-    // const style = useSpring({
-    //     from: { opacity: 0 },
-    //     to: { opacity: open ? 1 : 0 },
-    //     onStart: () => {
-    //         if (open && onEnter) {
-    //             onEnter();
-    //         }
-    //     },
-    //     onRest: () => {
-    //         if (!open && onExited) {
-    //             onExited();
-    //         }
-    //     },
-    // });
-
-    return (
-        <div ref={ref} {...other}>
-            {children}
-        </div>
-    );
-});
-
-Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-};
 
 export const EditGameModal = (props) => {
     const {
@@ -112,135 +74,133 @@ export const EditGameModal = (props) => {
                     timeout: 200,
                 }}
             >
-                <Fade in={open}>
-                    <div className={classes.paper}>
-                        <h2 id="spring-modal-title">{addStatus === true ? 'Add': 'Edit'} Game</h2>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <SportsEsportsIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Name"
-                                        defaultValue={gameName}
-                                        onChange={(e) => setGameName(e.target.value)}
-                                    />
-                                </Grid>
+                <div className={classes.paper}>
+                    <h2 id="spring-modal-title">{addStatus === true ? 'Add' : 'Edit'} Game</h2>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <SportsEsportsIcon />
                             </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <StoreMallDirectoryIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Type"
-                                        defaultValue={gameType}
-                                        onChange={(e) => setGameType(e.target.value)}
-                                    />
-                                </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Name"
+                                    defaultValue={gameName}
+                                    onChange={(e) => setGameName(e.target.value)}
+                                />
                             </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <RouterIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Route"
-                                        defaultValue={gameRoute}
-                                        onChange={(e) => setGameRoute(e.target.value)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <EmojiPeopleIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Win Percentage"
-                                        type="number"
-                                        defaultValue={winPercentage}
-                                        onChange={(e) => setWinPercentage(e.target.value)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <HighlightOffIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Lose Percentage"
-                                        type="number"
-                                        defaultValue={losePercentage}
-                                        onChange={(e) => setLosePercentage(e.target.value)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <MinimizeIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Min Bet Amount"
-                                        type="number"
-                                        defaultValue={min}
-                                        onChange={(e) => setMin(e.target.value)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end">
-                                <Grid item>
-                                    <MaximizeIcon />
-                                </Grid>
-                                <Grid item>
-                                    <TextField
-                                        label="Game Max Bet Amount"
-                                        type="number"
-                                        defaultValue={max}
-                                        onChange={(e) => setMax(e.target.value)}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </div>
-                        <div className={classes.margin}>
-                            <Grid container spacing={1} alignItems="flex-end" className={classes.customBtnGroup}>
-                                <Grid item>
-                                    <Button variant="contained" color="primary" 
-                                        onClick={() => {
-                                            if(addStatus) {
-                                                addNewGameHandle()
-                                            } else {
-                                                editGame()
-                                            }
-                                        }}
-                                    >
-                                        Save
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button variant="contained" color="primary" onClick={() => setOpen(false)}>
-                                        Cancel
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </div>
+                        </Grid>
                     </div>
-                </Fade>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <StoreMallDirectoryIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Type"
+                                    defaultValue={gameType}
+                                    onChange={(e) => setGameType(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <RouterIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Route"
+                                    defaultValue={gameRoute}
+                                    onChange={(e) => setGameRoute(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <EmojiPeopleIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Win Percentage"
+                                    type="number"
+                                    defaultValue={winPercentage}
+                                    onChange={(e) => setWinPercentage(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <HighlightOffIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Lose Percentage"
+                                    type="number"
+                                    defaultValue={losePercentage}
+                                    onChange={(e) => setLosePercentage(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <MinimizeIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Min Bet Amount"
+                                    type="number"
+                                    defaultValue={min}
+                                    onChange={(e) => setMin(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <MaximizeIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Game Max Bet Amount"
+                                    type="number"
+                                    defaultValue={max}
+                                    onChange={(e) => setMax(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end" className={classes.customBtnGroup}>
+                            <Grid item>
+                                <Button variant="contained" color="primary"
+                                    onClick={() => {
+                                        if (addStatus) {
+                                            addNewGameHandle()
+                                        } else {
+                                            editGame()
+                                        }
+                                    }}
+                                >
+                                    Save
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button variant="contained" color="primary" onClick={() => setOpen(false)}>
+                                    Cancel
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </div>
             </Modal>
         </div>
     );

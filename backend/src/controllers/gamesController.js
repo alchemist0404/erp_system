@@ -188,74 +188,17 @@ const manageNormalGame = async (req, res) => {
     }
     await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
     betHistoryController.addBetHistory(Types.ObjectId(re_data.customerId), Types.ObjectId(re_data.gameId), betAmount, winAmount)
+    checkAndFormatGameBank(customerId, gameId)
     res.json({
       occurrence_type: occurrence_type,
       occurrence: occurrence,
       gameStatus: true
     })
   } catch (err) {
-    console.log(err)
     res.json({
       occurrence_type: null,
       occurrence: 0,
       gameStatus: true
-    })
-  }
-};
-
-const manageGamehilow = async (req, res) => {
-  try {
-    var re_data = req.body;
-    var gameData = await Games.findById(Types.ObjectId(re_data.gameId))
-
-    var customerData = await Customers.findById(Types.ObjectId(re_data.customerId))
-    var profitData = await Profit.findOne({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) })
-    var rtpData = await Rtp.findOne({ game_id: Types.ObjectId(re_data.gameId) })
-
-    var betNum = Number(re_data.betAmount)
-
-    var allprofit = betNum * (100 - Number(rtpData.rtp)) / 100;
-    var provider_profit = profitData.provider_profit + allprofit * customerData.providerProfit / 100;
-    var customer_profit = profitData.customer_profit + allprofit - allprofit * customerData.providerProfit / 100;
-    var game_bank = 0;
-    var updateData = {}, occurrence = 0;
-    // var hookreturndata = await sendHook()
-    if (profitData.game_bank < (betNum + allprofit)) {
-      game_bank = profitData.game_bank + betNum - allprofit;
-      updateData = {
-        provider_profit: provider_profit,
-        customer_profit: customer_profit,
-        game_bank: game_bank
-      };
-      occurrence = 0;
-    } else {
-      if (Number(re_data.randomNumber) < gameData.win_occurrence) {
-        game_bank = profitData.game_bank - betNum - allprofit;
-        updateData = {
-          provider_profit: provider_profit,
-          customer_profit: customer_profit,
-          game_bank: game_bank
-        };
-        occurrence = gameData.win_occurrence;
-      } else {
-        game_bank = profitData.game_bank + betNum - allprofit;
-        updateData = {
-          provider_profit: provider_profit,
-          customer_profit: customer_profit,
-          game_bank: game_bank
-        };
-        occurrence = 0;
-      }
-    }
-    await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
-    res.json({
-      occurrence: occurrence,
-      gameStatus: true
-    })
-  } catch (err) {
-    res.json({
-      occurrence: 0,
-      gameStatus: false
     })
   }
 };
@@ -375,8 +318,6 @@ const manageGamebaccarat = async (req, res) => {
       }
     }
 
-    console.log('re_bets :>> ', re_bets, win_percent);
-
     updateData = {
       provider_profit: provider_profit,
       customer_profit: customer_profit,
@@ -387,6 +328,7 @@ const manageGamebaccarat = async (req, res) => {
 
     await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, updateData)
     betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), total_amount, win_amount)
+    checkAndFormatGameBank(customerId, gameId)
     res.json({
       win_percent,
       re_bets,
@@ -410,7 +352,6 @@ const checkBlackjackGameBank = async (req, res) => {
   const all_profit = Number(current_bet) * (100 - Number(rtpData.rtp)) / 100
 
   var win_occurrence = 0;
-  console.log("------------------------------------------");
   if (Number(randomNumber) > gameData.win_occurrence) {           //////////////// use lose money
     console.log("oops! you lose because you are not lucky~");
     win_occurrence = gameData.win_occurrence
@@ -457,10 +398,9 @@ const updateBlackjackGameBank = async (req, res) => {
     game_bank: game_bank
   };
 
-  console.log('profitData.game_bank :>> ', profitData.game_bank);
-
   await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
   betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), Number(current_bet), win_amount)
+  checkAndFormatGameBank(customerId, gameId)
   res.json({
     gameStatus: true
   })
@@ -468,7 +408,6 @@ const updateBlackjackGameBank = async (req, res) => {
 }
 
 const checkCrapsGameBank = async (req, res) => {
-  console.log("--------------------------------------------------");
   const { customerId, gameId, randomNumber, bets } = req.body;
 
   const gameData = await Games.findById(Types.ObjectId(gameId))
@@ -582,6 +521,7 @@ const updateGameBankWithWinAmount = async (req, res) => {
 
   await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
   betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), Number(bet_amount), Number(win_amount))
+  checkAndFormatGameBank(customerId, gameId)
   res.json({
     gameStatus: true
   })
@@ -637,12 +577,10 @@ const check3CardPokerGameBank = async (req, res) => {
   var availables = [], win_occurrence = 0;
   for (let i in payout_mult) {
     var amount = Number(ante_bet_amount) * 2 * Number(payout_mult[i][0]) + Number(plus_bet_amount) * Number(payout_mult[i][1])
-    console.log('amount :>> ', amount);
     if (amount + all_profit < profitData.game_bank) {
       availables.push(i)
     }
   }
-  console.log('availables :>> ', availables);
   if (Number(randomNumber) > gameData.win_occurrence) {
     win_occurrence = 0
     console.log("oops! you are not lucky!");
@@ -663,6 +601,14 @@ const check3CardPokerGameBank = async (req, res) => {
   })
 }
 
+async function checkAndFormatGameBank(customer_id, game_id) {
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customer_id), game_id: Types.ObjectId(game_id) })
+  
+  if (profitData.game_bank > 3000) {
+    Profit.updateOne({ customer_id: Types.ObjectId(customer_id), game_id: Types.ObjectId(game_id) }, { game_bank: 500 }).exec();
+  }
+}
+
 module.exports = {
   addGame,
   getGame,
@@ -671,7 +617,6 @@ module.exports = {
   updateGame,
   deleteMultiGames,
   deleteGame,
-  manageGamehilow,
   checkAmericanRoulleteGameBank,
   manageGamebaccarat,
   checkBlackjackGameBank,

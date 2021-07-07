@@ -35,12 +35,12 @@
     <script>
       var gameid = "";
       var customerid = "";
-      var home_url = "";
+      var home_url = "https://actiongame.xyz";
       $(document).ready(function () {
         var url_string = window.location.href; //window.location.href
         var url = new URL(url_string);
         var balance = Number(url.searchParams.get("balance"));
-        home_url = location.origin;
+        // home_url = location.origin;
         gameid = url.searchParams.get("gameid");
         customerid = url.searchParams.get("customerid");
 
