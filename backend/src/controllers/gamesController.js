@@ -601,6 +601,39 @@ const check3CardPokerGameBank = async (req, res) => {
   })
 }
 
+const check3DRoulleteGameBank = async (req, res) => {
+  const { customerId, gameId, bets_arr, cur_bet } = req.body;
+  var bets = JSON.parse(bets_arr);
+
+  const gameData = await Games.findById(Types.ObjectId(gameId))
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+  const all_profit = Number(cur_bet) * (100 - Number(rtpData.rtp)) / 100;
+
+  var win_arr = [], win_occurrence = 0;
+
+  for (let i = 0; i < bets.length; i++) {
+    if (Number(bets[i].win) + all_profit < profitData.game_bank) {
+      win_arr.push(bets[i])
+      if (Number(bets[i].win) > 0) {
+        win_occurrence = gameData.win_occurrence;
+      }
+    } else {
+      win_arr.push({win: 0, mc: null})
+    }
+  }
+
+  if (win_occurrence == 0) {
+    win_arr = bets_arr;
+  }
+
+  res.json({
+    gameStatus: true,
+    win_arr,
+    win_occurrence
+  })
+}
+
 async function checkAndFormatGameBank(customer_id, game_id) {
   const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customer_id), game_id: Types.ObjectId(game_id) })
   
@@ -627,4 +660,5 @@ module.exports = {
   updateGameBankWithWinAmount,
   checkStudPokerGameBank,
   check3CardPokerGameBank,
+  check3DRoulleteGameBank
 }

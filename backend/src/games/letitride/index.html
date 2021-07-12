@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript">
+      //        document.domain = "ztjy.edu.sh.cn";
+    </script>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Let It Ride</title>
+    <link rel="stylesheet" href="./assets/css/vplayer.css" />
+    <link rel="stylesheet" href="./assets/css/style_1.css" media="screen" />
+    <script
+      type="text/javascript"
+      src="./assets/js/plugin/random.min.js"
+    ></script>
+  </head>
+  <body draggable="false" ondragstart="return false;" ondrop="return false;">
+    <div
+      class="wrap"
+      draggable="false"
+      ondragstart="return false;"
+      ondrop="return false;"
+    >
+      <div
+        class="content"
+        id="content"
+        draggable="false"
+        ondragstart="return false;"
+        ondrop="return false;"
+      >
+        <div
+          class="contentWrap"
+          id="contentWrap"
+          draggable="false"
+          ondragstart="return false;"
+          ondrop="return false;"
+        >
+          <div
+            class="gameContent"
+            id="game"
+            draggable="false"
+            ondragstart="return false;"
+            ondrop="return false;"
+          ></div>
+          <div
+            class="dragLayer"
+            draggable="false"
+            ondragstart="return false;"
+            ondrop="return false;"
+          ></div>
+          <div
+            class="overLayer"
+            draggable="false"
+            ondragstart="return false;"
+            ondrop="return false;"
+            onclick="playVideo();"
+          ></div>
+          <!--            <div class="bottom-nav transition"></div>-->
+        </div>
+        <div class="videoContent">
+          <video
+            id="videoPlayer"
+            class="video-js vjs-default-skin vjs-big-play-centered"
+            playsinline
+            webkit-playsinline
+          >
+            <source src="" />
+            <p class="vjs-no-js"></p>
+          </video>
+        </div>
+        <canvas
+          id="effect_canvas"
+          draggable="false"
+          ondragstart="return false;"
+          ondrop="return false;"
+        ></canvas>
+      </div>
+      <canvas id="saveCanvas" style="display: none;"></canvas>
+      <form id="fileUploader" hidden style="display: none;">
+        <input
+          type="file"
+          id="fileContainer"
+          name="fileUploader"
+          accept=".png,.bmp,.gif,.jpg,.mp4,.mp3"
+          style="opacity: 0; width: 1px; height: 1px;"
+        />
+      </form>
+    </div>
+    <script>
+      var _GCONF = {
+        preProcessing: function (callback) {
+          _GCONF.CurrentBalance = 1000; //STARING CREDIT FOR THE USER.
+          _GCONF.MinBet = 15; //MIN BET PLAYABLE BY USER.
+          _GCONF.MaxBet = 300; //MAX BET PLAYABLE BY USER.
+          _GCONF.RoyalFlushMax = 5000; //PAYOUT LIMIT FOR ROYALFLUSH.
+          _GCONF.StraightFlushMax = 3000; //PAYOUT LIMIT FOR STRAIGHTFLISH.
+          _GCONF.RoyalFlush = 1000; //MULTIPLIER FOR ROYALFLUSH
+          _GCONF.StraightFlush = 200; //MULTIPLIER FOR STRAIGHT FLUSH
+          _GCONF.FourOfKind = 50; //MULTIPLIER FOR FOUR OF A KIND
+          _GCONF.FullHouse = 11; //MULTIPLIER FOR FULL HOUSE
+          _GCONF.Flush = 8; //MULTIPLIER FOR FLUSH
+          _GCONF.Straight = 5; //MULTIPLIER FOR STRAIGHT
+          _GCONF.ThreeOfKind = 3; //MULTIPLIER FOR THREE OF A KIND
+          _GCONF.TwoPair = 2; //MULTIPLIER FOR TWO PAIR
+          _GCONF.TensOrBetter = 1; //MULTIPLIER FOR TENS OR BETTER
+          _GCONF.WinPercent = 0.6; //WIN OCCURRENCE. VALUES BETWEEN 0-1.
+          if (callback) callback();
+        },
+        exitGame: function (totalBalence) {
+          // Add the function of going to main page here!!!
+          alert(totalBalence);
+          // history.back();
+        },
+        payoutProcessing: function (payout) {
+          // payout.multiplier : <multiplier> (ex， 1000, 200, 50, 11, ... ）
+          // payout.message: <message> (ex, "Royal Flush", "Straight Flush", "Four of Kind", ... )
+          // payout.score: <score> ( = <current bet amount> * <multiplier> )
+          // payout.curBetAmount : user selected bet amount
+          // payout.pullCount : the count of user's click "pull" button
+        //   alert('Current Score information is : ' + JSON.stringify(payout));
+          // Add the payout processing code here!!
+        },
+      };
+    </script>
+    <div class="scripts" hidden style="display: none;">
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/jquery-1.9.1.min.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/Base64.js"
+      ></script>
+      <script type="text/javascript" src="./assets/js/plugin/Blob.js"></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/card_core.min.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/play.min.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/my-menu.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/vplayer.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/record.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/recordRTC.js"
+      ></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/domlib.js"
+      ></script>
+      <script type="text/javascript" src="./assets/js/plugin/game.js"></script>
+      <script type="text/javascript" src="./assets/js/plugin/pixi.js"></script>
+      <script
+        type="text/javascript"
+        src="./assets/js/plugin/pixi.lib.js"
+      ></script>
+      <script type="text/javascript" src="./assets/js/lib.js"></script>
+    </div>
+  </body>
+</html>

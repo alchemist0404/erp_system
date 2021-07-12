@@ -3134,7 +3134,6 @@ function CGame(a) {
     $.ajax({
       url: `${home_url}/api/games/updateGameBankWithWinAmount`,
       type: 'POST',
-      async: false,
       data: {
         customerId: customerid,
         gameId: gameid,

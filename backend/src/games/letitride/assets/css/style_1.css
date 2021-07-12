@@ -1,0 +1,386 @@
+body, html {
+    background: #000;
+    position: fixed;
+    width: 100%;
+    height: 100%
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+    display: none;
+    -webkit-background-size: 100% 100% !important;
+    background-size: 100% 100% !important
+}
+
+.wrap, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    transform-origin: top left;
+    -ms-transform-origin: top left
+}
+
+.wrap {
+    z-index: 1;
+    top: 0;
+    left: 0;
+    margin: 0 auto
+}
+
+.content, .wrap {
+    position: absolute
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background-size: 100% 100%
+}
+
+.contentWrap {
+    position: absolute;
+    width: 0;
+    height: 0;
+    -webkit-transform-origin: left top;
+    -moz-transform-origin: left top;
+    -ms-transform-origin: left top;
+    -o-transform-origin: left top;
+    transform-origin: left top;
+    z-index: 3
+}
+
+.videoContent {
+    width: 100%;
+    height: 100%;
+    transform-origin: top left;
+    -ms-transform-origin: top left;
+    z-index: 3
+}
+
+.gameContent, .videoContent {
+    position: absolute;
+    top: 0;
+    left: 0
+}
+
+.gameContent {
+    width: 0;
+    height: 0;
+    z-index: 2
+}
+
+:fullscreen .contentWrap {
+    width: 100%;
+    height: 100%;
+    margin: 0
+}
+
+:-webkit-full-screen .contentWrap {
+    width: 100%;
+    height: 100%;
+    margin: 0
+}
+
+:-moz-full-screen .contentWrap {
+    width: 100%;
+    height: 100%;
+    margin: 0
+}
+
+:-ms-fullscreen .contentWrap {
+    width: 100%;
+    height: 100%;
+    margin: 0
+}
+
+:-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+    margin: 0
+}
+
+#effect_canvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 200
+}
+
+.video-js {
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    background: transparent
+}
+
+:not(span):not(br):not(p) {
+    font-size: 30px;
+    position: absolute;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-size: 100% 100%;
+    box-sizing: border-box
+}
+
+span {
+    position: relative;
+    display: block !important
+}
+
+.progressing_area, .uploading_backdrop {
+    display: none;
+    background-color: #000;
+    opacity: .85;
+    width: 100%;
+    height: 100%;
+    z-index: 12000;
+    position: absolute
+}
+
+.progressing_area {
+    background: transparent;
+    opacity: 1
+}
+
+#wait_ajax_loader {
+    top: 41%;
+    left: 50%;
+    z-index: 15000;
+    position: absolute
+}
+
+#progress_label {
+    left: 38%;
+    z-index: 16000
+}
+
+#progress_label, #progress_percent {
+    top: 43%;
+    font-size: 18px;
+    color: #fff;
+    position: absolute
+}
+
+#progress_percent {
+    left: 60%;
+    z-index: 17000
+}
+
+.dragLayer {
+    z-index: 100000;
+    height: 660px
+}
+
+.dragLayer, .overLayer {
+    left: 0;
+    top: 0;
+    width: 1280px;
+    background: transparent;
+    display: none;
+    position: absolute
+}
+
+.overLayer {
+    z-index: 100010;
+    height: 720px
+}
+
+.mediaPlayer {
+    top: 18%;
+    left: 50%;
+    width: 740px;
+    height: 457px;
+    z-index: 20000;
+    display: none;
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    transform: translateX(-50%);
+    -webkit-transform-origin: top right;
+    -moz-transform-origin: top right;
+    -ms-transform-origin: top right;
+    -o-transform-origin: top right;
+    transform-origin: top right
+}
+
+.selectorContainer {
+    padding: 0 10px;
+    color: #fff;
+    font-weight: 400;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: transparent;
+    -webkit-background-size: 100% 100% !important;
+    background-size: 100% 100% !important;
+    cursor: pointer
+}
+
+.selectorList {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: auto;
+    z-index: 15000;
+    padding: 15px 0;
+    display: none
+}
+
+.selectorList, .selectorList .select-item {
+    background: transparent;
+    margin: 0;
+    -webkit-background-size: 100% 100% !important;
+    background-size: 100% 100% !important
+}
+
+.selectorList .select-item {
+    padding: 0 10px;
+    color: #000;
+    font-weight: 400;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative
+}
+
+.selectorList .select-item:hover {
+    background: transparent;
+    color: #fff
+}
+
+input {
+    padding: 0 0 0 10px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.numberPanel .numPanelBg, .numberPanel > div > img {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    top: 0;
+    left: 0
+}
+
+.numberPanel .close {
+    right: 2px;
+    top: -2px
+}
+
+div[data-tag-type=button][data-status="0"] {
+    opacity: .5 !important;
+    pointer-events: none !important
+}
+
+.transition {
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out
+}
+
+.bottom-nav {
+    position: absolute;
+    left: 0;
+    top: 670px;
+    width: 100%;
+    height: 120px;
+    z-index: 10;
+    background: transparent;
+    background-position: 0 30px;
+    background-size: 100% !important
+}
+
+div[data-btn-type=pagenav] {
+    z-index: 11 !important
+}
+
+::-webkit-scrollbar {
+    width: 15px;
+    color: #274f1f
+}
+
+::-webkit-scrollbar-track {
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: 70% 100%;
+    border-radius: 2vw;
+    background-color: #2a966e
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 2vw;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: 100% auto, 50% 100% !important;
+    background-position: 50%;
+    cursor: pointer;
+    background-color: #172e17;
+    border: 1px solid #0c180c
+}
+
+/*!* Handle on hover *!*/
+::-webkit-scrollbar-thumb:hover {
+    cursor: pointer
+}
+
+.btn-title {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    text-align: center
+}
+
+.btn-title, .btn-tooltip {
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    color: #fff
+}
+
+.btn-tooltip {
+    left: 50%;
+    top: -80px;
+    width: auto;
+    height: auto;
+    transform: translateX(-50%);
+    box-sizing: border-box;
+    padding: 5px 20px;
+    font-size: 40px;
+    background-color: #000;
+    border: 4px solid #fff;
+    border-radius: 10px;
+    pointer-events: none
+}
+
+div[data-tag-type=button]:hover .btn-tooltip {
+    display: flex
+}
+
+div[data-tag-type=textLabel] {
+    line-height: 1.5;
+    align-items: flex-start
+}
+
+.btn-tooltip:empty {
+    opacity: 0
+}
