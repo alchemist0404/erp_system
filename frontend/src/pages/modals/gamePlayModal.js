@@ -66,6 +66,7 @@ export const GamePlayModal = (props) => {
                 <iframe
                     title="game window"
                     className={clsx("game-window-iframe", classes.gameIframe)}
+                    // src="http://localhost:6140/letitride/?customerid=60de8dee7010c075e796606a&gameid=60ebaed15775dc051016329e&balance=1000"
                     src={`${ROOT.home_url}/${gameRoute}?customerid=60de8dee7010c075e796606a&gameid=${gameId}&balance=1000`}
                 ></iframe>
             </Grid>

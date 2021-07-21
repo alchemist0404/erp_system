@@ -3174,13 +3174,11 @@ function CGame(b) {
     }
     b = response.responseJSON.win_occurrence;
 
-    console.log('a :>> ', a);
-
     if (e = v >= b ? !1 : !0) {
-      console.log('player win')
+      //player win
       do v = Math.floor(Math.random() * a.length), c = a[v].win; while (0 === c)
     } else {
-      console.log('player lose')
+      //player lose
       b = [];
       for (v = 0; 37 > v; v++) b.push(v);
       do {

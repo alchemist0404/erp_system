@@ -18,9 +18,9 @@ document.addEventListener('dragstart', function (event) {
     event.preventDefault();
 });
 
-window.console.log = function(){
-    // console.error('Sorry , developers tools are blocked here....');
-    window.console.log = function() {
-        return false;
-    }
-};
+// window.console.log = function(){
+//     // console.error('Sorry , developers tools are blocked here....');
+//     window.console.log = function() {
+//         return false;
+//     }
+// };

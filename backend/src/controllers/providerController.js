@@ -1,0 +1,3 @@
+exports.getUserInfo = (req, res) => {
+    
+}

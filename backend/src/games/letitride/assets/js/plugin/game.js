@@ -92,7 +92,9 @@ switch (
   (ST.txtBetInfo = 1),
   (ST.txtBalance = 2),
   (ST.txtPayoutInfo = 3);
-for (var GameHds = [], i = 0; i < 100; i++) GameHds[i] = {};
+var GameHds = [];
+for (i = 0; i < 100; i++) GameHds[i] = {};
+console.log('GameHds :>> ', GameHds);
 var rootPrefix = "./assets/images/game",
   imgData = [
     { name: "hd0_bgLogo", path: rootPrefix + "_1/logo.png" },
@@ -404,6 +406,7 @@ var rootPrefix = "./assets/images/game",
   ];
 function navConfig(e) {
   _GCONF.preProcessing(function () {
+    console.log('GameHds :>> ', GameHds);
     GameHds[0].configGame(), showPart(e + "");
   });
 }
@@ -1125,12 +1128,14 @@ function restoreAudio() {
       C = [0, 0, 0, 0, -1];
       let n = new Random().integer(1, 100) / 100;
       if (_GCONF.WinPercent > n)
+        // dealer win
         do {
           randomSort(x), (C = []);
           for (t = 0; t < 5; t++) C.push(x[t]);
           C.sort(card_sort_fn);
         } while (eval_hand(C) < 16);
       else
+        // player win
         do {
           randomSort(x), (C = []);
           for (t = 0; t < 5; t++) C.push(x[t]);

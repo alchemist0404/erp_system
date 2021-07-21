@@ -7,7 +7,7 @@ var _updateInterval = 15;
 var isMoving = false;
 
 function initStarTail() {
-    console.clear();
+    // console.clear();
 
     stage = new PIXI.Stage();
 
