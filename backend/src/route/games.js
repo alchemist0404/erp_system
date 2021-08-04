@@ -19,7 +19,8 @@ const {
     updateGameBankWithWinAmount,
     checkStudPokerGameBank,
     check3CardPokerGameBank,
-    check3DRoulleteGameBank
+    check3DRoulleteGameBank,
+    getAvailableGameBank
 } = require('../controllers/gamesController')
 
 router.get('/:id', getGameById)
@@ -40,5 +41,6 @@ router.post('/updateGameBankWithWinAmount', updateGameBankWithWinAmount)
 router.post('/checkStudPokerGameBank', checkStudPokerGameBank)
 router.post('/check3CardPokerGameBank', check3CardPokerGameBank)
 router.post('/check3DRoulleteGameBank', check3DRoulleteGameBank)
+router.post('/getAvailableGameBank', getAvailableGameBank)
 
 module.exports = router

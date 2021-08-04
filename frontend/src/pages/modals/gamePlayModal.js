@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Modal, IconButton, Grid, Typography } from '@material-ui/core';
+import { makeStyles, Modal, IconButton, Grid } from '@material-ui/core';
 import { ROOT } from '../../hooks'
 import { Close } from '@material-ui/icons/'
 import clsx from 'clsx'
@@ -44,7 +44,7 @@ export const GamePlayModal = (props) => {
         setOpen,
         gameId,
         gameRoute,
-        gameName
+        // gameName
     } = props;
     const classes = useStyles();
 
@@ -67,7 +67,7 @@ export const GamePlayModal = (props) => {
                     title="game window"
                     className={clsx("game-window-iframe", classes.gameIframe)}
                     // src="http://localhost:6140/letitride/?customerid=60de8dee7010c075e796606a&gameid=60ebaed15775dc051016329e&balance=1000"
-                    src={`${ROOT.home_url}/${gameRoute}?customerid=60de8dee7010c075e796606a&gameid=${gameId}&balance=1000`}
+                    src={`${ROOT.home_url}/${gameRoute}?customerid=61087d149e445c0f14ce2cb0&gameid=${gameId}&balance=1000`}
                 ></iframe>
             </Grid>
         </Modal>

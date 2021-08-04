@@ -218,7 +218,7 @@ const checkAmericanRoulleteGameBank = async (req, res) => {
     if (Number(bets[i].win) + all_profit < profitData.game_bank) {
       win_arr.push(bets[i])
     } else {
-      win_arr.push({win: 0, mc: null})
+      win_arr.push({ win: 0, mc: null })
       lose_arr.push(i)
     }
   }
@@ -619,7 +619,7 @@ const check3DRoulleteGameBank = async (req, res) => {
         win_occurrence = gameData.win_occurrence;
       }
     } else {
-      win_arr.push({win: 0, mc: null})
+      win_arr.push({ win: 0, mc: null })
     }
   }
 
@@ -634,9 +634,23 @@ const check3DRoulleteGameBank = async (req, res) => {
   })
 }
 
+const getAvailableGameBank = async (req, res) => {
+  const { customerId, gameId, bet_amount } = req.body;
+
+  const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
+  const rtpData = await Rtp.findOne({ game_id: Types.ObjectId(gameId) })
+  const all_profit = Number(bet_amount) * (100 - Number(rtpData.rtp)) / 100;
+  const game_bank = profitData.game_bank - all_profit;
+
+  res.json({
+    gameStatus: true,
+    game_bank,
+  })
+}
+
 async function checkAndFormatGameBank(customer_id, game_id) {
   const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customer_id), game_id: Types.ObjectId(game_id) })
-  
+
   if (profitData.game_bank > 3000) {
     Profit.updateOne({ customer_id: Types.ObjectId(customer_id), game_id: Types.ObjectId(game_id) }, { game_bank: 500 }).exec();
   }
@@ -660,5 +674,6 @@ module.exports = {
   updateGameBankWithWinAmount,
   checkStudPokerGameBank,
   check3CardPokerGameBank,
-  check3DRoulleteGameBank
+  check3DRoulleteGameBank,
+  getAvailableGameBank
 }
