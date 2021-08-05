@@ -28,6 +28,11 @@ export default function Users() {
 	const [userLastName, setUserLastName] = useState("")
 	const [userPhoneNumber, setUserPhoneNumber] = useState("")
 	const [userEmail, setUserEmail] = useState("")
+	const [userEndpoints, setUserEndpoints] = useState({
+		getUser: "",
+		credit: "",
+		debit: ""
+	})
 	const [userProfit, setUserProfit] = useState(0)
 
 	const options = {
@@ -54,6 +59,10 @@ export default function Users() {
 	// providerProfit
 	const columnData = [
 		{
+			name: "_id",
+			label: "User ID",
+		},
+		{
 			name: "firstName",
 			label: "First Name",
 		},
@@ -74,7 +83,8 @@ export default function Users() {
 			label: "Provider Profit(%)",
 		},
 		{
-			name: "Edit",
+			name: "endpoints",
+			label: "Edit",
 			options: {
 				filter: true,
 				sort: false,
@@ -87,11 +97,12 @@ export default function Users() {
 							onClick={() => {
 								setAddStatus(false)
 								setUserId(users[tableMeta.rowIndex]._id)
-								setUserFirstName(tableMeta.rowData[0])
-								setUserLastName(tableMeta.rowData[1])
-								setUserPhoneNumber(tableMeta.rowData[2])
-								setUserEmail(tableMeta.rowData[3])
-								setUserProfit(tableMeta.rowData[4])
+								setUserFirstName(tableMeta.rowData[1])
+								setUserLastName(tableMeta.rowData[2])
+								setUserPhoneNumber(tableMeta.rowData[3])
+								setUserEmail(tableMeta.rowData[4])
+								setUserProfit(tableMeta.rowData[5])
+								setUserEndpoints(users[tableMeta.rowIndex].endpoints)
 								setOpen(true)
 							}}
 						>
@@ -109,7 +120,8 @@ export default function Users() {
 			lastName: userLastName,
 			phoneNumber: userPhoneNumber,
 			email: userEmail,
-			providerProfit: userProfit
+			providerProfit: userProfit,
+			endpoints: userEndpoints
 		}, userId)
 		var data = await API.getUsers();
 		dispatch(users_store(data.data))
@@ -125,6 +137,11 @@ export default function Users() {
 		setUserLastName("")
 		setUserPhoneNumber("")
 		setUserEmail("")
+		setUserEndpoints({
+			getUser: "",
+			credit: "",
+			debit: ""
+		})
 		setUserProfit(0)
 		setOpen(true)
 	}
@@ -135,7 +152,8 @@ export default function Users() {
 			lastName: userLastName,
 			phoneNumber: userPhoneNumber,
 			email: userEmail,
-			providerProfit: userProfit
+			providerProfit: userProfit,
+			endpoints: userEndpoints
 		});
 		if (addUserResult.msg !== "" && addUserResult.msg !== undefined) {
 			alert(addUserResult.msg);
@@ -173,6 +191,7 @@ export default function Users() {
 				userPhoneNumber={userPhoneNumber}
 				userEmail={userEmail}
 				userProfit={userProfit}
+				userEndpoints={userEndpoints}
 				setUserFirstName={setUserFirstName}
 				setUserLastName={setUserLastName}
 				setUserPhoneNumber={setUserPhoneNumber}
@@ -180,6 +199,7 @@ export default function Users() {
 				setUserProfit={setUserProfit}
 				editUser={editUser}
 				addNewUserHandle={addNewUserHandle}
+				setUserEndpoints={setUserEndpoints}
 			/>
 		</Grid>
 	);

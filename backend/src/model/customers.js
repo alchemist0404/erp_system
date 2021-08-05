@@ -15,6 +15,9 @@ const customersSchema = new Schema({
 	},
 	providerProfit: {
 		type: Number
+	},
+	endpoints: {
+		type: Object
 	}
 })
 

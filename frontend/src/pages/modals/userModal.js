@@ -12,6 +12,7 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import EmailIcon from '@material-ui/icons/Email';
 import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
 import FaceIcon from '@material-ui/icons/Face';
+import LinkIcon from '@material-ui/icons/Link';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -45,11 +46,13 @@ export const EditUserModal = (props) => {
         userPhoneNumber,
         userEmail,
         userProfit,
+        userEndpoints,
         setUserFirstName,
         setUserLastName,
         setUserPhoneNumber,
         setUserEmail,
         setUserProfit,
+        setUserEndpoints,
         addNewUserHandle
     } = props;
     const classes = useStyles();
@@ -137,6 +140,54 @@ export const EditUserModal = (props) => {
                                     type="number"
                                     defaultValue={userProfit}
                                     onChange={(e) => setUserProfit(e.target.value)}
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <LinkIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Get User Endpoint"
+                                    type="string"
+                                    defaultValue={userEndpoints.getUser}
+                                    onChange={(e) => setUserEndpoints({...userEndpoints, getUser: e.target.value})}
+                                    required
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <LinkIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Credit Endpoint"
+                                    type="string"
+                                    defaultValue={userEndpoints.credit}
+                                    onChange={(e) => setUserEndpoints({...userEndpoints, credit: e.target.value})}
+                                    required
+                                />
+                            </Grid>
+                        </Grid>
+                    </div>
+                    <div className={classes.margin}>
+                        <Grid container spacing={1} alignItems="flex-end">
+                            <Grid item>
+                                <LinkIcon />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="Debit Endpoint"
+                                    type="string"
+                                    defaultValue={userEndpoints.debit}
+                                    onChange={(e) => setUserEndpoints({...userEndpoints, debit: e.target.value})}
+                                    required
                                 />
                             </Grid>
                         </Grid>
