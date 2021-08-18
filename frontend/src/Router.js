@@ -42,6 +42,10 @@ const AppRouter = () => {
         window.location.pathname === "/3d-roulette" ||
         window.location.pathname === "/letitride/" ||
         window.location.pathname === "/letitride" ||
+        window.location.pathname === "/horse-racing/" ||
+        window.location.pathname === "/horse-racing" ||
+        window.location.pathname === "/keno/" ||
+        window.location.pathname === "/keno" ||
         window.location.pathname === "/studpoker/" ||
         window.location.pathname === "/studpoker"
     ) {
