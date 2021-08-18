@@ -2666,13 +2666,14 @@ function CInterface(e) {
       var N = s_oSpriteLibrary.getSprite("but_exit");
       (n = CANVAS_WIDTH - N.width / 2 - 10),
         (r = N.height / 2 + 10),
-        (c = new CGfxButton(n, r, N, s_oStage)).addEventListener(
-          ON_MOUSE_UP,
-          this._onExit,
-          this
-        ),
+        (c = new CGfxButton(n, r, N, s_oStage)).setVisible(false),
+        // .addEventListener(
+        //   ON_MOUSE_UP,
+        //   this._onExit,
+        //   this
+        // ),
         (!1 !== DISABLE_SOUND_MOBILE && !1 !== s_bMobile) ||
-          ((a = c.getX() - N.width - 10),
+          ((a = c.getX() + 92 - N.width - 10),
           (s = N.height / 2 + 10),
           (I = new CToggle(
             a,

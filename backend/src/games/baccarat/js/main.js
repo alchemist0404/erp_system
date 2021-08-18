@@ -2748,9 +2748,10 @@ function CInterface(a) {
     f = CANVAS_WIDTH - z.width / 2 - 10;
     l = z.height / 2 + 10;
     g = new CGfxButton(f, l, z, s_oStage);
-    g.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    g.setVisible(false);
+    // g.addEventListener(ON_MOUSE_UP, this._onExit, this);
     if (!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile)
-      (q = g.getX() - z.width - 10),
+      (q = g.getX() + 92 - z.width - 10),
         (p = z.height / 2 + 10),
         (C = new CToggle(
           q,

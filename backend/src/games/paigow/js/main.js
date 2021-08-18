@@ -3048,10 +3048,11 @@ function CInterface(a) {
     d = CANVAS_WIDTH - B.width / 2 - 10;
     e = B.height / 2 + 10;
     l = new CGfxButton(d, e, B, s_oStage);
-    l.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    // l.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    l.setVisible(false)
     var L = s_oSpriteLibrary.getSprite("but_fullscreen");
     !1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile
-      ? ((f = l.getX() - B.width - 10),
+      ? ((f = l.getX() + 82 - B.width - 10),
         (k = B.height / 2 + 10),
         (w = new CToggle(
           f,

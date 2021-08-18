@@ -2801,8 +2801,9 @@ function CInterface(a) {
     g = y.height / 2 + 2;
     n = new CGfxButton(c, g, y, !0);
     n.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    n.setVisible(false);
     !1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile
-      ? ((f = n.getX() - y.width),
+      ? ((f = n.getX() + 62 - y.width),
         (k = y.height / 2 + 2),
         (x = new CToggle(
           f,

@@ -2596,8 +2596,9 @@ function CInterface() {
     e = CANVAS_WIDTH - x.height / 2 - 10;
     f = x.height / 2 + 10;
     p = new CGfxButton(e, f, x, !0, s_oStage);
-    p.addEventListener(ON_MOUSE_UP, this._onExit, this);
-    var G = CANVAS_WIDTH - x.width / 2 - 80;
+    // p.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    p.setVisible(false)
+    var G = CANVAS_WIDTH - x.width / 2 - 12;
     if (!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile)
       (x = s_oSpriteLibrary.getSprite("audio_icon")),
         (b = G),

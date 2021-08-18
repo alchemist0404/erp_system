@@ -192,7 +192,7 @@ const manageNormalGame = async (req, res) => {
     const amount = winAmount - betAmount
     await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
     betHistoryController.addBetHistory(Types.ObjectId(re_data.customerId), Types.ObjectId(re_data.gameId), betAmount, winAmount)
-    checkAndFormatGameBank(customerId, gameId)
+    checkAndFormatGameBank(re_data.customerId, re_data.gameId)
     providerController.actionBetPlayerBalanceUpdate(re_data.player, amount, amount > 0 ? "R" : "D")
     
     res.json({

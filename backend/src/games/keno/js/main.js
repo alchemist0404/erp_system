@@ -2107,8 +2107,9 @@ function CInterface() {
 		f = CANVAS_WIDTH - x.height / 2 - 20;
 		e = x.height / 2 + 10;
 		k = new CGfxButton(f, e, x, !0);
-		k.addEventListener(ON_MOUSE_UP, this._onExit, this);
-		b = CANVAS_WIDTH - x.width / 2 - 100 - 15;
+		// k.addEventListener(ON_MOUSE_UP, this._onExit, this);
+		k.setVisible(false)
+		b = CANVAS_WIDTH - x.width / 2 - 100 - 15 + 102;
 		d = x.height / 2 + 10;
 		if (!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile) x = s_oSpriteLibrary.getSprite("audio_icon"), m = new CToggle(b, d, x, s_bAudioActive), m.addEventListener(ON_MOUSE_UP, this._onAudioToggle, this);
 		x = window.document;

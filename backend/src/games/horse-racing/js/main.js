@@ -3706,8 +3706,9 @@ function CInterface() {
 		e = u.height / 2 + 10;
 		n = new CGfxButton(a, e, u);
 		n.block(!0);
-		n.addEventListener(ON_MOUSE_UP, this._onExit, this);
-		!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile ? (u = s_oSpriteLibrary.getSprite("audio_icon"), c = a - u.width / 2 - 10, l = e, f = new CToggle(c, l, u, s_bAudioActive, s_oStage), f.addEventListener(ON_MOUSE_UP, this._onAudioToggle, this), d = c - u.width / 2 - 10, b = l) : (d = a - u.width -
+		// n.addEventListener(ON_MOUSE_UP, this._onExit, this);
+		n.setVisible(false)
+		!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile ? (u = s_oSpriteLibrary.getSprite("audio_icon"), c = a - u.width / 2 - 10 + 62, l = e, f = new CToggle(c, l, u, s_bAudioActive, s_oStage), f.addEventListener(ON_MOUSE_UP, this._onAudioToggle, this), d = c - u.width / 2 - 10, b = l) : (d = a - u.width -
 			10, b = e);
 		u = window.document;
 		var m = u.documentElement;
@@ -3777,7 +3778,8 @@ function CCreditsPanel() {
 		k.addChild(c);
 		var g = s_oSpriteLibrary.getSprite("but_exit");
 		d = new CGfxButton(815, 284, g, k);
-		d.addEventListener(ON_MOUSE_UP, this.unload, this);
+		// d.addEventListener(ON_MOUSE_UP, this.unload, this);
+		d.setVisible(false)
 		b = new createjs.Text(TEXT_CREDITS_DEVELOPED,
 			"40px " + PRIMARY_FONT, "#fff");
 		b.textAlign = "center";
@@ -3827,11 +3829,12 @@ function CBetPanel() {
 		c = CANVAS_WIDTH - D.width / 2 - 10;
 		l = D.height / 2 + 10;
 		B = new CGfxButton(c, l, D, I);
-		B.addEventListener(ON_MOUSE_UP, this.onExit, this);
+		// B.addEventListener(ON_MOUSE_UP, this.onExit, this);
+		B.setVisible(false)
 		if (!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile) {
 			var H = s_oSpriteLibrary.getSprite("audio_icon");
 			d = c - D.width -
-				10;
+				10 + 62;
 			b = H.height / 2 + 10;
 			G = new CToggle(d, b, H, s_bAudioActive, s_oStage);
 			G.addEventListener(ON_MOUSE_UP, this._onAudioToggle, this);
@@ -4832,9 +4835,8 @@ function CMsgBox() {
 		b = new CTextButton(CANVAS_WIDTH / 2, 500, s_oSpriteLibrary.getSprite("fiche_panel"), TEXT_RECHARGE, PRIMARY_FONT, "#fff", 30, d);
 		b.setVisible(!1);
 		b.addEventListener(ON_MOUSE_UP, this._onRecharge, this);
-		c =
-			new CGfxButton(CANVAS_WIDTH / 2 + 205, CANVAS_HEIGHT / 2 - 130, s_oSpriteLibrary.getSprite("but_exit"), d);
-		c.addEventListener(ON_MOUSE_UP, this._onExit, this)
+		c = new CGfxButton(CANVAS_WIDTH / 2 + 205, CANVAS_HEIGHT / 2 - 130, s_oSpriteLibrary.getSprite("but_exit"), d);
+		// c.addEventListener(ON_MOUSE_UP, this._onExit, this)
 	};
 	this.unload = function () {
 		b.unload();

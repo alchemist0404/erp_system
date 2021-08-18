@@ -3836,10 +3836,11 @@ function CInterface() {
     a = CANVAS_WIDTH - t.width / 2 - 10;
     g = t.height / 2 + 10;
     p = new CGfxButton(a, g, t, s_oStage);
-    p.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    // p.addEventListener(ON_MOUSE_UP, this._onExit, this);
+    p.setVisible(false)
     if (!1 === DISABLE_SOUND_MOBILE || !1 === s_bMobile)
       (t = s_oSpriteLibrary.getSprite("audio_icon")),
-        (h = a - t.width / 2 - 10),
+        (h = a + 62 - t.width / 2 - 10),
         (b = t.height / 2 + 10),
         (r = new CToggle(h, b, t, s_bAudioActive, s_oStage)),
         r.addEventListener(ON_MOUSE_UP, this._onAudioToggle, this);
