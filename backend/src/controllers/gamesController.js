@@ -4,6 +4,7 @@ const fs = require('fs')
 const { DIR } = require('../../config')
 const sendHook = require('./axiosController')
 const betHistoryController = require('./betHistoryController')
+const providerController = require('./providerController')
 
 const addGame = async (req, res) => {
   try {
@@ -38,6 +39,7 @@ const getGame = async (req, res) => {
 const getGameById = async (req, res) => {
   try {
     var games = await Games.findById(Types.ObjectId(req.params.id));
+    // var user_info = await providerController.getUserInfo(req, res)
     res.json({
       status: true,
       data: games
@@ -186,9 +188,13 @@ const manageNormalGame = async (req, res) => {
         }
       }
     }
+
+    const amount = winAmount - betAmount
     await Profit.updateMany({ customer_id: Types.ObjectId(re_data.customerId), game_id: Types.ObjectId(re_data.gameId) }, updateData)
     betHistoryController.addBetHistory(Types.ObjectId(re_data.customerId), Types.ObjectId(re_data.gameId), betAmount, winAmount)
     checkAndFormatGameBank(customerId, gameId)
+    providerController.actionBetPlayerBalanceUpdate(re_data.player, amount, amount > 0 ? "R" : "D")
+    
     res.json({
       occurrence_type: occurrence_type,
       occurrence: occurrence,
@@ -246,7 +252,7 @@ const checkAmericanRoulleteGameBank = async (req, res) => {
 
 const manageGamebaccarat = async (req, res) => {
   try {
-    const { customerId, gameId, bets, randomNumber, betNumber } = req.body;
+    const { customerId, gameId, bets, randomNumber, betNumber, player } = req.body;
 
     const gameData = await Games.findById(Types.ObjectId(gameId))
     const customerData = await Customers.findById(Types.ObjectId(customerId))
@@ -326,9 +332,12 @@ const manageGamebaccarat = async (req, res) => {
 
     console.log('updateData :>> ', updateData);
 
+    const amount = win_amount - total_amount
     await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, updateData)
     betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), total_amount, win_amount)
     checkAndFormatGameBank(customerId, gameId)
+    providerController.actionBetPlayerBalanceUpdate(player, amount, amount > 0 ? "R" : "D")
+
     res.json({
       win_percent,
       re_bets,
@@ -372,7 +381,7 @@ const checkBlackjackGameBank = async (req, res) => {
 }
 
 const updateBlackjackGameBank = async (req, res) => {
-  const { customerId, gameId, is_win, current_bet } = req.body;
+  const { customerId, gameId, is_win, current_bet, player } = req.body;
 
   const customerData = await Customers.findById(Types.ObjectId(customerId))
   const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
@@ -398,9 +407,12 @@ const updateBlackjackGameBank = async (req, res) => {
     game_bank: game_bank
   };
 
+  const amount = win_amount - Number(current_bet)
   await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
   betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), Number(current_bet), win_amount)
   checkAndFormatGameBank(customerId, gameId)
+  providerController.actionBetPlayerBalanceUpdate(player, amount, amount > 0 ? "R" : "D")
+
   res.json({
     gameStatus: true
   })
@@ -497,7 +509,7 @@ const checkJackorBetterGameBank = async (req, res) => {
 }
 
 const updateGameBankWithWinAmount = async (req, res) => {
-  const { customerId, gameId, win_amount, bet_amount } = req.body;
+  const { customerId, gameId, win_amount, bet_amount, player } = req.body;
 
   const customerData = await Customers.findById(Types.ObjectId(customerId))
   const profitData = await Profit.findOne({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) })
@@ -507,9 +519,11 @@ const updateGameBankWithWinAmount = async (req, res) => {
   const provider_profit = profitData.provider_profit + all_profit * customerData.providerProfit / 100
   const customer_profit = profitData.customer_profit + all_profit - all_profit * customerData.providerProfit / 100
 
+  const amount = Number(win_amount) - Number(bet_amount)
+
   var game_bank = 0, update_data = {}
 
-  game_bank = profitData.game_bank - (Number(win_amount) - Number(bet_amount)) - all_profit;
+  game_bank = profitData.game_bank - amount - all_profit;
 
   update_data = {
     provider_profit: provider_profit,
@@ -520,8 +534,11 @@ const updateGameBankWithWinAmount = async (req, res) => {
   console.log('game_bank :>> ', game_bank);
 
   await Profit.updateMany({ customer_id: Types.ObjectId(customerId), game_id: Types.ObjectId(gameId) }, update_data)
+  
   betHistoryController.addBetHistory(Types.ObjectId(customerId), Types.ObjectId(gameId), Number(bet_amount), Number(win_amount))
   checkAndFormatGameBank(customerId, gameId)
+  providerController.actionBetPlayerBalanceUpdate(player, amount, amount > 0 ? "R" : "D")
+
   res.json({
     gameStatus: true
   })

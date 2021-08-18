@@ -2323,6 +2323,7 @@ function CGame(e) {
           gameId: gameid,
           bet_amount: cur_bet,
           win_amount: e,
+          player
         },
       }).done((data) => {
         if(data.gameStatus == false) {

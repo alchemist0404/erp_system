@@ -2520,7 +2520,8 @@ function CGame(a) {
           betAmount: y.getBetAnte(),
           winAmount: y.getBetAnte() * 0.95,
           tie: true,
-          randomNumber: randomNumber
+          randomNumber: randomNumber,
+          player
         }
       }).done((data) => {
         if(data.occurrence_type === 'lose') {

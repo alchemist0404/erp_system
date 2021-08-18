@@ -3139,6 +3139,7 @@ function CGame(a) {
         gameId: gameid,
         win_amount: c,
         bet_amount: p.getCurBet(),
+        player
       },
       success: (data) => {
         if(data.gameStatus == false) {

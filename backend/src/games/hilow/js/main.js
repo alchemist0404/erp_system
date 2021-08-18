@@ -2447,7 +2447,8 @@ function CGame(a) {
           betAmount: h,
           winAmount: h,
           tie: false,
-          randomNumber: randomNumber
+          randomNumber: randomNumber,
+          player
         }
       }).done((data) => {
         if(data.occurrence_type === 'win') {

@@ -3452,6 +3452,7 @@ function CGame(a) {
         gameId: gameid,
         win_amount,
         bet_amount,
+        player
       },
     }).done((data) => {
       if(data.gameStatus == false) {

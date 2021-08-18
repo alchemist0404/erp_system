@@ -2020,6 +2020,7 @@ function CGame(a) {
 				gameId: gameid,
 				win_amount,
 				bet_amount: d,
+				player
 			},
 			success: (data) => {
 				if (data.gameStatus == false) {

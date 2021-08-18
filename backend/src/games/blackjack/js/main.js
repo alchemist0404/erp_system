@@ -3422,6 +3422,7 @@ function CSeat() {
           gameId: gameid,
           current_bet: cur_bet,
           is_win,
+          player
         },
         success: (data) => {
           if (data.gameStatus == false) {

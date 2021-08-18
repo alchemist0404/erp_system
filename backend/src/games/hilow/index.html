@@ -35,6 +35,7 @@
     var gameid = '';
     var customerid = '';
     var home_url = '';
+    var player = '';
     $(document).ready(function () {
 
       var url_string = window.location.href; //window.location.href
@@ -43,6 +44,7 @@
       home_url = location.origin;
       gameid = url.searchParams.get("gameid");
       customerid = url.searchParams.get("customerid");
+      player = url.searchParams.get("player");
 
       var gameConfig = $.ajax({
         url: `${home_url}/api/games/${gameid}`,

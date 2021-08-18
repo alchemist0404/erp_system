@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles, Modal, IconButton, Grid } from '@material-ui/core';
-import { ROOT } from '../../hooks'
+import { API, ROOT } from '../../hooks'
 import { Close } from '@material-ui/icons/'
 import clsx from 'clsx'
 
@@ -44,9 +44,27 @@ export const GamePlayModal = (props) => {
         setOpen,
         gameId,
         gameRoute,
+        player
         // gameName
     } = props;
     const classes = useStyles();
+    const [ready, setReady] = useState(false)
+    const [balance, setBalance] = useState(0)
+
+    useEffect(() => {
+        loadPlayerBalance()
+    }, [])
+
+    const loadPlayerBalance = async () => {
+        const response = await API.actionBetPlayerBalance({Player: player.Player})
+        if (response.status) {
+            setBalance(response.data.Balance)
+            setReady(true)
+        } else {
+            alert(response.data)
+            setOpen(false)
+        }
+    }
 
     return (
         <Modal
@@ -54,21 +72,25 @@ export const GamePlayModal = (props) => {
             aria-describedby="spring-modal-description"
             className={classes.modal}
             open={open}
-            onClose={() => setOpen(!open)}
+            onClose={() => setOpen(false)}
         >
             <Grid className={classes.gameWindow}>
                 {/* <Grid className={classes.gameHeader}>
                     <Typography className={classes.gameName}>{gameName}</Typography>
                 </Grid> */}
-                <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpen(!open)}>
+                <IconButton aria-label="close" className={classes.closeButton} onClick={() => setOpen(false)}>
                     <Close fontSize="small" />
                 </IconButton>
-                <iframe
-                    title="game window"
-                    className={clsx("game-window-iframe", classes.gameIframe)}
-                    // src="http://localhost:6140/letitride/?customerid=60de8dee7010c075e796606a&gameid=60ebaed15775dc051016329e&balance=1000"
-                    src={`${ROOT.home_url}/${gameRoute}?customerid=61087d149e445c0f14ce2cb0&gameid=${gameId}&balance=1000`}
-                ></iframe>
+                {
+                    ready ? 
+                        <iframe
+                            title="game window"
+                            className={clsx("game-window-iframe", classes.gameIframe)}
+                            // src="http://localhost:6140/letitride/?customerid=60de8dee7010c075e796606a&gameid=60ebaed15775dc051016329e&balance=1000"
+                            src={`${ROOT.home_url}/${gameRoute}?customerid=611ca790234c5f2ab4dd3b50&gameid=${gameId}&player=${player.Player}&balance=${balance}`}
+                        ></iframe>
+                    : null
+                }
             </Grid>
         </Modal>
     );

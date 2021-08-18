@@ -5,6 +5,7 @@ import { Card, CardMedia, makeStyles, CardContent, Typography, IconButton } from
 import { red } from '@material-ui/core/colors';
 import { PlayArrow } from '@material-ui/icons';
 import { GamePlayModal } from './modals'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -45,6 +46,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Games() {
     const classes = useStyles();
+    const [player, setPlayer] = useState({})
+    const [ready, setReady] = useState(false)
     const [state, setState] = useState({
         games: [],
         gameId: "",
@@ -54,9 +57,22 @@ export default function Games() {
     const [open, setOpen] = useState(false)
 
     const loadGames = async () => {
+        const url_string = window.location.href;
+        const url = new URL(url_string);
+        const playerName = url.searchParams.get("Player");
+        const userId = url.searchParams.get("IdUser");
+
         const response = await API.getGames();
         if (response.status) {
             setState({ ...state, games: response.data })
+        }
+
+        const auth = await API.actionBetPlayerAuthenticate({playerName, userId});
+        if (!auth.status) {
+            window.location.href="https://google.com"
+        } else {
+            setPlayer(auth.data)
+            setReady(true)
         }
     }
 
@@ -77,7 +93,7 @@ export default function Games() {
                             />
                             <CardContent className={classes.cardContent}>
                                 <Typography variant="body2" color="textSecondary" component="p">{item.name}</Typography>
-                                <IconButton aria-label="delete" className={classes.margin} onClick={() => { setState({ ...state, gameId: item._id, gameRoute: item.route, gameName: item.name }); setOpen(!open) }}>
+                                <IconButton aria-label="delete" className={classes.margin} onClick={() => { setState({ ...state, gameId: item._id, gameRoute: item.route, gameName: item.name }); setOpen(true) }}>
                                     <PlayArrow fontSize="large" />
                                 </IconButton>
                             </CardContent>
@@ -86,13 +102,14 @@ export default function Games() {
                 ))
             }
             {
-                open ?
+                open && ready ?
                     <GamePlayModal
                         open={open}
                         setOpen={setOpen}
                         gameId={state.gameId}
                         gameRoute={state.gameRoute}
                         gameName={state.gameName}
+                        player={player}
                     />
                     : null
             }

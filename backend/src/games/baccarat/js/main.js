@@ -2374,7 +2374,8 @@ function CGame(a) {
           gameId: gameid,
           bets: a,
           randomNumber,
-          betNumber: c
+          betNumber: c,
+          player
         },
       }).done((data) => {
         if (data.gameStatus == false) {

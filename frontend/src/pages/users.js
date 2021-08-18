@@ -29,7 +29,7 @@ export default function Users() {
 	const [userPhoneNumber, setUserPhoneNumber] = useState("")
 	const [userEmail, setUserEmail] = useState("")
 	const [userEndpoints, setUserEndpoints] = useState({
-		getUser: "",
+		auth: "",
 		credit: "",
 		debit: ""
 	})
@@ -138,7 +138,7 @@ export default function Users() {
 		setUserPhoneNumber("")
 		setUserEmail("")
 		setUserEndpoints({
-			getUser: "",
+			auth: "",
 			credit: "",
 			debit: ""
 		})

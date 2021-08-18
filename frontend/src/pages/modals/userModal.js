@@ -151,10 +151,10 @@ export const EditUserModal = (props) => {
                             </Grid>
                             <Grid item>
                                 <TextField
-                                    label="Get User Endpoint"
+                                    label="Auth Endpoint"
                                     type="string"
-                                    defaultValue={userEndpoints.getUser}
-                                    onChange={(e) => setUserEndpoints({...userEndpoints, getUser: e.target.value})}
+                                    defaultValue={userEndpoints.auth}
+                                    onChange={(e) => setUserEndpoints({...userEndpoints, auth: e.target.value})}
                                     required
                                 />
                             </Grid>

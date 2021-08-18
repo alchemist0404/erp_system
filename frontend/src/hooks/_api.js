@@ -222,3 +222,24 @@ export const getBetHistory = async () => {
     });
     return result;
 }
+
+
+////////////////////////////////           player
+
+export const actionBetPlayerAuthenticate = async (params) => {
+    const result = await Axios({
+        endpoint: `/api/provider/actionBetPlayerAuthenticate`,
+        method: 'POST',
+        params: params
+    });
+    return result;
+}
+
+export const actionBetPlayerBalance = async (params) => {
+    const result = await Axios({
+        endpoint: `/api/provider/actionBetPlayerBalance`,
+        method: 'POST',
+        params: params
+    });
+    return result;
+}

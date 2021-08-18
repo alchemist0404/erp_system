@@ -3607,6 +3607,7 @@ function CGame(a) {
 					gameId: gameid,
 					win_amount: l,
 					bet_amount: s_oBetList.getTotBet(),
+					player
 				},
 				success: (data) => {
 					if (data.gameStatus == false) {
