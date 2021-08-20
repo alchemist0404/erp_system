@@ -87,7 +87,7 @@ export const GamePlayModal = (props) => {
                             title="game window"
                             className={clsx("game-window-iframe", classes.gameIframe)}
                             // src="http://localhost:6140/letitride/?customerid=60de8dee7010c075e796606a&gameid=60ebaed15775dc051016329e&balance=1000"
-                            src={`${ROOT.home_url}/${gameRoute}?customerid=611ca790234c5f2ab4dd3b50&gameid=${gameId}&player=${player.Player}&balance=${balance}`}
+                            src={`${ROOT.home_url}/${gameRoute}?customerid=611f315b306a493136b9f97b&gameid=${gameId}&player=${player.Player}&balance=${balance}`}
                         ></iframe>
                     : null
                 }

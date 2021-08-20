@@ -69,7 +69,8 @@ export default function Games() {
 
         const auth = await API.actionBetPlayerAuthenticate({playerName, userId});
         if (!auth.status) {
-            window.location.href="https://google.com"
+            alert("User is not authenticated!")
+            window.location.href="https://actionbetz.org/"
         } else {
             setPlayer(auth.data)
             setReady(true)
