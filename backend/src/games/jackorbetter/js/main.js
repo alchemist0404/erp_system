@@ -3299,7 +3299,7 @@ function CPayTable(a, c) {
       k[n] = [];
       for (h = 0; h < WIN_COMBINATIONS; h++) {
         var u = new createjs.Text(
-          s_oPayTableSettings.getWin(n, h),
+          s_oPayTableSettings.getWin(n, h) * BET_TYPE[0],
           "22px " + FONT1,
           "#fff000"
         );
